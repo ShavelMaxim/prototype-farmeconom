@@ -1,10 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useCatalogParams } from './use-catalog-params';
 import { apiErrorMessage } from '@/shared/api/errors';
 import { ProductCard } from './product-card';
 import { useSearchParams } from 'next/navigation';
-import { Alert, Button, Checkbox, Drawer, Empty, Input, Select, Skeleton } from 'antd';
+import { Alert, Button, Checkbox, Empty, Input, Select, Skeleton } from 'antd';
 import {
   ArrowRightOutlined,
   SearchOutlined,
@@ -19,6 +20,9 @@ import { useAppSelector } from '@/shared/lib/store-hooks';
 import { pharmacies } from '@/shared/config/pharmacies';
 import styles from './catalog.module.css';
 
+const FilterDrawer = dynamic(() => import('./filter-drawer'), {
+  loading: () => <p role="status">Открываем фильтры…</p>,
+});
 const sorting = [
   { value: 'popular', label: 'По популярности' },
   { value: 'price-asc', label: 'Сначала дешевле' },
@@ -31,6 +35,11 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
   const query = parseCatalogQuery({ ...Object.fromEntries(search), pharmacy });
   const { draft, searchChanged, reset, update, submitSearch } = useCatalogParams(query);
   const [drawer, setDrawer] = useState(false);
+  const filterTrigger = useRef<HTMLButtonElement>(null);
+  function closeFilters() {
+    setDrawer(false);
+    requestAnimationFrame(() => filterTrigger.current?.focus());
+  }
   const [demo, setDemo] = useState('normal');
   const { data, isFetching, isError, error, refetch } = useGetCatalogQuery(
     { ...query, demo },
@@ -162,6 +171,7 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
             />
           </div>
           <Button
+            ref={filterTrigger}
             className={styles.mobileFilters}
             icon={<SlidersOutlined />}
             onClick={() => setDrawer(true)}
@@ -227,18 +237,7 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           </div>
         </div>
       </section>
-      <Drawer
-        title="Категории и фильтры"
-        open={drawer}
-        onClose={() => setDrawer(false)}
-        footer={
-          <Button type="primary" block onClick={() => setDrawer(false)}>
-            Показать товары
-          </Button>
-        }
-      >
-        {filters}
-      </Drawer>
+      {drawer && <FilterDrawer onClose={closeFilters}>{filters}</FilterDrawer>}
       <details className={styles.demoPanel}>
         <summary>Проверить поведение интерфейса</summary>
         <p>

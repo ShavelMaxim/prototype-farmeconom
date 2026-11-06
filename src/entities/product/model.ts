@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { pharmacySchema } from '@/shared/config/pharmacy-id';
+import { productIdSchema } from '@/shared/config/product-id';
 export { pharmacySchema, type PharmacyId } from '@/shared/config/pharmacy-id';
 export const categories = [
   'Все товары',
@@ -14,7 +15,7 @@ const offerSchema = z.object({
 });
 export type Offer = z.infer<typeof offerSchema>;
 export const productSchema = z.object({
-  id: z.string().min(1),
+  id: productIdSchema,
   slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   name: z.string().min(1),
   description: z.string(),

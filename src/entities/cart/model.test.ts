@@ -41,3 +41,11 @@ describe('корзина: ограничения и восстановление
     expect(state.pharmacy).toBe('park');
   });
 });
+
+it('сохраняет идентификаторы товаров из API при восстановлении', () => {
+  const state = cartReducer(
+    initialCart,
+    restore({ pharmacy: 'central', items: [{ id: 'sku-thermometer-2026', quantity: 1 }] }),
+  );
+  expect(state.items[0]?.id).toBe('sku-thermometer-2026');
+});

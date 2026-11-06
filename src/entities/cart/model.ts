@@ -1,8 +1,9 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import { z } from 'zod';
 import { pharmacySchema } from '@/shared/config/pharmacy-id';
+import { productIdSchema } from '@/shared/config/product-id';
 const itemSchema = z.object({
-  id: z.string().regex(/^product-\d+$/),
+  id: productIdSchema,
   quantity: z.number().int().min(1).max(99),
 });
 export const cartSchema = z.object({
