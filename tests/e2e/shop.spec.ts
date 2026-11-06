@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 test('покупатель находит товар, сохраняет корзину и проходит демо-оформление', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('./');
   await expect(
     page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
   ).toBeEnabled();
@@ -8,7 +8,7 @@ test('покупатель находит товар, сохраняет кор�
   await expect(page).toHaveURL(/q=/);
   await page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }).click();
   await page.getByRole('link', { name: 'Корзина, товаров: 1' }).click();
-  await expect(page).toHaveURL(/\/cart$/);
+  await expect(page).toHaveURL(/\/cart\/?$/);
   await expect(page.getByRole('heading', { name: 'Корзина', exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Электронный термометр' })).toBeVisible();
@@ -24,7 +24,7 @@ test('покупатель находит товар, сохраняет кор�
 test('смена аптеки блокирует недоступный товар, а возврат восстанавливает оформление', async ({
   page,
 }) => {
-  await page.goto('/products/gentle-cleanser');
+  await page.goto('./products/gentle-cleanser');
   await page
     .getByRole('button', { name: 'В корзину: Гель для бережного очищения', exact: true })
     .click();
@@ -40,7 +40,7 @@ test('смена аптеки блокирует недоступный това
   await expect(page.getByRole('link', { name: 'К оформлению' })).toBeEnabled();
 });
 test('категория живёт в URL и восстанавливается кнопкой назад', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('./');
   await expect(
     page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
   ).toBeEnabled();
@@ -58,7 +58,7 @@ test('категория живёт в URL и восстанавливается
 test('клавиатурный вход доступен, консоль не содержит ошибок hydration', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/');
+  await page.goto('./');
   await expect(
     page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
   ).toBeEnabled();
@@ -67,7 +67,7 @@ test('клавиатурный вход доступен, консоль не с
   expect(errors).toEqual([]);
 });
 test('пустая выдача сбрасывается и layout помещается в экран', async ({ page }, testInfo) => {
-  await page.goto('/?q=несуществующийтовар');
+  await page.goto('./?q=несуществующийтовар');
   await expect(page.getByText('По вашему запросу ничего не нашлось')).toBeVisible();
   await page.getByRole('button', { name: 'Показать все товары' }).click();
   await expect(
@@ -82,16 +82,29 @@ test('пустая выдача сбрасывается и layout помеща�
   });
 });
 test('ошибка API локальна, товары сохраняются, повтор восстанавливает выдачу', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('./');
   const add = page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true });
   await expect(add).toBeEnabled();
-  await page.route('**/api/products*', (route) =>
-    route.fulfill({ status: 503, contentType: 'application/json', body: '{"message":"test"}' }),
-  );
+  await page.getByText('Проверить поведение интерфейса', { exact: true }).click();
+  await page.getByRole('combobox', { name: 'Режим сети' }).click();
+  await page.getByText('Ошибка API', { exact: true }).click();
   await page.getByRole('textbox', { name: 'Поиск товаров' }).fill('термометр');
   await expect(page.getByText('Не удалось обновить каталог')).toBeVisible();
   await expect(add).toBeDisabled();
-  await page.unroute('**/api/products*');
   await page.getByRole('button', { name: 'Повторить', exact: true }).click();
+  await expect(page.getByText('Не удалось обновить каталог')).toBeVisible();
+  await page.getByRole('combobox', { name: 'Режим сети' }).click();
+  await page.getByText('Обычная сеть', { exact: true }).click();
   await expect(add).toBeEnabled();
+});
+
+test('статическая карточка открывается напрямую и после обновления', async ({ page }) => {
+  await page.goto('./products/digital-thermometer/');
+  await expect(
+    page.getByRole('heading', { name: 'Электронный термометр', exact: true }),
+  ).toBeVisible();
+  await page.reload();
+  await expect(
+    page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
+  ).toBeEnabled();
 });

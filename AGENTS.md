@@ -13,7 +13,7 @@
 - Redux Toolkit: корзина и аптека. RTK Query: клиентские HTTP-запросы. Создавать store на экземпляр Provider, не глобальный singleton.
 - React Hook Form + Zod владеют состоянием и валидацией форм. Не дублировать их в Ant Form.
 - FSD: app → widgets → features → entities → shared; root app содержит тонкие Next.js маршруты, src/app — провайдеры. Без циклических и восходящих runtime-импортов. Единственное исключение: shared/lib/store-hooks.ts использует type-only RootState/AppDispatch из композиции store в app.
-- Моковый API через Route Handlers, единый репозиторий данных для SSR и API. PHP/MySQL — будущий этап. Не добавлять реальную оплату, аккаунты, аналитику или передачу персональных данных.
+- Публикация: статический экспорт Next.js на GitHub Pages, workflow после push в master. Локальные адаптеры RTK Query используют общий repository; Route Handlers удалены по согласованному переходу на Pages. NEXT_PUBLIC_API_URL — точка подключения будущего PHP API. PHP/MySQL — будущий этап. Не добавлять реальную оплату, аккаунты, аналитику или передачу персональных данных.
 - Денежные значения хранить в копейках, форматировать через Intl. Проверять цены и наличие по выбранной аптеке. Проверять входные данные API через Zod.
 
 ## Поведение

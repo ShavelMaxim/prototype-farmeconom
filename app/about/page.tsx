@@ -37,7 +37,7 @@ export default function AboutPage() {
       <p>
         Next.js App Router, TypeScript, Redux Toolkit и RTK Query. Интерфейс использует Ant Design с
         собственной темой и CSS Modules; формы — React Hook Form и Zod. Карточки доступны по прямым
-        ссылкам, а данные проверяются на моковом API.
+        ссылкам, а данные проверяются локальным демонстрационным адаптером.
       </p>
       <h2>Границы демонстрации</h2>
       <p>

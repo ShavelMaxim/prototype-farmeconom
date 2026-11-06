@@ -1,59 +1,38 @@
-# Публикация портфолио
+# GitHub Pages
 
-## Статус
+Репозиторий: https://github.com/ShavelMaxim/prototype-farmeconom
+Ветка публикации: master. Workflow: .github/workflows/pages.yml.
 
-Подготовлено к Vercel, но пока не опубликовано. Нужен вход владельца в Vercel. Внешнего URL и проверенного облачного deployment пока нет. Все данные демонстрационные, секреты и база данных не требуются.
+## Настройка
 
-## Выбранный вариант
+Settings → Pages → Build and deployment → Source: GitHub Actions. После push в master workflow выполняет npm ci, typecheck, lint, unit-тесты, статическую сборку и E2E; затем публикует out. Подпапка определяется через actions/configure-pages и не зашита в исходники. Для PR checks.yml проверяет код без публикации.
 
-Vercel запускает настоящий Next.js с SSR, статическими карточками и Route Handlers. Конфигурация в `vercel.json`; зависимости закреплены в `package-lock.json`. Версия Node.js в настройках проекта — **24.x**. Корневая папка — папка с `package.json` (при публикации всего рабочего каталога: `outputs/pharm-demo`).
+Права deploy: pages: write, id-token: write. Environment: github-pages. Публикация получает артефакт только после успешных проверок. Секреты демо не нужны.
 
-Платёжные услуги, платный тариф и пользовательский домен для текущего демо не настраивать. Если сервис потребует оплату, остановиться и согласовать её отдельно.
+Ожидаемый URL (до проверки не считать опубликованным): https://shavelmaxim.github.io/prototype-farmeconom/
 
-Sites использует Workers. Текущая `.next` сборка не соответствует его контракту `dist/server/index.js`. OpenNext поддерживает Next.js на Cloudflare, но совместимость с упаковкой Sites в этом проекте не проверена. Для срока к собеседованию выбран прямой хостинг Next.js без нового адаптера.
-
-## Развёртывание
-
-Предпочтительно подключить Vercel в чате и продолжить публикацию здесь. Альтернатива — официальный CLI из папки проекта:
+## Проверка
 
 ```powershell
-npx vercel login
-npx vercel link
-npx vercel deploy
+$env:NEXT_PUBLIC_BASE_PATH='/prototype-farmeconom'
+npm run build
+npm run test:e2e
+npm start
 ```
 
-При привязке выбрать свой личный аккаунт, создать проект `apteka-ryadom-portfolio` и использовать Next.js preset. Не привязывать к существующему чужому или рабочему проекту. Для нового проекта не нужны переменные окружения. CLI устанавливается отдельно от зависимостей приложения; логин выполняется в браузере, токены в чат не отправлять.
-
-После проверки preview:
+Просмотр: http://127.0.0.1:3100/prototype-farmeconom/.
 
 ```powershell
-npx vercel deploy --prod
-```
-
-Сохранить фактический URL и идентификатор deployment в CONTEXT.md. Проверить доступ к конечной ссылке без авторизации, прежде чем отправлять работодателю. Если включена Deployment Protection, публичную доступность нужно настроить в Vercel; наличие URL само по себе её не доказывает.
-
-## Проверка опубликованной версии
-
-В командах заменить пример фактическим адресом **этого демо**. Скрипт выполняет также POST демонстрационного оформления, которое не хранит заказов и не отправляет сообщения.
-
-```powershell
-npm run check:deployment -- https://your-demo.vercel.app
-$env:PLAYWRIGHT_BASE_URL = 'https://your-demo.vercel.app'
+npm run check:deployment -- https://shavelmaxim.github.io/prototype-farmeconom/
+$env:PLAYWRIGHT_BASE_URL='https://shavelmaxim.github.io/prototype-farmeconom/'
 npm run test:e2e
 Remove-Item Env:PLAYWRIGHT_BASE_URL
 ```
 
-HTTP-проверка проверяет пять страниц, 404, каталог, поиск, валидацию, локальную ошибку API и демо-оформление с серверным расчётом суммы. При заданном `PLAYWRIGHT_BASE_URL` тесты не запускают локальный сервер; проверяют выбранный адрес. Браузерные тесты используют установленный Chrome и создают скриншоты. Закрытый login-screen Vercel считается неуспешной проверкой, а не работающей витриной.
+Smoke проверяет страницы и JS/CSS. E2E проверяют клиентские моки и оформление: HTTP API на Pages отсутствует. Для статической версии используется npm start (скрипт serve-static.mjs), а не next start.
 
-Затем вручную открыть ссылку на телефоне: поиск → карточка → корзина → смена аптеки → демо-оформление. Проверить прямой вход в карточку и восстановление корзины после перезагрузки.
+## Будущий backend
 
-## Передача проекта
+NEXT_PUBLIC_API_URL включает HTTP-адаптер RTK Query. PHP потребуется разместить отдельно от Pages и настроить HTTPS/CORS. Браузерная проверка цены не заменяет серверную в настоящем магазине. PHP/MySQL отложены до завершения публикации.
 
-Архив исходников создаётся без `node_modules`, `.next`, `.git`, секретов и временных результатов тестов. В нём остаются lockfile, проверки, скриншоты и документация. После распаковки: `npm ci`, `npm run build`, `npm start`. Локальный адрес — `http://127.0.0.1:3000`.
-
-## Документация платформ
-
-- [Next.js: deployment](https://nextjs.org/docs/app/getting-started/deploying)
-- [Vercel: deployment из CLI](https://vercel.com/docs/projects/deploy-from-cli)
-- [Vercel: login](https://vercel.com/docs/cli/login)
-- [OpenNext: Cloudflare](https://opennext.js.org/cloudflare)
+Фактический статус — CONTEXT.md. Успешная локальная сборка не доказывает успешный deployment.

@@ -1,13 +1,13 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
-import { POST } from '../../../app/api/demo-checkout/route';
+import { demoCheckout as POST } from './demo-checkout';
 const request = (body: unknown) =>
   new Request('http://localhost/api/demo-checkout', {
     method: 'POST',
     body: JSON.stringify(body),
     headers: { 'Content-Type': 'application/json' },
   });
-describe('API оформления', () => {
+describe('Демонстрационное оформление', () => {
   const valid = {
     pickup: 'today',
     acknowledge: true,
