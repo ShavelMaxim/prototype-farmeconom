@@ -1,7 +1,5 @@
 import { Catalog } from '@/widgets/catalog/catalog';
-import { getCatalog } from '@/entities/product/repository';
-import { parseCatalogQuery } from '@/entities/product/model';
+import { defaultCatalog } from '@/entities/product/repository';
 export default function Home() {
-  const query = parseCatalogQuery({});
-  return <Catalog initial={getCatalog(query)} />;
+  return <Catalog initial={defaultCatalog} />;
 }

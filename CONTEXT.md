@@ -79,3 +79,15 @@ README, DEPLOYMENT и INTERVIEW обновлены под Pages. Старый а
 ## Последний завершённый результат профилирования
 
 Опубликована обычная production-версия5414929 (workflow42204058075 success).26 unit/integration и24 E2E прошли в CI. На внешнем сайте прошли10 адресных E2E: покупка, статический HTML безJS, axe/фокус/reflow, быстрый поиск. Финальный одиночный Pages Lighthouse:84/100,LCP1,35s,TBT578ms,CLS0, profiles/published.json. Контрольные локальные медианы44→67 не смешивать с одиночным Pages84. Все исходные профили/trace и промежуточные замеры сохранены; docs/performance/PROFILING.md — полный отчёт. Source maps включаются только флагом PROFILE_BUILD, в CI/default они выключены. Временные локальные профилирующие серверы остановлены. Задача профилирования и исправления основных причин завершена. Дальнейшее ускорение требует отдельного профилирования оставшихся module initialization/layout, без обещаний полевого INP.
+
+## Следующая итерация: code splitting и декоративный рендеринг
+
+6 ноября: Server Component передаёт один defaultCatalog в Providers и Catalog; makeStore(initialCatalog) seed только в демо-режиме. Не возвращать прямой runtime-импорт repository в store/API: фильтрация в filter-catalog.ts, contracts.ts загружается перед валидацией ответа. Product имеет type-only зависимость от схемы. URL/ID/корзина используют zod/mini из того же Zod, формы и сложные контракты — полный API. Границы валидации покрыты тестами.
+
+PharmacyDialog/FilterDrawer остаются dynamic, их import запускается также при pointerenter/focus кнопок. content-visibility применяется только к aria-hidden artwork фиксированной высоты198/390px. ProductCard memo, narrow selectors, stable serverState и существующие UX-механизмы сохранять.
+
+Эксперимент AntD zeroRuntime + static CSS отклонён по замерам, зависимость удалена. Общая тема вынесена в shared/config/antd-theme.ts без изменения токенов. Начальные scripts/source maps подтверждают отсутствие classic Zod, product/contracts и repository в холодном графе.
+
+Локально прошли typecheck/lint,28 unit/integration,26 E2E desktop/mobile (добавлена прокрутка и клавиатурное добавление последнего товара). Обе сравниваемые сборки с PROFILE_BUILD, один localhostURL, по3прогона без build/тестов параллельно: Performance69→73,TBT1466→1081ms,LCP2,44→2,32s,CLS0,JS1084364→1061592байт безgzip. Контроль Pages до публикации:80/80/77, медиана80,TBT787ms,LCP1,274s,CLS0. Не смешивать это с прежним одиночным84 или локальными значениями. docs/performance/ROUND2.md содержит методику и отказ от CSS-эксперимента.
+
+Следующий шаг: commit/push, дождаться Actions/deploy, внешние проверки и по3Pages-замера после. Пока новая версия не опубликована;90+не подтверждено. Начальные10этапов остаются завершёнными, новая итерация4/5.

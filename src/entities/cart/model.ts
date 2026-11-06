@@ -1,13 +1,13 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import { z } from 'zod';
+import * as z from 'zod/mini';
 import { pharmacySchema } from '@/shared/config/pharmacy-id';
 import { productIdSchema } from '@/shared/config/product-id';
 const itemSchema = z.object({
   id: productIdSchema,
-  quantity: z.number().int().min(1).max(99),
+  quantity: z.int().check(z.minimum(1), z.maximum(99)),
 });
 export const cartSchema = z.object({
-  items: z.array(itemSchema).max(50),
+  items: z.array(itemSchema).check(z.maxLength(50)),
   pharmacy: pharmacySchema,
 });
 export type CartData = z.infer<typeof cartSchema>;

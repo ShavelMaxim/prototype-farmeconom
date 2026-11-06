@@ -4,6 +4,7 @@ import { Providers } from '@/app/providers';
 import { Header } from '@/widgets/header/header';
 import Link from 'next/link';
 import './globals.css';
+import { defaultCatalog } from '@/entities/product/repository';
 export const metadata: Metadata = {
   title: { default: 'Аптека рядом — учебный интернет-магазин', template: '%s · Аптека рядом' },
   description: 'Frontend-портфолио: поиск, выбор аптеки и корзина на демонстрационных данных.',
@@ -17,7 +18,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           Перейти к содержимому
         </a>
         <AntdRegistry>
-          <Providers>
+          <Providers initialCatalog={defaultCatalog}>
             <Header />
             {children}
             <footer className="footer">

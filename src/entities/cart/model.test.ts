@@ -1,6 +1,28 @@
 import { describe, expect, it } from 'vitest';
-import { addItem, cartReducer, initialCart, restore, setPharmacy, setQuantity } from './model';
+import {
+  addItem,
+  cartReducer,
+  cartSchema,
+  initialCart,
+  restore,
+  setPharmacy,
+  setQuantity,
+} from './model';
 describe('корзина: ограничения и восстановление', () => {
+  it('проверяет границы сохранённых значений до восстановления', () => {
+    const valid = { pharmacy: 'central', items: [{ id: 'x'.repeat(128), quantity: 99 }] };
+    expect(cartSchema.safeParse(valid).success).toBe(true);
+    for (const item of [
+      { id: '', quantity: 1 },
+      { id: 'x'.repeat(129), quantity: 1 },
+      { id: 'sku', quantity: 100 },
+      { id: 'sku', quantity: 1.5 },
+    ])
+      expect(cartSchema.safeParse({ ...valid, items: [item] }).success).toBe(false);
+    expect(cartSchema.safeParse({ ...valid, items: Array(51).fill(valid.items[0]) }).success).toBe(
+      false,
+    );
+  });
   it('не добавляет недоступный товар и не превышает остаток при повторном добавлении', () => {
     let state = cartReducer(initialCart, addItem({ id: 'product-1', stock: 0 }));
     expect(state.items).toEqual([]);

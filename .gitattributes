@@ -2,3 +2,4 @@
 docs/performance/profiles/*.trace.json -diff
 docs/performance/profiles/*.cpuprofile -diff
 docs/performance/profiles/*lighthouse*.json -diff
+docs/performance/round2/*.json -diff

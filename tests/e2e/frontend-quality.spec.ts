@@ -2,6 +2,25 @@ import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 test.setTimeout(60000);
 
+test('прокрутка каталога сохраняет размер упаковки и доступность последнего товара', async ({
+  page,
+}) => {
+  await page.goto('./');
+  const card = page.locator('article').last();
+  await expect(page.locator('article')).toHaveCount(24);
+  // The decorative subtree may be skipped offscreen, but its fixed box must remain.
+  const scene = card.locator('[aria-hidden="true"]').first();
+  const before = await scene.evaluate((element) => element.getBoundingClientRect().height);
+  await card.scrollIntoViewIfNeeded();
+  await expect(card.getByRole('heading')).toBeVisible();
+  await expect(card.getByRole('button')).toBeEnabled();
+  expect(await scene.evaluate((element) => element.getBoundingClientRect().height)).toBe(before);
+  expect(before).toBe(198);
+  await card.getByRole('button').focus();
+  await page.keyboard.press('Enter');
+  await expect(card.getByRole('button')).toContainText('В корзине');
+});
+
 test('клавиатура: возврат фокуса из диалога и доступное оформление', async ({ page }) => {
   await page.goto('./products/digital-thermometer/');
   const choose = page.getByRole('button', { name: 'Выбрать аптеку', exact: true }).first();

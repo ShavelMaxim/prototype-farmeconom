@@ -172,6 +172,12 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           </div>
           <Button
             ref={filterTrigger}
+            onPointerEnter={() => {
+              void import('./filter-drawer').catch(() => {});
+            }}
+            onFocus={() => {
+              void import('./filter-drawer').catch(() => {});
+            }}
             className={styles.mobileFilters}
             icon={<SlidersOutlined />}
             onClick={() => setDrawer(true)}

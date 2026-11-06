@@ -2,6 +2,12 @@ import { describe, expect, it } from 'vitest';
 import { catalogQuerySchema } from './model';
 import { getCatalog, products } from './repository';
 describe('демонстрационный каталог', () => {
+  it('проверяет URL-параметры и ограничивает длину поиска после trim', () => {
+    expect(catalogQuerySchema.parse({ q: `  ${'я'.repeat(80)}  ` }).q).toBe('я'.repeat(80));
+    expect(catalogQuerySchema.safeParse({ q: 'я'.repeat(81) }).success).toBe(false);
+    expect(catalogQuerySchema.safeParse({ pharmacy: 'unknown' }).success).toBe(false);
+    expect(catalogQuerySchema.parse({}).sort).toBe('popular');
+  });
   it('имеет уникальные slug и корректные цены/остатки для каждой аптеки', () => {
     expect(products).toHaveLength(24);
     expect(new Set(products.map((p) => p.slug)).size).toBe(products.length);

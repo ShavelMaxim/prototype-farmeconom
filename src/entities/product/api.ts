@@ -1,13 +1,7 @@
 import { baseApi } from '@/shared/api/base-api';
 import { delay } from '@/shared/api/delay';
-import {
-  catalogQuerySchema,
-  catalogResponseSchema,
-  type CatalogQuery,
-  type CatalogResponse,
-  type Product,
-} from './model';
-import { getCatalog } from './repository';
+import { catalogQuerySchema, type CatalogQuery, type CatalogResponse, type Product } from './model';
+import { filterCatalog } from './filter-catalog';
 
 export const inventoryApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
@@ -18,7 +12,11 @@ export const inventoryApi = baseApi.injectEndpoints({
           const response = await request({ url: 'products', params: catalogQuerySchema.parse({}) });
           if (response.error) return { error: response.error };
           body = response.data;
-        } else body = getCatalog(catalogQuerySchema.parse({}));
+        } else {
+          const { defaultCatalog } = await import('./repository');
+          body = defaultCatalog;
+        }
+        const { catalogResponseSchema } = await import('./contracts');
         const parsed = catalogResponseSchema.safeParse(body);
         return parsed.success
           ? { data: parsed.data }
@@ -68,7 +66,7 @@ export const catalogApi = inventoryApi.injectEndpoints({
                 : { status: 'CUSTOM_ERROR', error: 'Не удалось получить каталог' },
           };
         if (!inventory.data) return { error: { status: 'CUSTOM_ERROR', error: 'Нет данных' } };
-        return { data: getCatalog(parsed.data, inventory.data.items) };
+        return { data: filterCatalog(parsed.data, inventory.data.items) };
       },
     }),
   }),

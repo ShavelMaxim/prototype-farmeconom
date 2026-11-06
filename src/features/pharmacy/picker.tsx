@@ -24,6 +24,12 @@ export function PharmacyPicker() {
     <>
       <Button
         ref={trigger}
+        onPointerEnter={() => {
+          void import('./pharmacy-dialog').catch(() => {});
+        }}
+        onFocus={() => {
+          void import('./pharmacy-dialog').catch(() => {});
+        }}
         type="text"
         icon={<EnvironmentOutlined />}
         onClick={() => {

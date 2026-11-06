@@ -3,7 +3,9 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { Provider, useStore } from 'react-redux';
 import { ConfigProvider } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
+import { antdTheme } from '@/shared/config/antd-theme';
 import { makeStore, type AppStore } from './store';
+import type { CatalogResponse } from '@/entities/product/model';
 import { restore } from '@/entities/cart/model';
 const STORAGE_KEY = 'apteka-ryadom:cart:v1';
 const useAppStore = useStore.withTypes<AppStore>();
@@ -33,33 +35,22 @@ function CartPersistence() {
   }, [store]);
   return null;
 }
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({
+  children,
+  initialCatalog,
+}: {
+  children: ReactNode;
+  initialCatalog?: CatalogResponse;
+}) {
   // Keep the initial snapshot stable: persisted state may arrive before a streamed
   // product subtree hydrates. React Redux must hydrate against the server HTML.
   const [{ store, serverState }] = useState(() => {
-    const store = makeStore();
+    const store = makeStore(initialCatalog);
     return { store, serverState: store.getState() };
   });
   return (
     <Provider store={store} serverState={serverState}>
-      <ConfigProvider
-        locale={ruRU}
-        theme={{
-          token: {
-            colorPrimary: '#176b52',
-            colorInfo: '#176b52',
-            colorText: '#203c35',
-            colorBgLayout: '#f7f8f3',
-            borderRadius: 12,
-            fontFamily: 'Arial, Helvetica, sans-serif',
-            controlHeight: 44,
-          },
-          components: {
-            Button: { fontWeight: 600, primaryShadow: 'none' },
-            Input: { activeShadow: '0 0 0 3px #176b5218' },
-          },
-        }}
-      >
+      <ConfigProvider locale={ruRU} theme={antdTheme}>
         {children}
         <CartPersistence />
       </ConfigProvider>

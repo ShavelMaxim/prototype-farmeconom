@@ -3,8 +3,8 @@ import { cartReducer } from '@/entities/cart/model';
 import { baseApi } from '@/shared/api/base-api';
 import { catalogApi } from '@/entities/product/api';
 import { catalogQuerySchema } from '@/entities/product/model';
-import { getCatalog } from '@/entities/product/repository';
-export function makeStore() {
+import type { CatalogResponse } from '@/entities/product/model';
+export function makeStore(initialCatalog?: CatalogResponse) {
   const store = configureStore({
     reducer: { cart: cartReducer, [baseApi.reducerPath]: baseApi.reducer },
     middleware: (getDefault) => getDefault().concat(baseApi.middleware),
@@ -12,9 +12,9 @@ export function makeStore() {
   // Demo data is already available at build time. Start with the same cache on
   // server and client instead of rendering 24 buttons through a fake cold fetch.
   // Live HTTP mode must obtain and validate current prices; never seed it.
-  if (!process.env.NEXT_PUBLIC_API_URL) {
+  if (!process.env.NEXT_PUBLIC_API_URL && initialCatalog) {
     const query = catalogQuerySchema.parse({});
-    const data = getCatalog(query);
+    const data = initialCatalog;
     store.dispatch(
       catalogApi.util.upsertQueryEntries([
         { endpointName: 'getInventory', arg: undefined, value: data },

@@ -1,7 +1,8 @@
 // @vitest-environment node
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { products } from './repository';
-import { catalogQuerySchema, catalogResponseSchema } from './model';
+import { catalogQuerySchema } from './model';
+import { catalogResponseSchema } from './contracts';
 import { checkoutResponseSchema } from '@/features/checkout/model';
 
 afterEach(() => {
