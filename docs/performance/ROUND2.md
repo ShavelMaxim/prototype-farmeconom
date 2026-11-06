@@ -46,4 +46,22 @@ TBT в этих прогонах снизился примерно на 26%, Jav
 - [Ant Design: zero runtime](https://ant.design/docs/react/customize-theme/).
 - [Next.js: inlineCss и ограничения](https://nextjs.org/docs/app/api-reference/config/next-config-js/inlineCss).
 
-Локальные регрессии, обычная публикация без source maps и сравнение на самом Pages фиксируются ниже после завершения. Результаты отклонённого эксперимента не выдаются за опубликованную версию.
+## Публикация и внешний контроль
+
+Код оптимизации8fa4413, итоговая опубликованная версия688b589. [Pages workflow42212520928](https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42212520928) и Quality checks42212520984 завершились успешно. Обычная сборка без PROFILE_BUILD/source maps. Прошли typecheck, ESLint,28 unit/integration и26 E2E локально и в CI. На опубликованном сайте отдельно прошли HTTP smoke (5страниц, их JS/CSS и404) и12 E2E desktop/mobile: покупка, статический HTML, прокрутка, фокус, axe/reflow, быстрый поиск.
+
+Первый Pages workflow42211505662 был отменён после длительной установки Chromium, до E2E/deploy. Новый workflow использует Chrome, уже установленный в образе ubuntu-24.04: явная проверка версии, PLAYWRIGHT_CHANNEL=chrome, все26 сценариев сохранены и пройдены. Сайт до успешного нового deployment оставался прежним. Доступность Chrome подтверждена в CI; общий механизм [browser channels поддерживается Playwright](https://playwright.dev/docs/browsers), состав образа описан в [runner-images](https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md).
+
+По3последовательных Lighthouse-прогона на одном публичном URL до и после, без параллельных тестов/build, стандартный mobile preset и холодный browser cache. В обоих случаях обычная production-сборка и сжатие Pages. Сырые результаты: `round2/pages-before-*.json`, `round2/pages-after-*.json`.
+
+| Показатель                                    |   До, медиана | После, медиана |
+| --------------------------------------------- | ------------: | -------------: |
+| Performance                                   | 80 (77/80/80) |  82 (80/82/87) |
+| LCP                                           |        1,274s |         1,249s |
+| TBT                                           |         787ms |          692ms |
+| CLS                                           |             0 |              0 |
+| Начальные JS transfer bytes, со сжатием Pages |       352 840 |        345 371 |
+
+Внешний выигрыш умеренный: TBT около−12%, JS−2,1%, изменение LCP небольшое. Разброс заметен и диапазоны пересекаются; устойчивые90+ не достигнуты. Прежние одиночные84 и локальную медиану73 не подменять этими результатами. Полевой INP не измерялся.
+
+Следующий предмет исследования — исполнение начального клиентского графа React/AntD и гидратация. Для новых изменений нужны профиль/coverage и повторные замеры. Эта итерация завершена с сохранением функций и проверенной публикацией; ограничение90+ зафиксировано явно.
