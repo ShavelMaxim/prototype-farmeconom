@@ -8,6 +8,7 @@ import { setPharmacy } from '@/entities/cart/model';
 export function PharmacyPicker() {
   const [open, setOpen] = useState(false);
   const id = useAppSelector((s) => s.cart.pharmacy);
+  const [draft, setDraft] = useState(id);
   const pharmacy = pharmacies.find((p) => p.id === id)!;
   const dispatch = useAppDispatch();
   return (
@@ -15,7 +16,10 @@ export function PharmacyPicker() {
       <Button
         type="text"
         icon={<EnvironmentOutlined />}
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setDraft(id);
+          setOpen(true);
+        }}
         aria-label="Выбрать аптеку"
       >
         {pharmacy.name} <DownOutlined />
@@ -25,18 +29,27 @@ export function PharmacyPicker() {
         open={open}
         onCancel={() => setOpen(false)}
         footer={
-          <Button type="primary" onClick={() => setOpen(false)}>
-            Готово
-          </Button>
+          <>
+            <Button onClick={() => setOpen(false)}>Отмена</Button>
+            <Button
+              type="primary"
+              onClick={() => {
+                dispatch(setPharmacy(draft));
+                setOpen(false);
+              }}
+            >
+              Применить выбор
+            </Button>
+          </>
         }
       >
         <p className="muted">
-          Ангарск · 3 демонстрационные аптеки. При смене аптеки цены и наличие в корзине
-          пересчитываются.
+          Ангарск · 3 демонстрационные аптеки. После подтверждения цены и наличие пересчитаются.
+          Товары сохранятся в корзине; недоступные позиции потребуется проверить.
         </p>
         <Radio.Group
-          value={id}
-          onChange={(e) => dispatch(setPharmacy(e.target.value))}
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
           className="pharmacy-options"
         >
           {pharmacies.map((p) => (

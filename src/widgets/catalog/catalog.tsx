@@ -21,6 +21,7 @@ import { useGetCatalogQuery } from '@/entities/product/api';
 import { ProductArtwork } from '@/entities/product/artwork';
 import { AddButton } from '@/features/cart/add-button';
 import { useAppSelector } from '@/shared/lib/store-hooks';
+import { pharmacies } from '@/shared/config/pharmacies';
 import styles from './catalog.module.css';
 
 const sorting = [
@@ -180,7 +181,9 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
                     ? 'Для вас и ваших близких'
                     : query.category}
               </h2>
-              <span className="muted">{result.total} товаров · цены в выбранной аптеке</span>
+              <span className="muted">
+                {result.total} товаров · аптека «{pharmacies.find((p) => p.id === pharmacy)!.name}»
+              </span>
             </div>
             <Select
               aria-label="Сортировка товаров"
@@ -204,11 +207,23 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
               type="error"
               showIcon
               title="Не удалось обновить каталог"
-              description="Сохранённые товары остаются видны. Повторите запрос; в режиме проверки ошибки сначала выберите обычную сеть."
-              action={
-                <Button size="small" onClick={refetch}>
-                  Повторить
-                </Button>
+              description={
+                <>
+                  <p>
+                    Предыдущая выдача остаётся видна. Добавление временно недоступно, пока не
+                    удастся обновить каталог.
+                  </p>
+                  <div className={styles.errorActions}>
+                    <Button size="small" onClick={refetch} disabled={isFetching}>
+                      Повторить
+                    </Button>
+                    {demo === 'error' && (
+                      <Button size="small" type="link" onClick={() => setDemo('normal')}>
+                        Отключить демонстрационную ошибку
+                      </Button>
+                    )}
+                  </div>
+                </>
               }
               style={{ marginBottom: 16 }}
             />

@@ -31,12 +31,12 @@ test('смена аптеки блокирует недоступный това
   await page.getByRole('link', { name: 'Перейти в корзину' }).click();
   await page.getByRole('button', { name: 'Выбрать аптеку' }).first().click();
   await page.getByRole('radio', { name: /У парка/ }).check();
-  await page.getByRole('button', { name: 'Готово', exact: true }).click();
+  await page.getByRole('button', { name: 'Применить выбор', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Исправьте наличие товаров' })).toBeDisabled();
   await expect(page.getByText('Проверьте наличие в выбранной аптеке')).toBeVisible();
   await page.getByRole('button', { name: 'Выбрать аптеку' }).first().click();
   await page.getByRole('radio', { name: /Центральная/ }).check();
-  await page.getByRole('button', { name: 'Готово', exact: true }).click();
+  await page.getByRole('button', { name: 'Применить выбор', exact: true }).click();
   await expect(page.getByRole('link', { name: 'К оформлению' })).toBeEnabled();
 });
 test('категория живёт в URL и восстанавливается кнопкой назад', async ({ page }) => {
@@ -91,10 +91,12 @@ test('ошибка API локальна, товары сохраняются, п
   await page.getByRole('textbox', { name: 'Поиск товаров' }).fill('термометр');
   await expect(page.getByText('Не удалось обновить каталог')).toBeVisible();
   await expect(add).toBeDisabled();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
   await page.getByRole('button', { name: 'Повторить', exact: true }).click();
   await expect(page.getByText('Не удалось обновить каталог')).toBeVisible();
-  await page.getByRole('combobox', { name: 'Режим сети' }).click();
-  await page.getByText('Обычная сеть', { exact: true }).click();
+  await page.getByRole('button', { name: 'Отключить демонстрационную ошибку' }).click();
   await expect(add).toBeEnabled();
 });
 
@@ -107,4 +109,31 @@ test('статическая карточка открывается напря�
   await expect(
     page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
   ).toBeEnabled();
+});
+
+test('отмена смены аптеки сохраняет цену, наличие и корзину', async ({ page }) => {
+  await page.goto('./products/gentle-cleanser/');
+  await page
+    .getByRole('button', { name: 'В корзину: Гель для бережного очищения', exact: true })
+    .click();
+  await page.getByRole('link', { name: 'Перейти в корзину' }).click();
+  await page.getByRole('button', { name: 'Выбрать аптеку', exact: true }).first().click();
+  await page.getByRole('radio', { name: /У парка/ }).check();
+  await page.getByRole('button', { name: 'Отмена', exact: true }).click();
+  await expect(page.getByRole('link', { name: 'К оформлению' })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Выбрать аптеку', exact: true }).first(),
+  ).toContainText('Центральная');
+  await page.getByRole('button', { name: 'Выбрать аптеку', exact: true }).first().click();
+  await expect(page.getByRole('radio', { name: /Центральная/ })).toBeChecked();
+  await page.getByRole('radio', { name: /У парка/ }).check();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('link', { name: 'К оформлению' })).toBeVisible();
+  await page.reload();
+  await expect(
+    page.getByRole('button', { name: 'Выбрать аптеку', exact: true }).first(),
+  ).toContainText('Центральная');
+  await expect(
+    page.getByRole('heading', { name: 'Гель для бережного очищения', exact: true }),
+  ).toBeVisible();
 });

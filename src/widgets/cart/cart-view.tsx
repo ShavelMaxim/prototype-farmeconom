@@ -104,7 +104,7 @@ export function CartView({ products }: { products: Product[] }) {
             ))}
           </div>
           <aside className={`${styles.summary} panel`}>
-            <h2>Ваш заказ</h2>
+            <h2>Ваш выбор</h2>
             <PharmacyPicker />
             <p className="muted">Цены и количество зависят от аптеки.</p>
             <div className={styles.row}>
@@ -119,6 +119,12 @@ export function CartView({ products }: { products: Product[] }) {
               <span>Итого</span>
               <strong>{money(summary.total)}</strong>
             </div>
+            {!summary.valid && (
+              <p className={styles.warning}>
+                Сумма включает недоступные позиции. Уберите их или измените аптеку перед
+                оформлением.
+              </p>
+            )}
             {summary.valid ? (
               <ActionLink href="/checkout">
                 К оформлению <ArrowRightOutlined aria-hidden="true" />

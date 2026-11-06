@@ -439,3 +439,15 @@
     display: none;
   }
 }
+.errorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.errorActions button {
+  white-space: normal;
+  height: auto;
+  min-height: 32px;
+  max-width: 100%;
+  text-align: left;
+}
