@@ -48,7 +48,7 @@ npm run test:e2e
 npm run check:deployment -- https://shavelmaxim.github.io/prototype-farmeconom/
 ```
 
-E2E проверяют out на статическом сервере, включая базовый путь, mobile, корзину, URL, ошибки и прямой вход в карточку. Локально нужен Chrome; CI устанавливает Chromium. PLAYWRIGHT_BASE_URL позволяет проверить опубликованный URL без локального сервера. Mobile — эмуляция в Chromium, не Safari.
+E2E проверяют out на статическом сервере, включая базовый путь, mobile, корзину, URL, ошибки и прямой вход в карточку. Локально нужен Chrome; Pages CI использует Chrome из образа ubuntu-24.04 и проверяет его наличие. PLAYWRIGHT_CHANNEL позволяет явно выбрать установленный браузер; без него обычный CI сохраняет стандартный Chromium. PLAYWRIGHT_BASE_URL позволяет проверить опубликованный URL без локального сервера. Mobile — эмуляция в Chromium/Chrome, не Safari.
 
 ## Публикация
 

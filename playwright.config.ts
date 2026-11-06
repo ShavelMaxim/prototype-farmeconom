@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 const deploymentUrl = process.env.PLAYWRIGHT_BASE_URL;
+const browserChannel = process.env.PLAYWRIGHT_CHANNEL || (process.env.CI ? undefined : 'chrome');
 const localUrl = `http://127.0.0.1:3100${process.env.NEXT_PUBLIC_BASE_PATH || ''}/`;
 export default defineConfig({
   testDir: './tests/e2e',
@@ -13,7 +14,7 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1440, height: 1000 },
-        channel: process.env.CI ? undefined : 'chrome',
+        channel: browserChannel,
       },
     },
     {
@@ -22,7 +23,7 @@ export default defineConfig({
         ...devices['iPhone 13'],
         deviceScaleFactor: 1,
         defaultBrowserType: 'chromium',
-        channel: process.env.CI ? undefined : 'chrome',
+        channel: browserChannel,
       },
     },
   ],
