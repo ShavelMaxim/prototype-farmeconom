@@ -10,10 +10,16 @@ import { getCartSummary } from '@/features/cart/summary';
 import { PharmacyPicker } from '@/features/pharmacy/picker';
 import styles from './cart-view.module.css';
 import { ActionLink } from '@/shared/ui/action-link';
-export function CartView({ products }: { products: Product[] }) {
+import { useInventory } from '@/entities/product/api';
+import { InventoryStatus } from '@/entities/product/inventory-status';
+export function CartView({ products: initial }: { products: Product[] }) {
+  const inventory = useInventory(initial);
+  const products = inventory.products;
   const cart = useAppSelector((s) => s.cart);
   const dispatch = useAppDispatch();
   const summary = getCartSummary(cart.items, products, cart.pharmacy);
+  if (!inventory.ready)
+    return <InventoryStatus error={inventory.error} retry={inventory.refetch} />;
   return (
     <main id="main" className="container">
       <Link href="/" className="back-link">

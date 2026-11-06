@@ -35,7 +35,7 @@ npm start
 
 ## Данные и будущий PHP API
 
-По умолчанию RTK Query использует локальные адаптеры с задержкой и моделированием ошибок. NEXT_PUBLIC_API_URL с завершающим / включает HTTP-режим: GET products с q/category/sort/available/pharmacy/demo, POST demo-checkout с pharmacy/pickup/acknowledge/items. Форматы моделей описаны в src/entities/product/model.ts и src/features/checkout/model.ts. PHP/MySQL пока не реализованы; HTTP-режим не проверен с настоящим backend. NEXT_PUBLIC_* доступны браузеру и не должны содержать секреты.
+По умолчанию RTK Query использует локальные адаптеры с задержкой и моделированием ошибок. NEXT_PUBLIC_API_URL с завершающим / включает HTTP-режим: GET products возвращает полный каталог с предложениями всех аптек; поиск и фильтры вычисляются из общей проверенной выборки на клиенте, POST demo-checkout с pharmacy/pickup/acknowledge/items. Zod проверяет успешные ответы. Карточка, корзина и оформление используют общий RTK Query-кеш getInventory, в HTTP-режиме статические цены не подставляются при сбое. Форматы моделей описаны в src/entities/product/model.ts и src/features/checkout/model.ts. PHP/MySQL пока не реализованы; HTTP-режим не проверен с настоящим backend. NEXT_PUBLIC_* доступны браузеру и не должны содержать секреты.
 
 ## Проверки
 
@@ -61,3 +61,5 @@ E2E проверяют out на статическом сервере, вклю�
 Сценарий показа: INTERVIEW.md. Перед продолжением читать AGENTS.md, PLAN.md, CONTEXT.md.
 
 Разбор архитектурных решений и ограничений для собеседования: [INTERVIEW-ANSWERS.md](INTERVIEW-ANSWERS.md). Результаты UX-проверки: [docs/UX-REVIEW.md](docs/UX-REVIEW.md).
+
+Проверки frontend-качества: axe для каталога, диалога и формы; reflow до 320 CSS px (вместо подмены browser zoom свойством CSS zoom), возврат фокуса, сообщения для скринридера, гонка быстрого поиска. Lighthouse-отчёты и ограничения измерений: docs/performance/README.md.

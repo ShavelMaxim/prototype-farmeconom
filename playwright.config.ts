@@ -4,6 +4,7 @@ const localUrl = `http://127.0.0.1:3100${process.env.NEXT_PUBLIC_BASE_PATH || ''
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: false,
+  workers: 2,
   retries: 0,
   use: { baseURL: deploymentUrl || localUrl, trace: 'retain-on-failure' },
   projects: [

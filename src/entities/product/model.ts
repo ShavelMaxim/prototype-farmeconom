@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { pharmacySchema, type PharmacyId } from '@/shared/config/pharmacy-id';
+import { pharmacySchema } from '@/shared/config/pharmacy-id';
 export { pharmacySchema, type PharmacyId } from '@/shared/config/pharmacy-id';
 export const categories = [
   'Все товары',
@@ -8,21 +8,26 @@ export const categories = [
   'Первая помощь',
   'Для детей',
 ] as const;
-export type Offer = { price: number; stock: number };
-export type Product = {
-  id: string;
-  slug: string;
-  name: string;
-  description: string;
-  details: string;
-  category: string;
-  brand: string;
-  size: string;
-  kind: 'bottle' | 'box' | 'device' | 'tube';
-  color: string;
-  label: string;
-  offers: Record<PharmacyId, Offer>;
-};
+const offerSchema = z.object({
+  price: z.number().int().nonnegative(),
+  stock: z.number().int().nonnegative(),
+});
+export type Offer = z.infer<typeof offerSchema>;
+export const productSchema = z.object({
+  id: z.string().min(1),
+  slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  name: z.string().min(1),
+  description: z.string(),
+  details: z.string(),
+  category: z.enum(categories),
+  brand: z.string(),
+  size: z.string(),
+  kind: z.enum(['bottle', 'box', 'device', 'tube']),
+  color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+  label: z.string(),
+  offers: z.object({ central: offerSchema, park: offerSchema, family: offerSchema }),
+});
+export type Product = z.infer<typeof productSchema>;
 export const catalogQuerySchema = z.object({
   q: z.string().trim().max(80).default(''),
   category: z.enum(categories).default('Все товары'),
@@ -31,7 +36,16 @@ export const catalogQuerySchema = z.object({
   pharmacy: pharmacySchema.default('central'),
 });
 export type CatalogQuery = z.infer<typeof catalogQuerySchema>;
-export type CatalogResponse = { items: Product[]; total: number };
+export const catalogResponseSchema = z
+  .object({ items: z.array(productSchema), total: z.number().int().nonnegative() })
+  .refine(
+    ({ items, total }) =>
+      items.length === total &&
+      new Set(items.map((p) => p.id)).size === total &&
+      new Set(items.map((p) => p.slug)).size === total,
+    'Ожидается полный каталог с уникальными товарами',
+  );
+export type CatalogResponse = z.infer<typeof catalogResponseSchema>;
 export function parseCatalogQuery(input: Record<string, unknown>): CatalogQuery {
   const parsed = catalogQuerySchema.safeParse(input);
   return parsed.success ? parsed.data : catalogQuerySchema.parse({});

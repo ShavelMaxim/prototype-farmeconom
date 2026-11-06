@@ -17,7 +17,12 @@ import { useCheckoutMutation } from '@/features/checkout/api';
 import { pharmacies } from '@/shared/config/pharmacies';
 import styles from './checkout.module.css';
 import { ActionLink } from '@/shared/ui/action-link';
-export function Checkout({ products }: { products: Product[] }) {
+import { useInventory } from '@/entities/product/api';
+import { InventoryStatus } from '@/entities/product/inventory-status';
+import { apiErrorMessage } from '@/shared/api/errors';
+export function Checkout({ products: initial }: { products: Product[] }) {
+  const inventory = useInventory(initial);
+  const products = inventory.products;
   const cart = useAppSelector((s) => s.cart);
   const dispatch = useAppDispatch();
   const summary = getCartSummary(cart.items, products, cart.pharmacy);
@@ -33,7 +38,7 @@ export function Checkout({ products }: { products: Product[] }) {
   });
   const pharmacy = pharmacies.find((p) => p.id === cart.pharmacy)!;
   async function submit(values: CheckoutFormValues) {
-    if (!summary.valid || isLoading) return;
+    if (!summary.valid || isLoading || !inventory.ready) return;
     try {
       const response = await checkout({
         ...values,
@@ -46,6 +51,8 @@ export function Checkout({ products }: { products: Product[] }) {
       /* RTK Query provides the error state below. */
     }
   }
+  if (!result && !inventory.ready)
+    return <InventoryStatus error={inventory.error} retry={inventory.refetch} />;
   return (
     <main id="main" className="container prose">
       {result ? (
@@ -120,6 +127,7 @@ export function Checkout({ products }: { products: Product[] }) {
                     onBlur={field.onBlur}
                     ref={field.ref}
                     aria-describedby={errors.acknowledge ? 'ack-error' : undefined}
+                    aria-invalid={Boolean(errors.acknowledge)}
                   >
                     Я понимаю, что это учебный сценарий без реального заказа
                   </Checkbox>
@@ -143,7 +151,7 @@ export function Checkout({ products }: { products: Product[] }) {
                   type="error"
                   showIcon
                   title="Не удалось завершить демонстрацию"
-                  description="Проверьте наличие в корзине и повторите попытку. Ваши товары сохранены."
+                  description={apiErrorMessage(error)}
                 />
               )}
               <Button

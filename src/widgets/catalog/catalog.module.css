@@ -18,7 +18,7 @@
 }
 .hero p {
   font-size: 14px;
-  color: #64766a;
+  color: #526459;
   margin-bottom: 19px;
 }
 .heroMeta {
@@ -110,7 +110,7 @@
   background: transparent;
   cursor: pointer;
   padding: 8px;
-  color: #64766a;
+  color: #526459;
 }
 .layout {
   display: grid;
@@ -166,7 +166,7 @@
 }
 .filterNote {
   font-size: 11px;
-  color: #748579;
+  color: #526459;
   margin: 8px 0 3px 24px;
 }
 .reset {
@@ -191,11 +191,11 @@
 }
 .help p {
   font-size: 12px;
-  color: #75816f;
+  color: #526459;
 }
 .help > span:last-child {
   font-size: 9px;
-  color: #8a907d;
+  color: #526459;
 }
 .toolbar {
   display: flex;
@@ -242,7 +242,7 @@
 .brand {
   font-size: 9px;
   letter-spacing: 1.5px;
-  color: #849187;
+  color: #526459;
 }
 .card h3 {
   font-size: 14px;
@@ -256,7 +256,7 @@
 }
 .size {
   font-size: 11px;
-  color: #7c8980;
+  color: #526459;
   margin: 0 0 18px;
   min-height: 18px;
 }
@@ -273,7 +273,7 @@
   min-height: 18px;
 }
 .noStock {
-  color: #8b7967;
+  color: #526459;
 }
 .cardBody button {
   font-size: 12px;
@@ -283,7 +283,7 @@
 }
 .catalogNote {
   margin-top: 24px;
-  color: #8a958c;
+  color: #526459;
   font-size: 11px;
 }
 .empty {

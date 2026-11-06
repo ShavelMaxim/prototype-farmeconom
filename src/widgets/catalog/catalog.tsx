@@ -1,6 +1,8 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
+import { useState } from 'react';
+import { useCatalogParams } from './use-catalog-params';
+import { apiErrorMessage } from '@/shared/api/errors';
+import { ProductCard } from './product-card';
 import { useSearchParams } from 'next/navigation';
 import { Alert, Button, Checkbox, Drawer, Empty, Input, Select, Skeleton } from 'antd';
 import {
@@ -11,15 +13,8 @@ import {
   EnvironmentOutlined,
   CloseOutlined,
 } from '@ant-design/icons';
-import {
-  categories,
-  money,
-  parseCatalogQuery,
-  type CatalogResponse,
-} from '@/entities/product/model';
+import { categories, parseCatalogQuery, type CatalogResponse } from '@/entities/product/model';
 import { useGetCatalogQuery } from '@/entities/product/api';
-import { ProductArtwork } from '@/entities/product/artwork';
-import { AddButton } from '@/features/cart/add-button';
 import { useAppSelector } from '@/shared/lib/store-hooks';
 import { pharmacies } from '@/shared/config/pharmacies';
 import styles from './catalog.module.css';
@@ -34,39 +29,14 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
   const search = useSearchParams();
   const pharmacy = useAppSelector((s) => s.cart.pharmacy);
   const query = parseCatalogQuery({ ...Object.fromEntries(search), pharmacy });
-  const [draft, setDraft] = useState(query.q);
+  const { draft, searchChanged, reset, update, submitSearch } = useCatalogParams(query);
   const [drawer, setDrawer] = useState(false);
   const [demo, setDemo] = useState('normal');
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { data, isFetching, isError, refetch } = useGetCatalogQuery({ ...query, demo });
-  const result = data ?? initial;
-  function update(values: Record<string, string>, replace = false) {
-    const params = new URLSearchParams(window.location.search);
-    Object.entries(values).forEach(([key, value]) =>
-      value ? params.set(key, value) : params.delete(key),
-    );
-    const url = `${window.location.pathname}${params.size ? `?${params}` : ''}`;
-    if (replace) window.history.replaceState(null, '', url);
-    else window.history.pushState(null, '', url);
-  }
-  useEffect(() => {
-    // Back/Forward must restore the input as well as the applied URL query.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setDraft(query.q);
-    return () => {
-      if (timer.current) clearTimeout(timer.current);
-    };
-  }, [query.q]);
-  function searchChanged(value: string) {
-    setDraft(value);
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => update({ q: value.trim() }, true), 300);
-  }
-  function reset() {
-    if (timer.current) clearTimeout(timer.current);
-    setDraft('');
-    update({ q: '', category: '', available: '', sort: '' });
-  }
+  const { data, isFetching, isError, error, refetch } = useGetCatalogQuery(
+    { ...query, demo },
+    { refetchOnMountOrArgChange: Boolean(process.env.NEXT_PUBLIC_API_URL) },
+  );
+  const result = data ?? (process.env.NEXT_PUBLIC_API_URL ? { items: [], total: 0 } : initial);
   const filters = (
     <div className={styles.filterContent}>
       <p className="eyebrow">КАТЕГОРИИ</p>
@@ -141,8 +111,7 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
         className={styles.search}
         onSubmit={(e) => {
           e.preventDefault();
-          if (timer.current) clearTimeout(timer.current);
-          update({ q: draft.trim() });
+          submitSearch();
         }}
       >
         <Input
@@ -200,7 +169,11 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
             Категории и фильтры
           </Button>
           <div className="status-line" role="status" aria-live="polite">
-            {isFetching ? 'Обновляем товары…' : isError ? '' : 'Цены и наличие обновлены'}
+            {isFetching
+              ? 'Обновляем товары…'
+              : isError
+                ? ''
+                : `Найдено товаров: ${result.total}. Цены и наличие обновлены`}
           </div>
           {isError && (
             <Alert
@@ -210,8 +183,8 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
               description={
                 <>
                   <p>
-                    Предыдущая выдача остаётся видна. Добавление временно недоступно, пока не
-                    удастся обновить каталог.
+                    {apiErrorMessage(error)} Добавление временно недоступно, пока не удастся
+                    обновить каталог.
                   </p>
                   <div className={styles.errorActions}>
                     <Button size="small" onClick={refetch} disabled={isFetching}>
@@ -240,31 +213,12 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           ) : (
             <div className={styles.grid} aria-busy={isFetching}>
               {result.items.map((product) => (
-                <article
+                <ProductCard
                   key={product.id}
-                  className={`${styles.card} ${isFetching ? styles.updating : ''}`}
-                >
-                  <Link
-                    href={`/products/${product.slug}`}
-                    aria-label={`Подробнее: ${product.name}`}
-                  >
-                    <ProductArtwork product={product} />
-                  </Link>
-                  <div className={styles.cardBody}>
-                    <span className={styles.brand}>{product.brand}</span>
-                    <h3>
-                      <Link href={`/products/${product.slug}`}>{product.name}</Link>
-                    </h3>
-                    <p className={styles.size}>{product.size}</p>
-                    <div className={styles.price}>{money(product.offers[pharmacy].price)}</div>
-                    <p className={product.offers[pharmacy].stock ? styles.stock : styles.noStock}>
-                      {product.offers[pharmacy].stock
-                        ? `● В наличии · ${product.offers[pharmacy].stock} шт.`
-                        : 'Нет в выбранной аптеке'}
-                    </p>
-                    <AddButton product={product} busy={isFetching || isError} />
-                  </div>
-                </article>
+                  product={product}
+                  pharmacy={pharmacy}
+                  busy={isFetching || isError}
+                />
               ))}
             </div>
           )}

@@ -1,6 +1,6 @@
 import type { CatalogQuery, Product } from '@/entities/product/model';
 
-type Seed = [string, string, string, string, string, Product['kind'], string, number];
+type Seed = [string, string, Product['category'], string, string, Product['kind'], string, number];
 const seeds: Seed[] = [
   [
     'gentle-cleanser',
@@ -257,9 +257,9 @@ export const products: Product[] = seeds.map((s, i) => ({
 export function getProduct(slug: string) {
   return products.find((p) => p.slug === slug);
 }
-export function getCatalog(query: CatalogQuery) {
+export function getCatalog(query: CatalogQuery, source: Product[] = products) {
   const normalized = query.q.toLocaleLowerCase('ru-RU').replaceAll('ё', 'е');
-  const items = products.filter(
+  const items = source.filter(
     (p) =>
       `${p.name} ${p.brand} ${p.category}`
         .toLocaleLowerCase('ru-RU')

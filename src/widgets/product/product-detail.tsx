@@ -7,8 +7,21 @@ import { useAppSelector } from '@/shared/lib/store-hooks';
 import { AddButton } from '@/features/cart/add-button';
 import { PharmacyPicker } from '@/features/pharmacy/picker';
 import styles from './product-detail.module.css';
-export function ProductDetail({ product }: { product: Product }) {
+import { useInventory } from '@/entities/product/api';
+import { InventoryStatus } from '@/entities/product/inventory-status';
+export function ProductDetail({ product: initial }: { product: Product }) {
+  const inventory = useInventory([initial]);
   const pharmacy = useAppSelector((s) => s.cart.pharmacy);
+  const product = inventory.products.find((p) => p.slug === initial.slug);
+  if (!inventory.ready)
+    return <InventoryStatus error={inventory.error} retry={inventory.refetch} />;
+  if (!product)
+    return (
+      <main id="main" className="container">
+        <h1>Товар больше недоступен</h1>
+        <Link href="/">Вернуться в каталог</Link>
+      </main>
+    );
   const offer = product.offers[pharmacy];
   return (
     <main id="main" className="container">
@@ -26,7 +39,7 @@ export function ProductDetail({ product }: { product: Product }) {
           </p>
           <h1 className={styles.title}>{product.name}</h1>
           <p className="muted">{product.size}</p>
-          <Tag color={offer.stock ? 'green' : 'default'}>
+          <Tag color={offer.stock ? 'green' : 'default'} style={{ color: '#176b52' }}>
             {offer.stock ? `В наличии ${offer.stock} шт.` : 'Нет в выбранной аптеке'}
           </Tag>
           <p className={styles.price}>{money(offer.price)}</p>

@@ -1,7 +1,7 @@
 :root {
   --green: #176b52;
   --ink: #203c35;
-  --muted: #728178;
+  --muted: #526459;
   --line: #e2e8dd;
   --paper: #fffefb;
   --background: #f7f8f3;
@@ -80,7 +80,7 @@ main {
   justify-content: space-between;
   gap: 30px;
   font-size: 12px;
-  color: #6a7b70;
+  color: #526459;
 }
 .footer strong {
   font-size: 20px;

@@ -17,4 +17,10 @@ export const checkoutRequestSchema = checkoutFormSchema.extend({
     ),
 });
 export type CheckoutRequest = z.infer<typeof checkoutRequestSchema>;
-export type CheckoutResponse = { reference: string; total: number; count: number; message: string };
+export const checkoutResponseSchema = z.object({
+  reference: z.string().min(1),
+  total: z.number().int().nonnegative(),
+  count: z.number().int().positive(),
+  message: z.string().min(1),
+});
+export type CheckoutResponse = z.infer<typeof checkoutResponseSchema>;

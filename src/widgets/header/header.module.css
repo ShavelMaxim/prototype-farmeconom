@@ -60,7 +60,7 @@
 .city {
   display: block;
   padding-left: 15px;
-  color: #74857a;
+  color: #526459;
   font-size: 9px;
   letter-spacing: 2px;
 }
@@ -84,7 +84,7 @@
   font-size: 14px;
   font-weight: 600;
 }
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .notice {
     padding: 8px 16px;
     font-size: 10px;

@@ -17,8 +17,12 @@ function CartPersistence() {
       /* Empty state is a safe fallback. */
     }
     store.dispatch(restore(saved));
+    let previousCart = store.getState().cart;
     return store.subscribe(() => {
-      const { items, pharmacy, hydrated } = store.getState().cart;
+      const currentCart = store.getState().cart;
+      if (currentCart === previousCart) return;
+      previousCart = currentCart;
+      const { items, pharmacy, hydrated } = currentCart;
       if (hydrated)
         try {
           localStorage.setItem(STORAGE_KEY, JSON.stringify({ items, pharmacy }));
