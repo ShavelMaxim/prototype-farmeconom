@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Provider, useStore } from 'react-redux';
-import { App, ConfigProvider } from 'antd';
+import { ConfigProvider } from 'antd';
 import ruRU from 'antd/locale/ru_RU';
 import { makeStore, type AppStore } from './store';
 import { restore } from '@/entities/cart/model';
@@ -60,10 +60,8 @@ export function Providers({ children }: { children: ReactNode }) {
           },
         }}
       >
-        <App>
-          {children}
-          <CartPersistence />
-        </App>
+        {children}
+        <CartPersistence />
       </ConfigProvider>
     </Provider>
   );
