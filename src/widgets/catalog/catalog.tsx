@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { useCatalogParams } from './use-catalog-params';
 import { apiErrorMessage } from '@/shared/api/errors';
 import { ProductCard } from './product-card';
-import { useSearchParams } from 'next/navigation';
+import { useCatalogSearch } from './use-catalog-search';
 import { Alert, Button, Checkbox, Empty, Input, Select, Skeleton } from 'antd';
 import {
   ArrowRightOutlined,
@@ -30,9 +30,9 @@ const sorting = [
   { value: 'name', label: 'По названию' },
 ];
 export function Catalog({ initial }: { initial: CatalogResponse }) {
-  const search = useSearchParams();
+  const search = useCatalogSearch();
   const pharmacy = useAppSelector((s) => s.cart.pharmacy);
-  const query = parseCatalogQuery({ ...Object.fromEntries(search), pharmacy });
+  const query = parseCatalogQuery({ ...Object.fromEntries(new URLSearchParams(search)), pharmacy });
   const { draft, searchChanged, reset, update, submitSearch } = useCatalogParams(query);
   const [drawer, setDrawer] = useState(false);
   const filterTrigger = useRef<HTMLButtonElement>(null);

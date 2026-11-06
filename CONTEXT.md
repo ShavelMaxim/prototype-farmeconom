@@ -63,3 +63,13 @@ README, DEPLOYMENT и INTERVIEW обновлены под Pages. Старый а
 Первоначальные 10 этапов и согласованная frontend-итерация завершены. Проверки реального PHP/MySQL, всех браузеров и полевого поведения скринридеров не выполнялись. Исторические результаты выше относятся к соответствующим версиям.
 
 На итоговом публичном сайте дополнительно прошли 6 frontend-quality E2E (axe, клавиатурный фокус, reflow и быстрый поиск) на desktop/mobile. Отчёт и финальные результаты фиксируются коммитом [skip ci], без повторной публикации неизменённого приложения.
+
+## CPU/рендеринг — следующая итерация
+
+Профилирование c084021 и оптимизированной сборки на одном localhost URL: CDP sampling1ms, CPU4x, viewport412x823, холодный кеш; по3 последовательных Lighthouse13.6 прогона без одновременных тестов/build. PROFILE_BUILD включает source maps только для профилирования, в обычной сборке выключен. STATIC_DIRECTORY служит выбору сохранённого контрольного out. Сырые артефакты и отчёт docs/performance/PROFILING.md.
+
+Исправления: useSearchParams заменён useSyncExternalStore с SSR snapshot='' и событиями History/popstate; удалены лишние app/loading.tsx и Suspense главной, скрывавшие готовый HTML; Intl.NumberFormat переиспользуется; store демо-режима получает getInventory/default getCatalog через upsertQueryEntries до первого рендера (live HTTP никогда не seed); ProductCard memo; prefetch ссылок отключён — вместо фоновой загрузки RSC переход запрашивает страницу по действию пользователя.
+
+Контрольный HTML:0 article и skeleton; итоговый:24 article, без root skeleton и скрывающей оболочки. Медианы локального Lighthouse:44→70, LCP9119→2269ms, TBT3398→1428ms, CLS0→0, запросы34→22. Одиночные диагностические CDP profiles: ScriptDuration3,272→1,069s, TaskDuration7,823→4,370s, UpdateLayoutTree518→101ms, Paint430→82ms, Layout1043→1309ms. Layout не улучшился — не заявлять ускорение каждой стадии. Эти абсолютные локальные значения нельзя сравнивать с предыдущими одиночными замерами Pages.
+
+Прошли локально: typecheck/lint,26 unit/integration,24 E2E, включая no-JS статический каталог. Следующее действие: commit/push, deployment и внешняя проверка обычной production-сборки без PROFILE_BUILD. В профилирующей локальной сборке maps есть; в CI обычного деплоя их не должно быть.

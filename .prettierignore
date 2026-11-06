@@ -6,3 +6,5 @@ playwright-report
 package-lock.json
 next-env.d.ts
 docs/screenshots
+
+docs/performance/profiles/

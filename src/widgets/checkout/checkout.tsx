@@ -69,7 +69,7 @@ export function Checkout({ products: initial }: { products: Product[] }) {
         </Result>
       ) : (
         <>
-          <Link href="/cart" className="back-link">
+          <Link prefetch={false} href="/cart" className="back-link">
             ← Назад в корзину
           </Link>
           <h1>Получение заказа</h1>
@@ -78,7 +78,9 @@ export function Checkout({ products: initial }: { products: Product[] }) {
             <Skeleton active />
           ) : !cart.items.length ? (
             <Empty description="Сначала добавьте товары в корзину">
-              <Link href="/">Открыть каталог →</Link>
+              <Link prefetch={false} href="/">
+                Открыть каталог →
+              </Link>
             </Empty>
           ) : (
             <form className={`panel ${styles.form}`} onSubmit={handleSubmit(submit)} noValidate>
@@ -96,7 +98,7 @@ export function Checkout({ products: initial }: { products: Product[] }) {
                   <br />
                   Режим работы: {pharmacy.hours}
                 </p>
-                <Link href="/cart" className="back-link">
+                <Link prefetch={false} href="/cart" className="back-link">
                   Изменить аптеку в корзине
                 </Link>
               </section>

@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import type { CatalogQuery } from '@/entities/product/model';
+import { CATALOG_URL_CHANGE } from './use-catalog-search';
 export function useCatalogParams(query: CatalogQuery) {
   const [draft, setDraft] = useState(query.q);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -13,6 +14,7 @@ export function useCatalogParams(query: CatalogQuery) {
     const url = `${window.location.pathname}${params.size ? `?${params}` : ''}`;
     if (replace) window.history.replaceState(null, '', url);
     else window.history.pushState(null, '', url);
+    window.dispatchEvent(new Event(CATALOG_URL_CHANGE));
   }
   useEffect(() => {
     // An older URL update must not overwrite a newer draft or cancel its debounce.

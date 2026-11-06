@@ -1,0 +1,212 @@
+{
+  "label": "after",
+  "url": "http://127.0.0.1:3100/prototype-farmeconom/",
+  "cpuSlowdown": 4,
+  "metrics": {
+    "Timestamp": 1924247.206328,
+    "AudioHandlers": 0,
+    "AudioWorkletProcessors": 0,
+    "Documents": 6,
+    "Frames": 5,
+    "JSEventListeners": 175,
+    "LayoutObjects": 1287,
+    "MediaKeySessions": 0,
+    "MediaKeys": 0,
+    "Nodes": 1412,
+    "Resources": 21,
+    "ContextLifecycleStateObservers": 33,
+    "V8PerContextDatas": 4,
+    "WorkerGlobalScopes": 0,
+    "UACSSResources": 0,
+    "RTCPeerConnections": 0,
+    "ResourceFetchers": 6,
+    "AdSubframes": 0,
+    "DetachedScriptStates": 2,
+    "ArrayBufferContents": 2,
+    "LayoutCount": 6,
+    "RecalcStyleCount": 8,
+    "LayoutDuration": 1.22976,
+    "RecalcStyleDuration": 0.217134,
+    "DevToolsCommandDuration": 0.424376,
+    "ScriptDuration": 1.211948,
+    "V8CompileDuration": 0.013522,
+    "TaskDuration": 4.74914,
+    "TaskOtherDuration": 1.6524,
+    "ThreadTime": 1.327163,
+    "ProcessTime": 6.283485,
+    "JSHeapUsedSize": 6116468,
+    "JSHeapTotalSize": 10293248,
+    "FirstMeaningfulPaint": 0,
+    "DomContentLoaded": 1924242.966266,
+    "NavigationStart": 1924242.35709
+  },
+  "timing": {
+    "UpdateLayoutTree": 276.4379999999999,
+    "Layout": 1276.9039999999998,
+    "Paint": 70.906
+  },
+  "topSelf": [
+    {
+      "name": "(native): (program)",
+      "ms": 2712
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/base/build-base.ts:47 instantiateModule",
+      "ms": 553
+    },
+    {
+      "name": "turbopack:///[project]/src/entities/product/api.ts:46 ",
+      "ms": 208
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/zod/v4/core/core.js:49 o",
+      "ms": 27
+    },
+    {
+      "name": "(native): (idle)",
+      "ms": 26
+    },
+    {
+      "name": "(native): query",
+      "ms": 25
+    },
+    {
+      "name": "(native): (garbage collector)",
+      "ms": 24
+    },
+    {
+      "name": "(native): ",
+      "ms": 24
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:4629 renderWithHooks",
+      "ms": 21
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:7770 beginWork",
+      "ms": 20
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs/es/util/css-variables.js:32 ",
+      "ms": 18
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@reduxjs/toolkit/dist/query/rtk-query.modern.mjs:2239 init",
+      "ms": 17
+    },
+    {
+      "name": "turbopack:///[project]/src/entities/product/repository.ts:276 ",
+      "ms": 15
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/antd/es/theme/themes/default/theme.js:2 ",
+      "ms": 15
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@reduxjs/toolkit/dist/query/rtk-query.modern.mjs:2200 ",
+      "ms": 14
+    },
+    {
+      "name": "(native): isElementHiddenForAria",
+      "ms": 14
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@reduxjs/toolkit/dist/query/rtk-query.modern.mjs:1539 ",
+      "ms": 14
+    },
+    {
+      "name": "(native): InjectedScript",
+      "ms": 13
+    },
+    {
+      "name": "(native): getImplicitAriaRole",
+      "ms": 11
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/use-sync-external-store/with-selector.js:3 ",
+      "ms": 11
+    }
+  ],
+  "topInclusiveSources": [
+    {
+      "name": "(native)",
+      "ms": 4667
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js",
+      "ms": 1211
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/base/build-base.ts",
+      "ms": 1155
+    },
+    {
+      "name": "turbopack:///[turbopack]/shared/runtime/runtime-utils.ts",
+      "ms": 1142
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/scheduler/cjs/scheduler.production.js",
+      "ms": 1135
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.production.js",
+      "ms": 968
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/navigation.js",
+      "ms": 663
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react/cjs/react.production.js",
+      "ms": 310
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-index.tsx",
+      "ms": 297
+    },
+    {
+      "name": "turbopack:///[project]/src/entities/cart/model.ts",
+      "ms": 242
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/dom/runtime-backend-dom.ts",
+      "ms": 241
+    },
+    {
+      "name": "turbopack:///[project]/src/entities/product/api.ts",
+      "ms": 229
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/zod/v4/classic/schemas.js",
+      "ms": 225
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-next-turbopack.ts",
+      "ms": 222
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-bootstrap.ts",
+      "ms": 222
+    },
+    {
+      "name": "http://127.0.0.1:3100/prototype-farmeconom/_next/static/chunks/2xwo1mx3ht2wg.js",
+      "ms": 215
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/antd/es/button/style/group.js",
+      "ms": 213
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/antd/es/_util/wave/style.js",
+      "ms": 204
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@reduxjs/toolkit/dist/query/rtk-query.modern.mjs",
+      "ms": 151
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/antd/es/config-provider/MotionWrapper.js",
+      "ms": 149
+    }
+  ]
+}

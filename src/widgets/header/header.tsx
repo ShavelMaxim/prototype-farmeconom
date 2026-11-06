@@ -11,13 +11,18 @@ export function Header() {
     <>
       <div className={styles.notice}>
         <span>Учебный концепт для портфолио · товары, цены и аптеки вымышлены</span>
-        <Link href="/about">
+        <Link prefetch={false} href="/about">
           О проекте <ArrowRightOutlined />
         </Link>
       </div>
       <header className={styles.header}>
         <div className={styles.inner}>
-          <Link href="/" className={styles.logo} aria-label="Аптека рядом — каталог">
+          <Link
+            prefetch={false}
+            href="/"
+            className={styles.logo}
+            aria-label="Аптека рядом — каталог"
+          >
             <span className={styles.cross}>+</span>
             <span>
               аптека
@@ -31,12 +36,19 @@ export function Header() {
             <PharmacyPicker />
           </div>
           <nav aria-label="Основная навигация" className={styles.nav}>
-            <Link href="/">Каталог</Link>
-            <Link href="/about" className={styles.about}>
+            <Link prefetch={false} href="/">
+              Каталог
+            </Link>
+            <Link prefetch={false} href="/about" className={styles.about}>
               О проекте
             </Link>
           </nav>
-          <Link href="/cart" className={styles.cart} aria-label={`Корзина, товаров: ${count}`}>
+          <Link
+            prefetch={false}
+            href="/cart"
+            className={styles.cart}
+            aria-label={`Корзина, товаров: ${count}`}
+          >
             <Badge count={count} color="#176b52" size="small">
               <ShoppingOutlined style={{ fontSize: 22 }} />
             </Badge>

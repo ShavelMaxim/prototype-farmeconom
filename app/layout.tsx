@@ -30,7 +30,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <br />
                 Не официальный сайт Фармэконом. Покупки не совершаются.
               </p>
-              <Link href="/about">Как устроен проект ↗</Link>
+              <Link prefetch={false} href="/about">
+                Как устроен проект ↗
+              </Link>
             </footer>
           </Providers>
         </AntdRegistry>

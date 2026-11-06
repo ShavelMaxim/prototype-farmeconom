@@ -51,10 +51,11 @@ export function parseCatalogQuery(input: Record<string, unknown>): CatalogQuery 
   const parsed = catalogQuerySchema.safeParse(input);
   return parsed.success ? parsed.data : catalogQuerySchema.parse({});
 }
+const rubles = new Intl.NumberFormat('ru-RU', {
+  style: 'currency',
+  currency: 'RUB',
+  maximumFractionDigits: 2,
+});
 export function money(kopecks: number) {
-  return new Intl.NumberFormat('ru-RU', {
-    style: 'currency',
-    currency: 'RUB',
-    maximumFractionDigits: 2,
-  }).format(kopecks / 100);
+  return rubles.format(kopecks / 100);
 }

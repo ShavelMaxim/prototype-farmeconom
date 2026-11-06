@@ -22,7 +22,7 @@ export function CartView({ products: initial }: { products: Product[] }) {
     return <InventoryStatus error={inventory.error} retry={inventory.refetch} />;
   return (
     <main id="main" className="container">
-      <Link href="/" className="back-link">
+      <Link prefetch={false} href="/" className="back-link">
         ← Продолжить покупки
       </Link>
       <div className="page-top">
@@ -54,11 +54,15 @@ export function CartView({ products: initial }: { products: Product[] }) {
               <article className={styles.line} key={line.id}>
                 {line.product ? (
                   <>
-                    <Link className={styles.art} href={`/products/${line.product.slug}`}>
+                    <Link
+                      prefetch={false}
+                      className={styles.art}
+                      href={`/products/${line.product.slug}`}
+                    >
                       <ProductArtwork product={line.product} />
                     </Link>
                     <div className={styles.info}>
-                      <Link href={`/products/${line.product.slug}`}>
+                      <Link prefetch={false} href={`/products/${line.product.slug}`}>
                         <h2>{line.product.name}</h2>
                       </Link>
                       <p className="muted">{line.product.size}</p>

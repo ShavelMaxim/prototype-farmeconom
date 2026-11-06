@@ -1,0 +1,212 @@
+{
+  "label": "before",
+  "url": "http://127.0.0.1:3100/prototype-farmeconom/",
+  "cpuSlowdown": 4,
+  "metrics": {
+    "Timestamp": 1923923.623045,
+    "AudioHandlers": 0,
+    "AudioWorkletProcessors": 0,
+    "Documents": 6,
+    "Frames": 5,
+    "JSEventListeners": 762,
+    "LayoutObjects": 1419,
+    "MediaKeySessions": 0,
+    "MediaKeys": 0,
+    "Nodes": 1491,
+    "Resources": 33,
+    "ContextLifecycleStateObservers": 31,
+    "V8PerContextDatas": 4,
+    "WorkerGlobalScopes": 0,
+    "UACSSResources": 0,
+    "RTCPeerConnections": 0,
+    "ResourceFetchers": 6,
+    "AdSubframes": 0,
+    "DetachedScriptStates": 2,
+    "ArrayBufferContents": 23,
+    "LayoutCount": 9,
+    "RecalcStyleCount": 53,
+    "LayoutDuration": 1.043528,
+    "RecalcStyleDuration": 0.515749,
+    "DevToolsCommandDuration": 0.521329,
+    "ScriptDuration": 3.272455,
+    "V8CompileDuration": 0.014376,
+    "TaskDuration": 7.823214,
+    "TaskOtherDuration": 2.455777,
+    "ThreadTime": 2.09871,
+    "ProcessTime": 11.090703,
+    "JSHeapUsedSize": 11109412,
+    "JSHeapTotalSize": 19730432,
+    "FirstMeaningfulPaint": 1923921.531097,
+    "DomContentLoaded": 1923915.755615,
+    "NavigationStart": 1923915.167363
+  },
+  "timing": {
+    "UpdateLayoutTree": 517.594,
+    "Paint": 430.45300000000015,
+    "Layout": 1043.0629999999999
+  },
+  "topSelf": [
+    {
+      "name": "(native): (program)",
+      "ms": 3417
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/base/build-base.ts:47 instantiateModule",
+      "ms": 701
+    },
+    {
+      "name": "(native): (idle)",
+      "ms": 560
+    },
+    {
+      "name": "turbopack:///[project]/src/entities/product/model.ts:53 ",
+      "ms": 259
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:4629 renderWithHooks",
+      "ms": 141
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/stylis/src/Parser.js:24 e",
+      "ms": 77
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:10499 commitMutationEffectsOnFiber",
+      "ms": 48
+    },
+    {
+      "name": "(native): (garbage collector)",
+      "ms": 47
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/antd/es/button/Button.js:42 ",
+      "ms": 46
+    },
+    {
+      "name": "(native): ",
+      "ms": 43
+    },
+    {
+      "name": "(native): insertBefore",
+      "ms": 41
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:7770 beginWork",
+      "ms": 39
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs-utils/es/util/statistic.js:9 B",
+      "ms": 37
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:5811 useMemo",
+      "ms": 33
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/stylis/src/Tokenizer.js:64 eP",
+      "ms": 32
+    },
+    {
+      "name": "(native): fetch",
+      "ms": 28
+    },
+    {
+      "name": "(native): appendChild",
+      "ms": 28
+    },
+    {
+      "name": "(native): isElementHiddenForAria",
+      "ms": 27
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:14414 cf",
+      "ms": 27
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:8361 ",
+      "ms": 27
+    }
+  ],
+  "topInclusiveSources": [
+    {
+      "name": "(native)",
+      "ms": 8203
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js",
+      "ms": 3109
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/scheduler/cjs/scheduler.production.js",
+      "ms": 2726
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/base/build-base.ts",
+      "ms": 1085
+    },
+    {
+      "name": "turbopack:///[turbopack]/shared/runtime/runtime-utils.ts",
+      "ms": 1076
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.production.js",
+      "ms": 762
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react/cjs/react.production.js",
+      "ms": 731
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs/es/hooks/useGlobalCache.js",
+      "ms": 599
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs-utils/es/util/genStyleUtils.js",
+      "ms": 523
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs/es/Cache.js",
+      "ms": 494
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-index.tsx",
+      "ms": 459
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/dom/runtime-backend-dom.ts",
+      "ms": 429
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs/es/hooks/useStyleRegister.js",
+      "ms": 425
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-next-turbopack.ts",
+      "ms": 385
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-bootstrap.ts",
+      "ms": 385
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/antd/locale/ru_RU.js",
+      "ms": 288
+    },
+    {
+      "name": "turbopack:///[project]/src/entities/product/model.ts",
+      "ms": 279
+    },
+    {
+      "name": "turbopack:///[project]/src/widgets/catalog/product-card.tsx",
+      "ms": 269
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@reduxjs/toolkit/dist/query/rtk-query.modern.mjs",
+      "ms": 236
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/zod/v4/classic/schemas.js",
+      "ms": 232
+    }
+  ]
+}

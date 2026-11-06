@@ -2,7 +2,7 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const root = path.resolve('out');
+const root = path.resolve(process.env.STATIC_DIRECTORY || 'out');
 const prefix = process.env.NEXT_PUBLIC_BASE_PATH || '';
 const port = Number(process.env.PORT || 3100);
 const types = {

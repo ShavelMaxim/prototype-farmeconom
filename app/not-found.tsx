@@ -5,7 +5,7 @@ export default function NotFound() {
       <p className="eyebrow">404</p>
       <h1>Этой страницы нет</h1>
       <p>Возможно, ссылка изменилась. Все демонстрационные товары доступны в каталоге.</p>
-      <Link href="/" className="back-link">
+      <Link prefetch={false} href="/" className="back-link">
         Вернуться в каталог →
       </Link>
     </main>

@@ -1,9 +1,10 @@
 import Link from 'next/link';
+import { memo } from 'react';
 import { ProductArtwork } from '@/entities/product/artwork';
 import { money, type Product, type PharmacyId } from '@/entities/product/model';
 import { AddButton } from '@/features/cart/add-button';
 import styles from './catalog.module.css';
-export function ProductCard({
+export const ProductCard = memo(function ProductCard({
   product,
   pharmacy,
   busy,
@@ -14,13 +15,19 @@ export function ProductCard({
 }) {
   return (
     <article className={`${styles.card} ${busy ? styles.updating : ''}`}>
-      <Link href={`/products/${product.slug}`} aria-label={`Подробнее: ${product.name}`}>
+      <Link
+        prefetch={false}
+        href={`/products/${product.slug}`}
+        aria-label={`Подробнее: ${product.name}`}
+      >
         <ProductArtwork product={product} />
       </Link>
       <div className={styles.cardBody}>
         <span className={styles.brand}>{product.brand}</span>
         <h3>
-          <Link href={`/products/${product.slug}`}>{product.name}</Link>
+          <Link prefetch={false} href={`/products/${product.slug}`}>
+            {product.name}
+          </Link>
         </h3>
         <p className={styles.size}>{product.size}</p>
         <div className={styles.price}>{money(product.offers[pharmacy].price)}</div>
@@ -33,4 +40,4 @@ export function ProductCard({
       </div>
     </article>
   );
-}
+});

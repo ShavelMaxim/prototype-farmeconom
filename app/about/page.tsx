@@ -4,7 +4,7 @@ export const metadata: Metadata = { title: 'О проекте' };
 export default function AboutPage() {
   return (
     <main id="main" className="container prose">
-      <Link href="/" className="back-link">
+      <Link prefetch={false} href="/" className="back-link">
         ← Каталог
       </Link>
       <p className="eyebrow">FRONTEND CASE STUDY / 2026</p>

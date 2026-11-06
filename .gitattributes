@@ -1,0 +1,4 @@
+# Profiling artifacts are inspectable reports, not hand-edited source.
+docs/performance/profiles/*.trace.json -diff
+docs/performance/profiles/*.cpuprofile -diff
+docs/performance/profiles/*lighthouse*.json -diff

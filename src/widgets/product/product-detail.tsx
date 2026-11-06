@@ -19,13 +19,15 @@ export function ProductDetail({ product: initial }: { product: Product }) {
     return (
       <main id="main" className="container">
         <h1>Товар больше недоступен</h1>
-        <Link href="/">Вернуться в каталог</Link>
+        <Link prefetch={false} href="/">
+          Вернуться в каталог
+        </Link>
       </main>
     );
   const offer = product.offers[pharmacy];
   return (
     <main id="main" className="container">
-      <Link href="/" className="back-link">
+      <Link prefetch={false} href="/" className="back-link">
         ← Каталог товаров
       </Link>
       <div className={styles.layout}>
@@ -45,7 +47,9 @@ export function ProductDetail({ product: initial }: { product: Product }) {
           <p className={styles.price}>{money(offer.price)}</p>
           <div className={styles.purchase}>
             <AddButton product={product} />
-            <Link href="/cart">Перейти в корзину →</Link>
+            <Link prefetch={false} href="/cart">
+              Перейти в корзину →
+            </Link>
           </div>
           <Divider />
           <h2 className={styles.subtitle}>Самовывоз из аптеки</h2>
