@@ -1,5 +1,7 @@
 # Аптека рядом — frontend-портфолио
 
+[Открыть опубликованное демо](https://shavelmaxim.github.io/prototype-farmeconom/) · [Успешный deployment](https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42189557878)
+
 Независимый учебный концепт аптечного магазина для собеседования в Фармэконом. Данные вымышленные; реальные заказы не создаются. Next.js App Router экспортируется в статические файлы для GitHub Pages.
 
 ## Возможности

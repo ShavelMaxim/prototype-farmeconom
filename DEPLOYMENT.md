@@ -9,7 +9,7 @@ Settings → Pages → Build and deployment → Source: GitHub Actions. Посл
 
 Права deploy: pages: write, id-token: write. Environment: github-pages. Публикация получает артефакт только после успешных проверок. Секреты демо не нужны.
 
-Ожидаемый URL (до проверки не считать опубликованным): https://shavelmaxim.github.io/prototype-farmeconom/
+Опубликовано и проверено 6 ноября 2026: https://shavelmaxim.github.io/prototype-farmeconom/
 
 ## Проверка
 
@@ -36,3 +36,5 @@ Smoke проверяет страницы и JS/CSS. E2E проверяют кл
 NEXT_PUBLIC_API_URL включает HTTP-адаптер RTK Query. PHP потребуется разместить отдельно от Pages и настроить HTTPS/CORS. Браузерная проверка цены не заменяет серверную в настоящем магазине. PHP/MySQL отложены до завершения публикации.
 
 Фактический статус — CONTEXT.md. Успешная локальная сборка не доказывает успешный deployment.
+
+Успешный deployment: https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42189557878 (cef3771). На внешнем сайте прошли HTTP smoke и 14 E2E desktop/mobile.

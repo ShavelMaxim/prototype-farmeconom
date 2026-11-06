@@ -28,6 +28,8 @@ Windows, Node 24.21.0, npm 12.2.0. Генерируемая .next/dev содер
 
 Репозиторий: https://github.com/ShavelMaxim/prototype-farmeconom. Ветка master. origin настроен. Исходная версия до перехода сохранена коммитом fbd0ec5. Подключённый MCP GitHub использует verdant-yucca, но штатный Git Credential Manager успешно авторизуется как ShavelMaxim. Не выводить и не сохранять credentials. Вспомогательный API-скрипт находится вне репозитория в work/ и использует credential только в памяти.
 
-.github/workflows/pages.yml: push master / manual → проверки → export → E2E → Pages. checks.yml проверяет PR и push. GitHub Pages пока не настроен (GET pages вернул 404). Следующее действие: commit/push, включение Pages build_type=workflow, проверка workflow и внешнего URL. До подтверждения deployment этап 10 остаётся незавершённым.
+.github/workflows/pages.yml: push master / manual → проверки → export → E2E → Pages. checks.yml проверяет PR и push. GitHub Pages включён через API (build_type=workflow, public=true, HTTPS). Commit cef3771 отправлен в master. Workflow Deploy GitHub Pages 42189557878 и Quality checks 42189557994 успешно завершились. Сайт: https://shavelmaxim.github.io/prototype-farmeconom/. На внешнем URL прошли HTTP smoke (5 страниц и их JS/CSS, неизвестный товар 404) и все 14 desktop/mobile E2E. Все 10 этапов завершены. Следующий необязательный этап — локальный PHP/MySQL либо репетиция показа; не добавлять backend без согласованного объёма.
 
 README, DEPLOYMENT и INTERVIEW обновлены под Pages. Старый архив ../pharm-demo-source.zip содержит версию до перехода и не отражает текущий код; использовать репозиторий как источник актуальных исходников.
+
+Документация и скриншоты после внешней проверки фиксируются отдельным коммитом [skip ci], без изменения опубликованного приложения. Актуальный архив исходников: ../pharm-demo-github-pages-source.zip.
