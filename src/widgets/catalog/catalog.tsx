@@ -1,0 +1,325 @@
+'use client';
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Alert, Button, Checkbox, Drawer, Empty, Input, Select, Skeleton } from 'antd';
+import {
+  ArrowRightOutlined,
+  SearchOutlined,
+  SlidersOutlined,
+  SafetyCertificateOutlined,
+  EnvironmentOutlined,
+  CloseOutlined,
+} from '@ant-design/icons';
+import {
+  categories,
+  money,
+  parseCatalogQuery,
+  type CatalogResponse,
+} from '@/entities/product/model';
+import { useGetCatalogQuery } from '@/entities/product/api';
+import { ProductArtwork } from '@/entities/product/artwork';
+import { AddButton } from '@/features/cart/add-button';
+import { useAppSelector } from '@/shared/lib/store-hooks';
+import styles from './catalog.module.css';
+
+const sorting = [
+  { value: 'popular', label: 'По популярности' },
+  { value: 'price-asc', label: 'Сначала дешевле' },
+  { value: 'price-desc', label: 'Сначала дороже' },
+  { value: 'name', label: 'По названию' },
+];
+export function Catalog({ initial }: { initial: CatalogResponse }) {
+  const search = useSearchParams();
+  const pharmacy = useAppSelector((s) => s.cart.pharmacy);
+  const query = parseCatalogQuery({ ...Object.fromEntries(search), pharmacy });
+  const [draft, setDraft] = useState(query.q);
+  const [drawer, setDrawer] = useState(false);
+  const [demo, setDemo] = useState('normal');
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { data, isFetching, isError, refetch } = useGetCatalogQuery({ ...query, demo });
+  const result = data ?? initial;
+  function update(values: Record<string, string>, replace = false) {
+    const params = new URLSearchParams(window.location.search);
+    Object.entries(values).forEach(([key, value]) =>
+      value ? params.set(key, value) : params.delete(key),
+    );
+    const url = `${window.location.pathname}${params.size ? `?${params}` : ''}`;
+    if (replace) window.history.replaceState(null, '', url);
+    else window.history.pushState(null, '', url);
+  }
+  useEffect(() => {
+    // Back/Forward must restore the input as well as the applied URL query.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDraft(query.q);
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, [query.q]);
+  function searchChanged(value: string) {
+    setDraft(value);
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => update({ q: value.trim() }, true), 300);
+  }
+  function reset() {
+    if (timer.current) clearTimeout(timer.current);
+    setDraft('');
+    update({ q: '', category: '', available: '', sort: '' });
+  }
+  const filters = (
+    <div className={styles.filterContent}>
+      <p className="eyebrow">КАТЕГОРИИ</p>
+      <div className={styles.categories}>
+        {categories.map((category, i) => (
+          <button
+            key={category}
+            aria-pressed={query.category === category}
+            className={query.category === category ? styles.active : ''}
+            onClick={() => update({ category: i === 0 ? '' : category })}
+          >
+            <span>{['✳', '◒', '⊞', '+', '♡'][i]}</span>
+            {category}
+            <ArrowRightOutlined />
+          </button>
+        ))}
+      </div>
+      <div className={styles.divider} />
+      <Checkbox
+        checked={query.available === 'true'}
+        onChange={(e) => update({ available: e.target.checked ? 'true' : '' })}
+      >
+        Только в наличии
+      </Checkbox>
+      <p className={styles.filterNote}>В выбранной аптеке</p>
+      <Button type="link" onClick={reset} className={styles.reset}>
+        Сбросить фильтры
+      </Button>
+      <div className={styles.help}>
+        <SafetyCertificateOutlined />
+        <h3>
+          Всё необходимое
+          <br />
+          для заботы о себе
+        </h3>
+        <p>Сравните товары и выберите удобную аптеку для получения.</p>
+        <span>Демонстрационный каталог</span>
+      </div>
+    </div>
+  );
+  return (
+    <main id="main" className="container">
+      <section className={styles.hero} aria-labelledby="hero-title">
+        <div>
+          <span className="eyebrow">ЗАБОТА БЛИЖЕ, ЧЕМ КАЖЕТСЯ</span>
+          <h1 id="hero-title">
+            Всё для здоровья.
+            <br />
+            <span>Рядом с вами.</span>
+          </h1>
+          <p>
+            Найдите нужное и выберите удобную аптеку.
+            <br />
+            Спокойно, понятно, без лишних шагов.
+          </p>
+          <div className={styles.heroMeta}>
+            <span>
+              <EnvironmentOutlined /> 3 аптеки в Ангарске
+            </span>
+            <span>Самовывоз</span>
+          </div>
+        </div>
+        <div className={styles.heroGraphic} aria-hidden="true">
+          <div className={styles.orbit} />
+          <div className={styles.heroCross}>+</div>
+          <span className={styles.heroChip}>Каждый день — с заботой</span>
+          <div className={styles.smallCircle}>✳</div>
+        </div>
+      </section>
+      <form
+        role="search"
+        className={styles.search}
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (timer.current) clearTimeout(timer.current);
+          update({ q: draft.trim() });
+        }}
+      >
+        <Input
+          aria-label="Поиск товаров"
+          placeholder="Название товара, бренд или категория"
+          prefix={<SearchOutlined />}
+          value={draft}
+          onChange={(e) => searchChanged(e.target.value)}
+          maxLength={80}
+          suffix={
+            draft ? (
+              <button
+                className={styles.clear}
+                type="button"
+                aria-label="Очистить поиск"
+                onClick={() => searchChanged('')}
+              >
+                <CloseOutlined />
+              </button>
+            ) : null
+          }
+        />
+        <Button type="primary" htmlType="submit">
+          Найти <ArrowRightOutlined />
+        </Button>
+      </form>
+      <section className={styles.layout} aria-label="Каталог товаров">
+        <aside className={styles.sidebar}>{filters}</aside>
+        <div className={styles.main}>
+          <div className={styles.toolbar}>
+            <div>
+              <h2>
+                {query.q
+                  ? `Поиск: «${query.q}»`
+                  : query.category === 'Все товары'
+                    ? 'Для вас и ваших близких'
+                    : query.category}
+              </h2>
+              <span className="muted">{result.total} товаров · цены в выбранной аптеке</span>
+            </div>
+            <Select
+              aria-label="Сортировка товаров"
+              value={query.sort}
+              options={sorting}
+              onChange={(value) => update({ sort: value })}
+            />
+          </div>
+          <Button
+            className={styles.mobileFilters}
+            icon={<SlidersOutlined />}
+            onClick={() => setDrawer(true)}
+          >
+            Категории и фильтры
+          </Button>
+          <div className="status-line" role="status" aria-live="polite">
+            {isFetching ? 'Обновляем товары…' : isError ? '' : 'Цены и наличие обновлены'}
+          </div>
+          {isError && (
+            <Alert
+              type="error"
+              showIcon
+              title="Не удалось обновить каталог"
+              description="Сохранённые товары остаются видны. Повторите запрос; в режиме проверки ошибки сначала выберите обычную сеть."
+              action={
+                <Button size="small" onClick={refetch}>
+                  Повторить
+                </Button>
+              }
+              style={{ marginBottom: 16 }}
+            />
+          )}
+          {!result.total && !isFetching && !isError ? (
+            <div className={styles.empty}>
+              <Empty description="По вашему запросу ничего не нашлось">
+                <p className="muted">Попробуйте другое название или уберите фильтры.</p>
+                <Button onClick={reset} type="primary">
+                  Показать все товары
+                </Button>
+              </Empty>
+            </div>
+          ) : (
+            <div className={styles.grid} aria-busy={isFetching}>
+              {result.items.map((product) => (
+                <article
+                  key={product.id}
+                  className={`${styles.card} ${isFetching ? styles.updating : ''}`}
+                >
+                  <Link
+                    href={`/products/${product.slug}`}
+                    aria-label={`Подробнее: ${product.name}`}
+                  >
+                    <ProductArtwork product={product} />
+                  </Link>
+                  <div className={styles.cardBody}>
+                    <span className={styles.brand}>{product.brand}</span>
+                    <h3>
+                      <Link href={`/products/${product.slug}`}>{product.name}</Link>
+                    </h3>
+                    <p className={styles.size}>{product.size}</p>
+                    <div className={styles.price}>{money(product.offers[pharmacy].price)}</div>
+                    <p className={product.offers[pharmacy].stock ? styles.stock : styles.noStock}>
+                      {product.offers[pharmacy].stock
+                        ? `● В наличии · ${product.offers[pharmacy].stock} шт.`
+                        : 'Нет в выбранной аптеке'}
+                    </p>
+                    <AddButton product={product} busy={isFetching || isError} />
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+          <div className={styles.catalogNote}>
+            Изображения упаковок условные. Все товары и цены — демонстрационные.
+          </div>
+        </div>
+      </section>
+      <Drawer
+        title="Категории и фильтры"
+        open={drawer}
+        onClose={() => setDrawer(false)}
+        footer={
+          <Button type="primary" block onClick={() => setDrawer(false)}>
+            Показать товары
+          </Button>
+        }
+      >
+        {filters}
+      </Drawer>
+      <details className={styles.demoPanel}>
+        <summary>Проверить поведение интерфейса</summary>
+        <p>
+          Инструмент для демонстрации на собеседовании. Задержка и ошибка применяются только к
+          запросам каталога.
+        </p>
+        <Select
+          aria-label="Режим сети"
+          value={demo}
+          onChange={setDemo}
+          options={[
+            { value: 'normal', label: 'Обычная сеть' },
+            { value: 'slow', label: 'Задержка 1,5 секунды' },
+            { value: 'error', label: 'Ошибка API' },
+          ]}
+          style={{ minWidth: 220 }}
+        />
+      </details>
+    </main>
+  );
+}
+export function CatalogSkeleton() {
+  return (
+    <div className="container" role="status" aria-label="Загружаем каталог">
+      <div className={styles.hero} style={{ minHeight: 310 }}>
+        <Skeleton active paragraph={{ rows: 3 }} />
+      </div>
+      <div className={styles.search}>
+        <Skeleton.Input active block style={{ height: 54 }} />
+      </div>
+      <div className={styles.layout}>
+        <aside className={styles.sidebar}>
+          <Skeleton active paragraph={{ rows: 6 }} />
+        </aside>
+        <div>
+          <div style={{ height: 90 }}>
+            <Skeleton active paragraph={{ rows: 1 }} />
+          </div>
+          <div className={styles.grid}>
+            {Array.from({ length: 8 }, (_, i) => (
+              <div className={styles.card} key={i}>
+                <div style={{ height: 198, background: '#e9eee7', borderRadius: 14 }} />
+                <div className={styles.cardBody}>
+                  <Skeleton active paragraph={{ rows: 4 }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

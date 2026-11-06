@@ -1,0 +1,45 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.form section h2 {
+  font-size: 19px;
+  margin-top: 6px;
+}
+.form section p {
+  font-size: 13px;
+  margin-top: 10px;
+}
+.form section a {
+  margin: 0;
+}
+.form fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.form legend {
+  font-size: 19px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.total {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  font-size: 14px;
+}
+.total strong {
+  font-size: 26px;
+  letter-spacing: -1px;
+}
+.error {
+  color: #b33c39;
+  font-size: 13px;
+  margin: -10px 0 0;
+}

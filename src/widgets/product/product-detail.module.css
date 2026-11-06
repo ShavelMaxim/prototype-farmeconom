@@ -1,0 +1,64 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+.title {
+  font-size: 36px;
+  line-height: 1.2;
+  margin: 16px 0;
+}
+.caption {
+  font-size: 11px;
+  color: #819083;
+  margin: 14px 0;
+}
+.price {
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin: 24px 0;
+}
+.purchase {
+  max-width: 330px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.purchase > a {
+  font-size: 13px;
+  color: var(--green);
+}
+.subtitle {
+  font-size: 18px;
+}
+.facts {
+  margin: 0;
+}
+.facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  border-bottom: 1px solid var(--line);
+  padding: 14px 0;
+  font-size: 13px;
+}
+.facts dt {
+  color: var(--muted);
+}
+.facts dd {
+  text-align: right;
+  margin: 0;
+}
+@media (max-width: 700px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .title {
+    font-size: 30px;
+  }
+  .purchase {
+    max-width: none;
+  }
+}
