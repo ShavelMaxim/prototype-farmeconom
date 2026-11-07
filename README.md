@@ -1,6 +1,6 @@
 # Аптека рядом — frontend-портфолио
 
-[Открыть опубликованное демо](https://shavelmaxim.github.io/prototype-farmeconom/) · [Успешный deployment](https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42352387959)
+[Открыть опубликованное демо](https://shavelmaxim.github.io/prototype-farmeconom/) · [Успешный deployment](https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42364035624)
 
 Независимый учебный концепт аптечного магазина для собеседования в Фармэконом. Данные вымышленные; реальные заказы не создаются. Next.js App Router экспортируется в статические файлы для GitHub Pages.
 
@@ -78,6 +78,8 @@ E2E проверяют out на статическом сервере, вклю�
 
 Новая UX-итерация: [сценарии и границы](docs/UX-EXPANSION.md), [проверки и замеры расширенного интерфейса](docs/performance/UX-EXPANSION.md). Актуальное состояние публикации — в CONTEXT.md. scripts/capture-ux.mjs снимает четыре размера экрана, scripts/measure-ui.mjs — последовательные Lighthouse-замеры без нагрузки от параллельных тестов.
 
-Финальная UX-версия da7c6ce опубликована: 40 unit/integration и 56 E2E в CI, HTTP smoke и 22 внешних E2E прошли. Mobile Performance 90/94/91 (медиана 91), A11y/BP 100, CLS 0. SEO 60 сохраняется из-за noindex. Подробные прогоны и ограничения — docs/performance/UX-EXPANSION.md.
+Предыдущая UX-версия da7c6ce опубликована: 40 unit/integration и 56 E2E в CI, HTTP smoke и 22 внешних E2E прошли. Mobile Performance 90/94/91 (медиана 91), A11y/BP 100, CLS 0. SEO 60 сохраняется из-за noindex. Подробные прогоны и ограничения — docs/performance/UX-EXPANSION.md.
 
 Финальный мобильный разбор: [наблюдения, исправления и дальнейшие приоритеты](docs/FINAL-UX-REVIEW.md). Крупные кнопки количества, закреплённый итог корзины, отмена удаления, компактные фильтры и явный переход к результатам поиска.
+
+Опубликованные мобильные исправления: 091ce0d. В CI 42 unit/integration и 62 E2E; 20 внешних E2E и HTTP smoke прошли. Новые mobile Lighthouse 88/96/93, медиана 93, CLS 0, A11y/BP 100. Первый прогон ниже 90; все результаты и ограничения сохранены в финальном UX-отчёте.
