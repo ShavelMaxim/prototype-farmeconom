@@ -9,6 +9,21 @@
 * {
   box-sizing: border-box;
 }
+/* Ant Design Icons normally inserts this geometry after hydration. Keep the
+   SSR shell stable before that client effect runs. */
+.anticon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+  vertical-align: -0.125em;
+}
+.anticon > * {
+  line-height: 1;
+}
+.anticon svg {
+  display: inline-block;
+  vertical-align: inherit;
+}
 body {
   margin: 0;
   background: var(--background);

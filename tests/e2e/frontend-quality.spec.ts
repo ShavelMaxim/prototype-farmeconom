@@ -2,6 +2,38 @@ import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 test.setTimeout(60000);
 
+test('геометрия шапки и начала страницы совпадает до и после гидратации', async ({
+  page,
+  browser,
+  baseURL,
+}, testInfo) => {
+  const withoutJS = await browser.newContext({
+    baseURL,
+    javaScriptEnabled: false,
+    viewport: page.viewportSize()!,
+    deviceScaleFactor: 1,
+    isMobile: testInfo.project.name === 'mobile',
+    hasTouch: testInfo.project.name === 'mobile',
+    userAgent: await page.evaluate(() => navigator.userAgent),
+  });
+  const geometry = async (target: typeof page) => ({
+    headerHeight: (await target.locator('header').boundingBox())!.height,
+    mainTop: (await target.locator('main').boundingBox())!.y,
+  });
+  try {
+    const staticPage = await withoutJS.newPage();
+    await staticPage.goto('./');
+    const initial = await geometry(staticPage);
+    await page.goto('./');
+    await expect(
+      page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
+    ).toBeEnabled();
+    expect(await geometry(page)).toEqual(initial);
+  } finally {
+    await withoutJS.close();
+  }
+});
+
 test('начальный JavaScript укладывается в бюджет до открытия диалогов', async ({ page }) => {
   const downloads: Promise<number>[] = [];
   page.on('response', (response) => {
