@@ -133,6 +133,15 @@ test('подсказки и сравнение аптек доступны пр�
   await input.fill('электронный терм');
   await expect(page.getByRole('listbox')).toBeVisible();
   await input.press('ArrowDown');
+  await expect(page).toHaveURL(/q=/);
+  await expect(page.locator('article')).toHaveCount(1);
+  await expect(
+    page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
+  ).toBeEnabled();
+  await expect(page.getByRole('group', { name: 'Товары каталога', exact: true })).toHaveAttribute(
+    'aria-busy',
+    'false',
+  );
   await settleMotion(page);
   const popupBox = await page.getByRole('listbox').locator('..').boundingBox();
   const navBox = await page
@@ -142,9 +151,12 @@ test('подсказки и сравнение аптек доступны пр�
   let audit = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
     .analyze();
-  expect(audit.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) }))).toEqual(
-    [],
-  );
+  expect(
+    audit.violations.map((v) => ({
+      id: v.id,
+      nodes: v.nodes.map((n) => ({ target: n.target, reason: n.failureSummary })),
+    })),
+  ).toEqual([]);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
