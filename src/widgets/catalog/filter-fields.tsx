@@ -17,12 +17,14 @@ export function FilterFields({
   onChange,
   disabled = false,
   priceSlider,
+  compactCategories = false,
 }: {
   query: CatalogQuery;
   products: Product[];
   onChange: (patch: Record<string, string>) => void;
   disabled?: boolean;
   priceSlider?: ReactNode;
+  compactCategories?: boolean;
 }) {
   const [ageUnit, setAgeUnit] = useState('months');
   const subset = products.filter(
@@ -79,8 +81,13 @@ export function FilterFields({
   return (
     <fieldset className={styles.fields} disabled={disabled}>
       <legend className="visually-hidden">Условия подбора товаров</legend>
-      <details className={styles.group} open>
-        <summary>Категории</summary>
+      <details className={styles.group} open={!compactCategories}>
+        <summary>
+          Категории
+          {compactCategories && (
+            <small className={styles.categorySelection}>{query.category}</small>
+          )}
+        </summary>
         <div className={styles.categories}>
           {categories.map((category) => (
             <button

@@ -62,7 +62,9 @@ try {
     console.log(
       JSON.stringify({
         width,
-        overflow: await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+        overflow: await page.evaluate(
+          () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+        ),
       }),
     );
     await context.close();

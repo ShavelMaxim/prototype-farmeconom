@@ -147,11 +147,19 @@ test('настройки: контраст, 200% текста, сохранен�
   await dialog.getByRole('checkbox', { name: 'Уменьшить анимацию', exact: true }).check();
   await expect(page.locator('html')).toHaveAttribute('data-scale', '200');
   await dialog.getByRole('button', { name: 'Готово', exact: true }).click();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-contrast', 'dark');
   await expect(page.locator('html')).toHaveAttribute('data-scale', '200');
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
   await page.getByRole('button', { name: 'Настройки отображения', exact: true }).click();
   dialog = page.getByRole('dialog');
   await expect(dialog.getByRole('radio', { name: '200%', exact: true })).toBeChecked();

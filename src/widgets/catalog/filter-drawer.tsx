@@ -38,7 +38,11 @@ export default function FilterDrawer({
         open
         afterOpenChange={setReady}
         onClose={onClose}
-        styles={{ wrapper: { width: 'min(100vw, 480px)' } }}
+        styles={{
+          root: { width: '100vw', height: '100dvh' },
+          wrapper: { width: 'min(100vw, 480px)' },
+          title: { minWidth: 0, overflowWrap: 'anywhere' },
+        }}
         footer={
           <div className={styles.drawerFooter}>
             <Button
@@ -64,6 +68,7 @@ export default function FilterDrawer({
             </Button>
             <Button
               block
+              aria-label="Сбросить условия"
               onClick={() =>
                 setDraft({
                   ...catalogQuerySchema.parse({}),
@@ -73,7 +78,7 @@ export default function FilterDrawer({
                 })
               }
             >
-              Сбросить условия
+              Сбросить
             </Button>
             <Button type="text" onClick={onClose}>
               Отмена
@@ -86,6 +91,7 @@ export default function FilterDrawer({
           Изменения применятся после нажатия «Показать». Закрытие отменяет выбор.
         </p>
         <FilterFields
+          compactCategories
           query={draft}
           products={products}
           priceSlider={

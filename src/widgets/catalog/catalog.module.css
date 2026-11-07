@@ -346,6 +346,10 @@
   width: 174px;
   flex-shrink: 0;
 }
+.catalogControls {
+  display: flex;
+  gap: 8px;
+}
 .grid {
   min-width: 0;
   margin: 0;
@@ -819,5 +823,28 @@
   }
   .demoPanel {
     order: 4;
+  }
+  .toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .catalogControls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .catalogControls .sortControl,
+  .catalogControls .mobileFilters {
+    width: auto;
+    min-width: min(145px, 100%);
+    flex: 1 1 145px;
+    margin: 0;
+  }
+  .resultsTitle {
+    /* The root already reserves 90px of scroll padding. Add only the excess. */
+    scroll-margin-top: max(0px, calc(var(--catalog-search-height, 68px) - 78px));
+  }
+  :global(html[data-scale='150']) .catalogControls > *,
+  :global(html[data-scale='200']) .catalogControls > * {
+    flex-basis: 100%;
   }
 }

@@ -47,6 +47,7 @@ test('категория живёт в URL и восстанавливается
   if (page.viewportSize()!.width < 600)
     await page.getByRole('button', { name: /Категории и фильтры/ }).click();
   if (page.viewportSize()!.width < 600) {
+    await page.getByRole('dialog').locator('summary').filter({ hasText: 'Категории' }).click();
     await page
       .getByRole('dialog')
       .getByRole('button', { name: /Медтехника/ })
@@ -79,9 +80,11 @@ test('пустая выдача сбрасывается и layout помеща�
   await expect(
     page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
   ).toBeEnabled();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
-    true,
-  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
   await page.screenshot({
     path: `docs/screenshots/catalog-${testInfo.project.name}.png`,
     fullPage: true,
@@ -96,9 +99,11 @@ test('ошибка API локальна, товары сохраняются, п
   await page.getByRole('textbox', { name: 'Поиск товаров' }).fill('термометр');
   await expect(page.getByText('Не удалось обновить каталог')).toBeVisible();
   await expect(add).toBeDisabled();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
-    true,
-  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
   await page.getByRole('button', { name: 'Повторить', exact: true }).click();
   await expect(page.getByText('Не удалось обновить каталог')).toBeVisible();
   await page.getByRole('button', { name: 'Отключить демонстрационную ошибку' }).click();

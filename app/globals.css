@@ -199,14 +199,18 @@ main {
 }
 .skip-link {
   position: fixed;
-  top: -100px;
+  top: 12px;
   left: 12px;
-  background: white;
+  transform: translateY(calc(-100% - 24px));
+  max-width: calc(100vw - 24px);
+  overflow-wrap: anywhere;
+  background: var(--paper);
+  color: var(--ink);
   padding: 14px;
   z-index: 1000;
 }
 .skip-link:focus-visible {
-  top: 12px;
+  transform: none;
 }
 .pharmacy-options {
   display: flex;

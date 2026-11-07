@@ -39,14 +39,21 @@ const slice = createSlice({
     },
     setQuantity(state, action: PayloadAction<{ id: string; quantity: number; stock: number }>) {
       const item = state.items.find((x) => x.id === action.payload.id);
-      if (item && action.payload.stock > 0)
+      if (item && action.payload.stock > 0 && Number.isFinite(action.payload.quantity))
         item.quantity = Math.max(
           1,
-          Math.min(Math.floor(action.payload.quantity), action.payload.stock),
+          Math.min(99, Math.floor(action.payload.quantity), action.payload.stock),
         );
     },
     removeItem(state, action: PayloadAction<string>) {
       state.items = state.items.filter((x) => x.id !== action.payload);
+    },
+    restoreRemovedItem(state, action: PayloadAction<CartData['items'][number]>) {
+      if (!state.hydrated || !itemSchema.safeParse(action.payload).success) return;
+      const item = state.items.find((line) => line.id === action.payload.id);
+      if (item) item.quantity = Math.min(99, item.quantity + action.payload.quantity);
+      else if (state.items.length < 50) state.items.push(action.payload);
+      // Undo restores the user's selection. The summary still blocks checkout if stock changed.
     },
     clearCart(state) {
       state.items = [];
@@ -66,6 +73,14 @@ const slice = createSlice({
     },
   },
 });
-export const { restore, setPharmacy, addItem, setQuantity, removeItem, clearCart, repeatItems } =
-  slice.actions;
+export const {
+  restore,
+  setPharmacy,
+  addItem,
+  setQuantity,
+  removeItem,
+  restoreRemovedItem,
+  clearCart,
+  repeatItems,
+} = slice.actions;
 export const cartReducer = slice.reducer;

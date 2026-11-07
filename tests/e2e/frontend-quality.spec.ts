@@ -247,9 +247,11 @@ test('каталог: автоматическая доступность и ref
     width: Math.max(320, Math.floor(original.width / 2)),
     height: original.height,
   });
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
-    true,
-  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
+    ),
+  ).toBe(true);
   await expect(page.getByRole('textbox', { name: 'Поиск товаров' })).toBeVisible();
   if (page.viewportSize()!.width < 600) {
     const filters = page.getByRole('button', { name: 'Категории и фильтры', exact: false });

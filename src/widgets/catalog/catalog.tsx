@@ -19,7 +19,7 @@ import { useInventory, useGetCatalogQuery } from '@/entities/product/api';
 import { useAppSelector } from '@/shared/lib/store-hooks';
 import { pharmacies } from '@/shared/config/pharmacies';
 import styles from './catalog.module.css';
-import { categoryPatch } from '@/entities/product/facets';
+import { categoryPatch, facetKeys, values } from '@/entities/product/facets';
 import { useDesktopLayout } from '@/shared/lib/use-desktop-layout';
 import { AppliedFilters } from './applied-filters';
 import { productCount } from '@/shared/lib/product-count';
@@ -75,6 +75,18 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
       : 1;
   const visible = useMemo(() => result.items.slice(0, page * BATCH_SIZE), [result.items, page]);
   const gridRef = useRef<HTMLFieldSetElement>(null);
+  const searchRef = useRef<HTMLFormElement>(null);
+  const resultsRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    const form = searchRef.current;
+    if (!form) return;
+    const measure = () =>
+      form.parentElement?.style.setProperty('--catalog-search-height', `${form.offsetHeight}px`);
+    const observer = new ResizeObserver(measure);
+    observer.observe(form);
+    measure();
+    return () => observer.disconnect();
+  }, []);
   const focusIndex = useRef<number | null>(null);
   useEffect(() => {
     if (focusIndex.current === null) return;
@@ -85,6 +97,10 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
   }, [page]);
   const inventory = useInventory(initial.items);
   const desktop = useDesktopLayout();
+  const filterCount =
+    Number(query.category !== 'Все товары') +
+    Number(query.available === 'true') +
+    facetKeys.reduce((count, key) => count + values(query[key]).length, 0);
   return (
     <main id="main" className={`container ${styles.catalogPage}`}>
       <section className={styles.hero} aria-labelledby="hero-title">
@@ -114,11 +130,18 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
         </div>
       </section>
       <form
+        ref={searchRef}
         role="search"
         className={styles.search}
         onSubmit={(e) => {
           e.preventDefault();
           submitSearch();
+          if (!desktop) {
+            requestAnimationFrame(() => {
+              resultsRef.current?.focus({ preventScroll: true });
+              resultsRef.current?.scrollIntoView({ block: 'start' });
+            });
+          }
         }}
       >
         <span className={styles.searchInput}>
@@ -130,6 +153,7 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
             value={draft}
             onChange={(event) => searchChanged(event.currentTarget.value)}
             maxLength={80}
+            enterKeyHint="search"
           />
           {draft && (
             <button
@@ -180,7 +204,7 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
         <div className={styles.main}>
           <div className={styles.toolbar}>
             <div>
-              <h2>
+              <h2 ref={resultsRef} tabIndex={-1} className={styles.resultsTitle}>
                 {query.q
                   ? `Поиск: «${query.q}»`
                   : query.category === 'Все товары'
@@ -192,38 +216,41 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
                 {pharmacies.find((p) => p.id === pharmacy)!.name}»
               </span>
             </div>
-            <div className={styles.sortControl}>
-              <select
-                aria-label="Сортировка товаров"
-                className={styles.select}
-                disabled={!hydrated}
-                value={query.sort}
-                onChange={(event) => update({ sort: event.currentTarget.value })}
+            <div className={styles.catalogControls}>
+              <div className={styles.sortControl}>
+                <select
+                  aria-label="Сортировка товаров"
+                  className={styles.select}
+                  disabled={!hydrated}
+                  value={query.sort}
+                  onChange={(event) => update({ sort: event.currentTarget.value })}
+                >
+                  {sorting.map(({ value, label }) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <Button
+                ref={setFilterTrigger}
+                aria-label={`Категории и фильтры${filterCount ? `, применено: ${filterCount}` : ''}`}
+                aria-haspopup="dialog"
+                aria-expanded={filtersOpen}
+                onPointerEnter={() => {
+                  void import('./filter-drawer').catch(() => {});
+                }}
+                onFocus={() => {
+                  void import('./filter-drawer').catch(() => {});
+                }}
+                className={styles.mobileFilters}
+                icon={<SlidersOutlined />}
+                onClick={showFilters}
               >
-                {sorting.map(({ value, label }) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
+                Фильтры {filterCount > 0 && <span aria-hidden="true">· {filterCount}</span>}
+              </Button>
             </div>
           </div>
-          <Button
-            ref={setFilterTrigger}
-            aria-haspopup="dialog"
-            aria-expanded={filtersOpen}
-            onPointerEnter={() => {
-              void import('./filter-drawer').catch(() => {});
-            }}
-            onFocus={() => {
-              void import('./filter-drawer').catch(() => {});
-            }}
-            className={styles.mobileFilters}
-            icon={<SlidersOutlined />}
-            onClick={showFilters}
-          >
-            Категории и фильтры
-          </Button>
           <AppliedFilters query={query} onChange={update} onReset={reset} />
           <div className="status-line" role="status" aria-live="polite">
             {isFetching

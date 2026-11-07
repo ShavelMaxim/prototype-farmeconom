@@ -17,7 +17,11 @@ export default function DisplayDialog({ onClose }: { onClose: () => void }) {
         open
         afterOpenChange={setReady}
         onClose={onClose}
-        styles={{ wrapper: { width: 'min(100vw, 480px)' } }}
+        styles={{
+          root: { width: '100vw', height: '100dvh' },
+          wrapper: { width: 'min(100vw, 480px)' },
+          title: { minWidth: 0, overflowWrap: 'anywhere' },
+        }}
         footer={
           <Button type="primary" block onClick={onClose}>
             Готово

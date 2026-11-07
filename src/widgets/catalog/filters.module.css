@@ -148,4 +148,25 @@
   padding-bottom: env(safe-area-inset-bottom);
   display: grid;
   gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.drawerFooter > :first-child {
+  grid-column: 1 / -1;
+}
+.drawerFooter button {
+  height: auto;
+  min-height: 44px;
+  white-space: normal;
+}
+.categorySelection {
+  margin-left: auto;
+  padding-left: 12px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+:global(html[data-scale='200']) .drawerFooter {
+  grid-template-columns: minmax(0, 1fr);
 }
