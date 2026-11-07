@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { settleMotion } from './settle-motion';
 test.setTimeout(60000);
 
 test('геометрия шапки и начала страницы совпадает до и после гидратации', async ({
@@ -187,6 +188,7 @@ test('клавиатура: возврат фокуса из диалога и �
   await page.keyboard.press('Enter');
   await expect(page.getByRole('dialog')).toBeVisible();
   await expect(page.getByRole('dialog')).toContainText('Где вам удобно');
+  await settleMotion(page);
   const modalAxe = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
     .analyze();
@@ -210,6 +212,7 @@ test('клавиатура: возврат фокуса из диалога и �
   });
   await expect(consent).toHaveAttribute('aria-invalid', 'true');
   await expect(consent).toBeFocused();
+  await settleMotion(page);
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
     .analyze();
@@ -226,6 +229,7 @@ test('каталог: автоматическая доступность и ref
   await expect(
     page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
   ).toBeEnabled();
+  await settleMotion(page);
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
     .analyze();

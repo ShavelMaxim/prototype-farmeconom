@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { settleMotion } from './settle-motion';
 test.setTimeout(60000);
 const addName = 'В корзину: Электронный термометр';
 
@@ -125,6 +126,7 @@ test('новые панели и страницы проходят автома�
   await page.goto('./');
   await page.getByRole('button', { name: 'Настройки отображения', exact: true }).click();
   const check = async () => {
+    await settleMotion(page);
     const result = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -174,6 +176,7 @@ test('светлая и тёмная контрастные схемы дост�
     await page.getByRole('button', { name: 'Настройки отображения', exact: true }).click();
     await page.getByRole('dialog').getByRole('radio', { name: scheme, exact: true }).check();
     await page.getByRole('dialog').getByRole('button', { name: 'Готово', exact: true }).click();
+    await settleMotion(page);
     let result = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
@@ -185,6 +188,7 @@ test('светлая и тёмная контрастные схемы дост�
     ).toEqual([]);
     await page.getByRole('button', { name: /Категории и фильтры/ }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
+    await settleMotion(page);
     result = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
       .analyze();
