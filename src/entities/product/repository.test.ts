@@ -9,7 +9,7 @@ describe('демонстрационный каталог', () => {
     expect(catalogQuerySchema.parse({}).sort).toBe('popular');
   });
   it('имеет уникальные slug и корректные цены/остатки для каждой аптеки', () => {
-    expect(products).toHaveLength(24);
+    expect(products).toHaveLength(44);
     expect(new Set(products.map((p) => p.slug)).size).toBe(products.length);
     for (const p of products)
       for (const offer of Object.values(p.offers)) {

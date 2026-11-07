@@ -1,0 +1,29 @@
+.group {
+  border: 0;
+  padding: 0;
+  margin: 24px 0;
+}
+.group legend {
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.group label,
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  cursor: pointer;
+}
+.group input,
+.check input {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  accent-color: var(--green);
+}
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}

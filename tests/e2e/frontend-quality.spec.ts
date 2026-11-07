@@ -88,7 +88,7 @@ test('сетка добавляет правильный товар через �
     .filter({
       has: page.getByRole('heading', { name: 'Гель для бережного очищения', exact: true }),
     })
-    .getByRole('button');
+    .locator('button[data-product-id]');
   await expect(first).toBeEnabled();
   await first.locator('svg').click();
   await expect(first).toContainText('В корзине 1');
@@ -102,6 +102,34 @@ test('сетка добавляет правильный товар через �
   await expect(first).toBeDisabled();
   await expect(first).toContainText('В корзине 2 · максимум');
   await expect(page.getByRole('link', { name: 'Корзина, товаров: 3', exact: true })).toBeVisible();
+});
+
+test('Escape отменяет загрузку фильтров без позднего появления панели', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+  await expect(
+    page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
+  ).toBeEnabled();
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route('**/_next/static/chunks/*.js', async (route) => {
+    await gate;
+    await route.continue();
+  });
+  const trigger = page.getByRole('button', { name: /Категории и фильтры/ });
+  try {
+    await trigger.click();
+    await expect(page.getByRole('status').filter({ hasText: 'Открываем фильтры…' })).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(trigger).toBeFocused();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  } finally {
+    release();
+  }
+  await page.waitForLoadState('networkidle');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
 });
 
 test('первый поиск и добавление работают сразу после готовности кнопки', async ({ page }) => {
@@ -138,18 +166,18 @@ test('прокрутка каталога сохраняет размер упа
 }) => {
   await page.goto('./');
   const card = page.locator('article').last();
-  await expect(page.locator('article')).toHaveCount(24);
+  await expect(page.locator('article')).toHaveCount(44);
   // The decorative subtree may be skipped offscreen, but its fixed box must remain.
-  const scene = card.locator('[aria-hidden="true"]').first();
+  const scene = card.locator('a > div[aria-hidden="true"]').first();
   const before = await scene.evaluate((element) => element.getBoundingClientRect().height);
   await card.scrollIntoViewIfNeeded();
   await expect(card.getByRole('heading')).toBeVisible();
-  await expect(card.getByRole('button')).toBeEnabled();
+  await expect(card.locator('button[data-product-id]')).toBeEnabled();
   expect(await scene.evaluate((element) => element.getBoundingClientRect().height)).toBe(before);
   expect(before).toBe(198);
-  await card.getByRole('button').focus();
+  await card.locator('button[data-product-id]').focus();
   await page.keyboard.press('Enter');
-  await expect(card.getByRole('button')).toContainText('В корзине');
+  await expect(card.locator('button[data-product-id]')).toContainText('В корзине');
 });
 
 test('клавиатура: возврат фокуса из диалога и доступное оформление', async ({ page }) => {
@@ -240,7 +268,7 @@ test('последний быстрый запрос побеждает при �
   await page.getByRole('button', { name: 'Применить выбор', exact: true }).click();
   await expect(page).toHaveURL(/q=%D1%82%D0%B5%D1%80%D0%BC%D0%BE%D0%BC%D0%B5%D1%82%D1%80/);
   await expect(page.getByRole('status').filter({ hasText: /Найдено товаров/ })).toContainText('2');
-  await expect(page.getByText('2 товаров · аптека «У парка»')).toBeVisible();
+  await expect(page.getByText('2 товара · аптека «У парка»')).toBeVisible();
   await expect(
     page.getByRole('heading', { name: 'Крем для рук без отдушки', exact: true }),
   ).toHaveCount(0);

@@ -1,0 +1,151 @@
+.fields {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.group {
+  border-bottom: 1px solid var(--line);
+  padding: 16px 0;
+}
+.group summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.group summary::after {
+  content: '+';
+  margin-left: 12px;
+}
+.group[open] summary::after {
+  content: '−';
+}
+.group summary span {
+  margin-left: auto;
+  color: var(--green);
+}
+.categories {
+  display: grid;
+  gap: 4px;
+}
+.categories button {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  text-align: left;
+  padding: 10px;
+  border-radius: 10px;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.categories button[aria-pressed='true'] {
+  background: var(--tint, var(--tint));
+  color: var(--green);
+  font-weight: 700;
+}
+.categories small,
+.options small {
+  color: var(--muted);
+  margin-left: auto;
+}
+.availability,
+.options label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.availability {
+  margin-top: 16px;
+}
+.fields input[type='checkbox'] {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  accent-color: var(--green);
+}
+.options {
+  display: grid;
+  gap: 4px;
+}
+.options span {
+  overflow-wrap: anywhere;
+}
+.range {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.range > * {
+  min-width: 0;
+  flex: 1;
+}
+.range label {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.range input,
+.range select {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 8px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+}
+.note {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 8px 0 0;
+}
+.warning {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--tint, #f4eee2);
+  color: var(--ink);
+  font-size: 0.8rem;
+}
+.applied {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+.applied button {
+  min-height: 44px;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.applied button:hover {
+  border-color: var(--green);
+}
+.drawerFooter {
+  padding-bottom: env(safe-area-inset-bottom);
+  display: grid;
+  gap: 8px;
+}

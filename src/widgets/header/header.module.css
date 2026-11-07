@@ -1,11 +1,11 @@
 .notice {
-  background: #e8eee2;
-  color: #4c6255;
+  background: var(--tint);
+  color: var(--muted);
   display: flex;
   justify-content: space-between;
   gap: 16px;
   padding: 9px max(24px, calc((100% - 1280px) / 2));
-  font-size: 11px;
+  font-size: 0.6875rem;
   line-height: 1.5;
 }
 .notice a {
@@ -13,7 +13,7 @@
   font-weight: 600;
 }
 .header {
-  background: #fffefb;
+  background: var(--paper);
   border-bottom: 1px solid #e4e9df;
 }
 .inner {
@@ -22,34 +22,35 @@
   padding: 24px;
   display: flex;
   align-items: center;
-  gap: 44px;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 .logo {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 600;
   line-height: 1;
   letter-spacing: -0.5px;
 }
 .word {
   display: block;
-  font-size: 27px;
+  font-size: 1.6875rem;
   font-weight: 800;
 }
 .dot {
   color: #e5a565;
 }
 .cross {
-  background: #176b52;
-  color: #fff;
+  background: var(--green);
+  color: var(--on-accent);
   width: 47px;
   height: 47px;
   border-radius: 15px;
   display: grid;
   place-items: center;
-  font-size: 43px;
+  font-size: 2.6875rem;
   font-weight: 400;
   line-height: 1;
 }
@@ -60,28 +61,104 @@
 .city {
   display: block;
   padding-left: 15px;
-  color: #526459;
-  font-size: 9px;
+  color: var(--muted);
+  font-size: 0.5625rem;
   letter-spacing: 2px;
 }
 .nav {
   display: flex;
-  gap: 28px;
+  gap: 18px;
   margin-left: auto;
-  font-size: 14px;
+  font-size: 0.875rem;
+}
+.nav a[aria-current='page'] {
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+.display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px;
+  color: var(--green);
+  background: var(--paper);
+  cursor: pointer;
+}
+.bottomNav {
+  display: none;
+}
+@media (max-width: 900px) {
+  .display {
+    grid-row: 1;
+    grid-column: 2;
+  }
+  .cart.cart {
+    display: none;
+  }
+  .bottomNav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 24px #203c3508;
+  }
+  .bottomNav a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    padding: 6px 0;
+    min-height: 52px;
+    border-radius: 12px;
+    color: var(--muted);
+    font-size: 0.7rem;
+    overflow-wrap: anywhere;
+  }
+  .bottomNav a[aria-current='page'] {
+    color: var(--green);
+    background: var(--tint, var(--tint));
+    font-weight: 700;
+  }
+  .bottomIcon {
+    position: relative;
+    font-size: 1.3rem;
+  }
+  .bottomIcon small {
+    position: absolute;
+    top: -7px;
+    right: -14px;
+    border-radius: 12px;
+    padding: 1px 4px;
+    font-size: 0.6rem;
+    background: var(--green);
+    color: var(--on-accent, #fff);
+  }
 }
 .nav a:hover {
-  color: #176b52;
+  color: var(--green);
   text-decoration: underline;
 }
 .cart {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #eef3e9;
+  background: var(--tint);
   padding: 12px 18px;
   border-radius: 12px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 .cartIcon {
@@ -97,8 +174,8 @@
   padding: 0 4px;
   border-radius: 8px;
   background: var(--green);
-  color: #fff;
-  font-size: 10px;
+  color: var(--on-accent);
+  font-size: 0.625rem;
   font-weight: 400;
   line-height: 14px;
   text-align: center;
@@ -107,7 +184,7 @@
 @media (max-width: 900px) {
   .notice {
     padding: 8px 16px;
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .notice a {
     display: none;
@@ -121,15 +198,15 @@
   .logo {
     grid-column: 1;
     grid-row: 1;
-    font-size: 15px;
+    font-size: 0.9375rem;
   }
   .word {
-    font-size: 21px;
+    font-size: 1.3125rem;
   }
   .cross {
     width: 38px;
     height: 38px;
-    font-size: 34px;
+    font-size: 2.125rem;
   }
   .location {
     grid-column: 1 / -1;
@@ -142,6 +219,13 @@
     border: 0;
     border-top: 1px solid var(--line);
     margin-left: 0;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .location > button {
+    min-width: 0;
+    max-width: 100%;
+    margin-left: auto;
   }
   .nav {
     display: none;
@@ -157,6 +241,11 @@
   }
   .city {
     padding-left: 0;
-    font-size: 9px;
+    font-size: 0.5625rem;
+  }
+}
+@media (max-width: 480px) {
+  .display > span:last-child {
+    display: none;
   }
 }

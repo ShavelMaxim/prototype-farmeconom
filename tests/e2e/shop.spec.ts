@@ -46,9 +46,15 @@ test('категория живёт в URL и восстанавливается
   ).toBeEnabled();
   if (page.viewportSize()!.width < 600)
     await page.getByRole('button', { name: /Категории и фильтры/ }).click();
-  await page.getByRole('button', { name: /Медтехника/ }).click();
+  if (page.viewportSize()!.width < 600) {
+    await page
+      .getByRole('dialog')
+      .getByRole('button', { name: /Медтехника/ })
+      .click();
+    await expect(page).not.toHaveURL(/category=/);
+  } else await page.getByRole('button', { name: /Медтехника/ }).click();
   if (page.viewportSize()!.width < 600)
-    await page.getByRole('button', { name: 'Показать товары', exact: true }).click();
+    await page.getByRole('button', { name: /^Показать \d+ товар(?:а|ов)?$/ }).click();
   await expect(page).toHaveURL(/category=/);
   await expect(page.getByRole('heading', { name: 'Медтехника', exact: true })).toBeVisible();
   await page.goBack();

@@ -23,3 +23,16 @@ it('запоздавший URL не стирает новый черновик �
   act(() => window.dispatchEvent(new PopStateEvent('popstate')));
   expect(result.current.draft).toBe('термометр');
 });
+it('повторное применение тех же условий не добавляет запись в History', () => {
+  window.history.replaceState(null, '', '/?category=Медтехника');
+  const { result } = renderHook(() =>
+    useCatalogParams(catalogQuerySchema.parse({ category: 'Медтехника' })),
+  );
+  const push = vi.spyOn(window.history, 'pushState');
+  act(() => result.current.update({ category: 'Медтехника' }));
+  // URLSearchParams canonicalizes the literal Cyrillic URL once.
+  push.mockClear();
+  act(() => result.current.update({ category: 'Медтехника' }));
+  expect(push).not.toHaveBeenCalled();
+  push.mockRestore();
+});

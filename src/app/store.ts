@@ -1,12 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { cartReducer } from '@/entities/cart/model';
+import { personalReducer } from '@/entities/personal/model';
 import { baseApi } from '@/shared/api/base-api';
 import { catalogApi } from '@/entities/product/api';
 import { catalogQuerySchema } from '@/entities/product/model';
 import type { CatalogResponse } from '@/entities/product/model';
 export function makeStore(initialCatalog?: CatalogResponse) {
   const store = configureStore({
-    reducer: { cart: cartReducer, [baseApi.reducerPath]: baseApi.reducer },
+    reducer: {
+      cart: cartReducer,
+      personal: personalReducer,
+      [baseApi.reducerPath]: baseApi.reducer,
+    },
     middleware: (getDefault) => getDefault().concat(baseApi.middleware),
   });
   // Demo data is already available at build time. Start with the same cache on

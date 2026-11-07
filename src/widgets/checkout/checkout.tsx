@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Alert, Button, Checkbox, Empty, Radio, Result, Skeleton } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/store-hooks';
 import { clearCart } from '@/entities/cart/model';
+import { recordOrder } from '@/entities/personal/model';
 import { money, type Product } from '@/entities/product/model';
 import { getCartSummary } from '@/features/cart/summary';
 import {
@@ -46,6 +47,20 @@ export function Checkout({ products: initial }: { products: Product[] }) {
         pharmacy: cart.pharmacy,
       }).unwrap();
       setResult(response);
+      dispatch(
+        recordOrder({
+          reference: response.reference,
+          createdAt: new Date().toISOString(),
+          pharmacy: cart.pharmacy,
+          pickup: values.pickup,
+          lines: summary.lines.map((line) => ({
+            id: line.id,
+            name: line.product!.name,
+            quantity: line.quantity,
+            price: line.offer!.price,
+          })),
+        }),
+      );
       dispatch(clearCart());
     } catch {
       /* RTK Query provides the error state below. */
@@ -60,7 +75,14 @@ export function Checkout({ products: initial }: { products: Product[] }) {
           status="success"
           title="Демонстрация завершена"
           subTitle={`${result.reference} · ${result.count} шт. · ${money(result.total)}`}
-          extra={<ActionLink href="/">Вернуться в каталог</ActionLink>}
+          extra={
+            <>
+              <ActionLink href="/orders">Посмотреть мои заказы</ActionLink>
+              <Link prefetch={false} href="/">
+                Вернуться в каталог
+              </Link>
+            </>
+          }
         >
           <p>
             {result.message} Данные не переданы в аптеку, товары не зарезервированы, оплата не

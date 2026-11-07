@@ -34,8 +34,8 @@ const slice = createSlice({
       const { id, stock } = action.payload;
       if (stock <= 0) return;
       const item = state.items.find((x) => x.id === id);
-      if (item) item.quantity = Math.min(item.quantity + 1, stock);
-      else state.items.push({ id, quantity: 1 });
+      if (item) item.quantity = Math.min(item.quantity + 1, stock, 99);
+      else if (state.items.length < 50) state.items.push({ id, quantity: 1 });
     },
     setQuantity(state, action: PayloadAction<{ id: string; quantity: number; stock: number }>) {
       const item = state.items.find((x) => x.id === action.payload.id);
@@ -51,7 +51,21 @@ const slice = createSlice({
     clearCart(state) {
       state.items = [];
     },
+    repeatItems(
+      state,
+      { payload }: PayloadAction<{ id: string; quantity: number; stock: number }[]>,
+    ) {
+      if (!state.hydrated) return;
+      payload.forEach(({ id, quantity, stock }) => {
+        if (quantity <= 0 || stock <= 0) return;
+        const item = state.items.find((line) => line.id === id);
+        if (item) item.quantity = Math.min(99, stock, item.quantity + quantity);
+        else if (state.items.length < 50)
+          state.items.push({ id, quantity: Math.min(99, stock, quantity) });
+      });
+    },
   },
 });
-export const { restore, setPharmacy, addItem, setQuantity, removeItem, clearCart } = slice.actions;
+export const { restore, setPharmacy, addItem, setQuantity, removeItem, clearCart, repeatItems } =
+  slice.actions;
 export const cartReducer = slice.reducer;

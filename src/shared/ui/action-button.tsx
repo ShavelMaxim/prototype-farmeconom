@@ -19,7 +19,7 @@ export function ActionButton({
     <button
       {...props}
       type={type}
-      className={`${styles.button} ${styles[variant]} ${small ? styles.small : ''} ${className}`}
+      className={`${styles.button} ${styles[variant] ?? ''} ${small ? styles.small : ''} ${className}`}
     >
       {icon}
       {children}

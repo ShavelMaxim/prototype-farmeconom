@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { ActionButton } from '@/shared/ui/action-button';
 import { LoadingNotice } from '@/shared/ui/loading-notice';
@@ -7,16 +7,12 @@ import { EnvironmentOutlined, DownOutlined } from '@ant-design/icons';
 import { pharmacies } from '@/shared/config/pharmacies';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/store-hooks';
 import { setPharmacy } from '@/entities/cart/model';
+import { useDialogController } from '@/shared/lib/use-dialog-controller';
 const PharmacyDialog = dynamic(() => import('./pharmacy-dialog'), {
   loading: () => <LoadingNotice>Открываем выбор аптеки…</LoadingNotice>,
 });
 export function PharmacyPicker() {
-  const [open, setOpen] = useState(false);
-  const trigger = useRef<HTMLButtonElement>(null);
-  function close() {
-    setOpen(false);
-    requestAnimationFrame(() => trigger.current?.focus());
-  }
+  const { open: open, show: show, close: close, setTrigger: setTrigger } = useDialogController();
   const id = useAppSelector((s) => s.cart.pharmacy);
   const hydrated = useAppSelector((s) => s.cart.hydrated);
   const [draft, setDraft] = useState(id);
@@ -26,7 +22,7 @@ export function PharmacyPicker() {
     <>
       <ActionButton
         disabled={!hydrated}
-        ref={trigger}
+        ref={setTrigger}
         onPointerEnter={() => {
           void import('./pharmacy-dialog').catch(() => {});
         }}
@@ -37,7 +33,7 @@ export function PharmacyPicker() {
         icon={<EnvironmentOutlined />}
         onClick={() => {
           setDraft(id);
-          setOpen(true);
+          show();
         }}
         aria-label="Выбрать аптеку"
         aria-haspopup="dialog"

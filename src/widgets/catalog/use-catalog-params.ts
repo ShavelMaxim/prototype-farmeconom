@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { facetKeys } from '@/entities/product/facets';
 import type { CatalogQuery } from '@/entities/product/model';
 import { CATALOG_URL_CHANGE } from './use-catalog-search';
 export function useCatalogParams(query: CatalogQuery) {
@@ -12,6 +13,7 @@ export function useCatalogParams(query: CatalogQuery) {
       value ? params.set(key, value) : params.delete(key),
     );
     const url = `${window.location.pathname}${params.size ? `?${params}` : ''}`;
+    if (url === `${window.location.pathname}${window.location.search}`) return;
     if (replace) window.history.replaceState(null, '', url);
     else window.history.pushState(null, '', url);
     window.dispatchEvent(new Event(CATALOG_URL_CHANGE));
@@ -44,7 +46,13 @@ export function useCatalogParams(query: CatalogQuery) {
     if (timer.current) clearTimeout(timer.current);
     pending.current = null;
     setDraft('');
-    update({ q: '', category: '', available: '', sort: '' });
+    update({
+      q: '',
+      category: '',
+      available: '',
+      sort: '',
+      ...Object.fromEntries(facetKeys.map((key) => [key, ''])),
+    });
   }
   return {
     draft,

@@ -9,8 +9,8 @@
   border: 1px solid transparent;
   border-radius: 12px;
   background: var(--green);
-  color: #fff;
-  font-size: 14px;
+  color: var(--on-accent);
+  font-size: 0.875rem;
   font-weight: 600;
   line-height: normal;
   white-space: nowrap;
@@ -27,25 +27,32 @@
   background: #0a4536;
 }
 .added {
-  border-color: #d9d9d9;
-  background: #fff;
+  border-color: var(--line);
+  background: var(--paper);
   color: var(--ink);
   box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
 }
 .added:hover:not(:disabled) {
   border-color: #2c785f;
-  background: #fff;
+  background: var(--paper);
   color: #2c785f;
 }
 .added:active:not(:disabled) {
   border-color: #0a4536;
-  background: #fff;
+  background: var(--paper);
   color: #0a4536;
 }
 .button:disabled {
-  border-color: #d9d9d9;
+  border-color: var(--line);
   background: rgb(0 0 0 / 4%);
-  color: rgb(0 0 0 / 25%);
+  color: var(--muted);
+  opacity: 0.65;
   box-shadow: none;
   cursor: not-allowed;
+}
+
+:global(html[data-contrast='dark']) .button:hover:not(:disabled),
+:global(html[data-contrast='dark']) .link:hover {
+  background: var(--tint);
+  color: var(--green);
 }

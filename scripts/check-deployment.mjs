@@ -4,7 +4,16 @@ assert(target, 'Usage: npm run check:deployment -- https://owner.github.io/repos
 const base = new URL(target.endsWith('/') ? target : `${target}/`);
 assert(['http:', 'https:'].includes(base.protocol));
 assert(!base.username && !base.password);
-for (const route of ['', 'products/digital-thermometer/', 'cart/', 'checkout/', 'about/']) {
+for (const route of [
+  '',
+  'products/digital-thermometer/',
+  'products/demo-tablets-a/',
+  'cart/',
+  'checkout/',
+  'favorites/',
+  'orders/',
+  'about/',
+]) {
   const url = new URL(route, base);
   const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
   assert.equal(response.status, 200, `${url}: HTTP status`);

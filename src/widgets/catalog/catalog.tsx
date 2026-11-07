@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useCatalogParams } from './use-catalog-params';
 import { apiErrorMessage } from '@/shared/api/errors';
@@ -11,15 +11,18 @@ import {
   ArrowRightOutlined,
   SearchOutlined,
   SlidersOutlined,
-  SafetyCertificateOutlined,
   EnvironmentOutlined,
   CloseOutlined,
 } from '@ant-design/icons';
 import { categories, parseCatalogQuery, type CatalogResponse } from '@/entities/product/model';
-import { useGetCatalogQuery } from '@/entities/product/api';
+import { useInventory, useGetCatalogQuery } from '@/entities/product/api';
 import { useAppSelector } from '@/shared/lib/store-hooks';
 import { pharmacies } from '@/shared/config/pharmacies';
 import styles from './catalog.module.css';
+import { FilterFields, categoryPatch } from './filter-fields';
+import { AppliedFilters } from './applied-filters';
+import { productCount } from '@/shared/lib/product-count';
+import { useDialogController } from '@/shared/lib/use-dialog-controller';
 
 const FilterDrawer = dynamic(() => import('./filter-drawer'), {
   loading: () => <LoadingNotice>Открываем фильтры…</LoadingNotice>,
@@ -36,63 +39,39 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
   const hydrated = useAppSelector((s) => s.cart.hydrated);
   const query = parseCatalogQuery({ ...Object.fromEntries(new URLSearchParams(search)), pharmacy });
   const { draft, searchChanged, reset, update, submitSearch } = useCatalogParams(query);
-  const [drawer, setDrawer] = useState(false);
-  const filterTrigger = useRef<HTMLButtonElement>(null);
-  function closeFilters() {
-    setDrawer(false);
-    requestAnimationFrame(() => filterTrigger.current?.focus());
-  }
+  const {
+    open: filtersOpen,
+    show: showFilters,
+    close: closeFilters,
+    setTrigger: setFilterTrigger,
+  } = useDialogController();
   const [demo, setDemo] = useState('normal');
   const { data, isFetching, isError, error, refetch } = useGetCatalogQuery(
     { ...query, demo },
     { refetchOnMountOrArgChange: Boolean(process.env.NEXT_PUBLIC_API_URL) },
   );
   const result = data ?? (process.env.NEXT_PUBLIC_API_URL ? { items: [], total: 0 } : initial);
+  const inventory = useInventory(initial.items);
   const filters = (
-    <div className={styles.filterContent}>
-      <p className="eyebrow">КАТЕГОРИИ</p>
-      <div className={styles.categories}>
-        {categories.map((category, i) => (
-          <button
-            key={category}
-            aria-pressed={query.category === category}
-            className={query.category === category ? styles.active : ''}
-            onClick={() => update({ category: i === 0 ? '' : category })}
-          >
-            <span>{['✳', '◒', '⊞', '+', '♡'][i]}</span>
-            {category}
-            <ArrowRightOutlined />
-          </button>
-        ))}
-      </div>
-      <div className={styles.divider} />
-      <label className={styles.checkField}>
-        <input
-          type="checkbox"
-          disabled={!hydrated}
-          checked={query.available === 'true'}
-          onChange={(event) => update({ available: event.currentTarget.checked ? 'true' : '' })}
-        />
-        <span>Только в наличии</span>
-      </label>
-      <p className={styles.filterNote}>В выбранной аптеке</p>
-      <Button variant="link" onClick={reset} className={styles.reset}>
+    <>
+      <FilterFields
+        query={query}
+        products={inventory.products}
+        disabled={!hydrated}
+        onChange={(patch) =>
+          update(
+            patch,
+            Object.keys(patch).some((key) => ['min', 'max', 'age'].includes(key)),
+          )
+        }
+      />
+      <Button variant="link" onClick={reset}>
         Сбросить фильтры
       </Button>
-      <div className={styles.help}>
-        <SafetyCertificateOutlined />
-        <h3>
-          Всё необходимое
-          <br />
-          для заботы о себе
-        </h3>
-        <p>Сравните товары и выберите удобную аптеку для получения.</p>
-        <span>Демонстрационный каталог</span>
-      </div>
-    </div>
+    </>
   );
   return (
-    <main id="main" className="container">
+    <main id="main" className={`container ${styles.catalogPage}`}>
       <section className={styles.hero} aria-labelledby="hero-title">
         <div>
           <span className="eyebrow">ЗАБОТА БЛИЖЕ, ЧЕМ КАЖЕТСЯ</span>
@@ -103,8 +82,7 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           </h1>
           <p>
             Найдите нужное и выберите удобную аптеку.
-            <br />
-            Спокойно, понятно, без лишних шагов.
+            <br /> Спокойно, понятно, без лишних шагов.
           </p>
           <div className={styles.heroMeta}>
             <span>
@@ -133,7 +111,7 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           <input
             aria-label="Поиск товаров"
             disabled={!hydrated}
-            placeholder="Название товара, бренд или категория"
+            placeholder="Название или бренд"
             value={draft}
             onChange={(event) => searchChanged(event.currentTarget.value)}
             maxLength={80}
@@ -153,6 +131,18 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           Найти <ArrowRightOutlined />
         </Button>
       </form>
+      <div className={styles.categoryRail} aria-label="Быстрый выбор категории">
+        {categories.map((category) => (
+          <button
+            key={category}
+            disabled={!hydrated}
+            aria-pressed={query.category === category}
+            onClick={() => update(categoryPatch(category))}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
       <section className={styles.layout} aria-label="Каталог товаров">
         <aside className={styles.sidebar}>{filters}</aside>
         <div className={styles.main}>
@@ -166,7 +156,8 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
                     : query.category}
               </h2>
               <span className="muted">
-                {result.total} товаров · аптека «{pharmacies.find((p) => p.id === pharmacy)!.name}»
+                {productCount(result.total)} · аптека «
+                {pharmacies.find((p) => p.id === pharmacy)!.name}»
               </span>
             </div>
             <div className={styles.sortControl}>
@@ -186,9 +177,9 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
             </div>
           </div>
           <Button
-            ref={filterTrigger}
+            ref={setFilterTrigger}
             aria-haspopup="dialog"
-            aria-expanded={drawer}
+            aria-expanded={filtersOpen}
             onPointerEnter={() => {
               void import('./filter-drawer').catch(() => {});
             }}
@@ -197,10 +188,11 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
             }}
             className={styles.mobileFilters}
             icon={<SlidersOutlined />}
-            onClick={() => setDrawer(true)}
+            onClick={showFilters}
           >
             Категории и фильтры
           </Button>
+          <AppliedFilters query={query} onChange={update} onReset={reset} />
           <div className="status-line" role="status" aria-live="polite">
             {isFetching
               ? 'Обновляем товары…'
@@ -246,7 +238,14 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           </div>
         </div>
       </section>
-      {drawer && <FilterDrawer onClose={closeFilters}>{filters}</FilterDrawer>}
+      {filtersOpen && (
+        <FilterDrawer
+          query={query}
+          products={inventory.products}
+          onApply={update}
+          onClose={closeFilters}
+        />
+      )}
       <details className={styles.demoPanel}>
         <summary>Проверить поведение интерфейса</summary>
         <p>

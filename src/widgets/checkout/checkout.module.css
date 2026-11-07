@@ -4,11 +4,11 @@
   gap: 24px;
 }
 .form section h2 {
-  font-size: 19px;
+  font-size: 1.1875rem;
   margin-top: 6px;
 }
 .form section p {
-  font-size: 13px;
+  font-size: 0.8125rem;
   margin-top: 10px;
 }
 .form section a {
@@ -20,7 +20,7 @@
   margin: 0;
 }
 .form legend {
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 600;
   margin-bottom: 16px;
 }
@@ -32,14 +32,14 @@
   justify-content: space-between;
   gap: 12px;
   align-items: center;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .total strong {
-  font-size: 26px;
+  font-size: 1.625rem;
   letter-spacing: -1px;
 }
 .error {
   color: #b33c39;
-  font-size: 13px;
+  font-size: 0.8125rem;
   margin: -10px 0 0;
 }
