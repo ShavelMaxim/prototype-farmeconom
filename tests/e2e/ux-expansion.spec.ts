@@ -125,6 +125,7 @@ test('настройки: контраст, 200% текста, сохранен�
 test('новые панели и страницы проходят автоматическую проверку доступности', async ({ page }) => {
   await page.goto('./');
   await page.getByRole('button', { name: 'Настройки отображения', exact: true }).click();
+  await expect(page.getByRole('dialog')).toBeVisible();
   const check = async () => {
     await settleMotion(page);
     const result = await new AxeBuilder({ page })

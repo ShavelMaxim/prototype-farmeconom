@@ -19,6 +19,7 @@ export default function FilterDrawer({
   onClose: () => void;
 }) {
   const [draft, setDraft] = useState(query);
+  const [ready, setReady] = useState(false);
   const count = filterCatalog(draft, products).total;
   const prices = products
     .filter((p) => draft.category === 'Все товары' || p.category === draft.category)
@@ -35,6 +36,7 @@ export default function FilterDrawer({
       <Drawer
         title="Категории и фильтры"
         open
+        afterOpenChange={setReady}
         onClose={onClose}
         styles={{ wrapper: { width: 'min(100vw, 480px)' } }}
         footer={
@@ -79,6 +81,7 @@ export default function FilterDrawer({
           </div>
         }
       >
+        <span hidden data-dialog-ready={ready} />
         <p className="muted">
           Изменения применятся после нажатия «Показать». Закрытие отменяет выбор.
         </p>

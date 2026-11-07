@@ -1,10 +1,12 @@
 'use client';
+import { useState } from 'react';
 import { Drawer, Button } from 'antd';
 import { AntdBoundary } from '@/shared/ui/antd-boundary';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/store-hooks';
 import { setDisplay, resetDisplay, type PersonalData } from '@/entities/personal/model';
 import styles from './display-dialog.module.css';
 export default function DisplayDialog({ onClose }: { onClose: () => void }) {
+  const [ready, setReady] = useState(false);
   const display = useAppSelector((s) => s.personal.display);
   const storageUnavailable = useAppSelector((s) => s.personal.storageUnavailable);
   const dispatch = useAppDispatch();
@@ -13,6 +15,7 @@ export default function DisplayDialog({ onClose }: { onClose: () => void }) {
       <Drawer
         title="Настройки отображения"
         open
+        afterOpenChange={setReady}
         onClose={onClose}
         styles={{ wrapper: { width: 'min(100vw, 480px)' } }}
         footer={
@@ -21,6 +24,7 @@ export default function DisplayDialog({ onClose }: { onClose: () => void }) {
           </Button>
         }
       >
+        <span hidden data-dialog-ready={ready} />
         <p className="muted">Изменения видны сразу и сохраняются в этом браузере.</p>
         <fieldset className={styles.group}>
           <legend>Размер текста</legend>

@@ -21,6 +21,7 @@ export function Orders({ products: initial }: { products: Product[] }) {
   const inventory = useInventory(initial);
   const [repeat, setRepeat] = useState<DemoOrder | null>(null);
   const [completed, setCompleted] = useState(false);
+  const [dialogReady, setDialogReady] = useState(false);
   const {
     open: repeatOpen,
     show: showRepeat,
@@ -111,6 +112,7 @@ export function Orders({ products: initial }: { products: Product[] }) {
                       setRepeatTrigger(event.currentTarget);
                       setRepeat(order);
                       setCompleted(false);
+                      setDialogReady(false);
                       showRepeat();
                     }}
                     disabled={
@@ -136,6 +138,7 @@ export function Orders({ products: initial }: { products: Product[] }) {
         <Modal
           title={completed ? 'Товары добавлены' : 'Проверка перед повтором'}
           open={Boolean(repeat) && repeatOpen}
+          afterOpenChange={setDialogReady}
           onCancel={closeRepeat}
           footer={
             completed ? (
@@ -170,6 +173,7 @@ export function Orders({ products: initial }: { products: Product[] }) {
             )
           }
         >
+          <span hidden data-dialog-ready={dialogReady} />
           {completed ? (
             <p role="status">
               Существующая корзина сохранена. Новое демо-оформление ещё не создано.
