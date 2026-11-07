@@ -3,9 +3,10 @@ import { useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useCatalogParams } from './use-catalog-params';
 import { apiErrorMessage } from '@/shared/api/errors';
-import { ProductCard } from './product-card';
+import { ProductGrid } from './product-grid';
 import { useCatalogSearch } from './use-catalog-search';
-import { Alert, Button, Checkbox, Empty, Input, Select, Skeleton } from 'antd';
+import { ActionButton as Button } from '@/shared/ui/action-button';
+import { LoadingNotice } from '@/shared/ui/loading-notice';
 import {
   ArrowRightOutlined,
   SearchOutlined,
@@ -21,7 +22,7 @@ import { pharmacies } from '@/shared/config/pharmacies';
 import styles from './catalog.module.css';
 
 const FilterDrawer = dynamic(() => import('./filter-drawer'), {
-  loading: () => <p role="status">Открываем фильтры…</p>,
+  loading: () => <LoadingNotice>Открываем фильтры…</LoadingNotice>,
 });
 const sorting = [
   { value: 'popular', label: 'По популярности' },
@@ -32,6 +33,7 @@ const sorting = [
 export function Catalog({ initial }: { initial: CatalogResponse }) {
   const search = useCatalogSearch();
   const pharmacy = useAppSelector((s) => s.cart.pharmacy);
+  const hydrated = useAppSelector((s) => s.cart.hydrated);
   const query = parseCatalogQuery({ ...Object.fromEntries(new URLSearchParams(search)), pharmacy });
   const { draft, searchChanged, reset, update, submitSearch } = useCatalogParams(query);
   const [drawer, setDrawer] = useState(false);
@@ -64,14 +66,17 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
         ))}
       </div>
       <div className={styles.divider} />
-      <Checkbox
-        checked={query.available === 'true'}
-        onChange={(e) => update({ available: e.target.checked ? 'true' : '' })}
-      >
-        Только в наличии
-      </Checkbox>
+      <label className={styles.checkField}>
+        <input
+          type="checkbox"
+          disabled={!hydrated}
+          checked={query.available === 'true'}
+          onChange={(event) => update({ available: event.currentTarget.checked ? 'true' : '' })}
+        />
+        <span>Только в наличии</span>
+      </label>
       <p className={styles.filterNote}>В выбранной аптеке</p>
-      <Button type="link" onClick={reset} className={styles.reset}>
+      <Button variant="link" onClick={reset} className={styles.reset}>
         Сбросить фильтры
       </Button>
       <div className={styles.help}>
@@ -123,27 +128,28 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           submitSearch();
         }}
       >
-        <Input
-          aria-label="Поиск товаров"
-          placeholder="Название товара, бренд или категория"
-          prefix={<SearchOutlined />}
-          value={draft}
-          onChange={(e) => searchChanged(e.target.value)}
-          maxLength={80}
-          suffix={
-            draft ? (
-              <button
-                className={styles.clear}
-                type="button"
-                aria-label="Очистить поиск"
-                onClick={() => searchChanged('')}
-              >
-                <CloseOutlined />
-              </button>
-            ) : null
-          }
-        />
-        <Button type="primary" htmlType="submit">
+        <span className={styles.searchInput}>
+          <SearchOutlined aria-hidden="true" />
+          <input
+            aria-label="Поиск товаров"
+            disabled={!hydrated}
+            placeholder="Название товара, бренд или категория"
+            value={draft}
+            onChange={(event) => searchChanged(event.currentTarget.value)}
+            maxLength={80}
+          />
+          {draft && (
+            <button
+              className={styles.clear}
+              type="button"
+              aria-label="Очистить поиск"
+              onClick={() => searchChanged('')}
+            >
+              <CloseOutlined />
+            </button>
+          )}
+        </span>
+        <Button variant="primary" type="submit" disabled={!hydrated}>
           Найти <ArrowRightOutlined />
         </Button>
       </form>
@@ -163,15 +169,26 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
                 {result.total} товаров · аптека «{pharmacies.find((p) => p.id === pharmacy)!.name}»
               </span>
             </div>
-            <Select
-              aria-label="Сортировка товаров"
-              value={query.sort}
-              options={sorting}
-              onChange={(value) => update({ sort: value })}
-            />
+            <div className={styles.sortControl}>
+              <select
+                aria-label="Сортировка товаров"
+                className={styles.select}
+                disabled={!hydrated}
+                value={query.sort}
+                onChange={(event) => update({ sort: event.currentTarget.value })}
+              >
+                {sorting.map(({ value, label }) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <Button
             ref={filterTrigger}
+            aria-haspopup="dialog"
+            aria-expanded={drawer}
             onPointerEnter={() => {
               void import('./filter-drawer').catch(() => {});
             }}
@@ -192,51 +209,37 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
                 : `Найдено товаров: ${result.total}. Цены и наличие обновлены`}
           </div>
           {isError && (
-            <Alert
-              type="error"
-              showIcon
-              title="Не удалось обновить каталог"
-              description={
-                <>
-                  <p>
-                    {apiErrorMessage(error)} Добавление временно недоступно, пока не удастся
-                    обновить каталог.
-                  </p>
-                  <div className={styles.errorActions}>
-                    <Button size="small" onClick={refetch} disabled={isFetching}>
-                      Повторить
-                    </Button>
-                    {demo === 'error' && (
-                      <Button size="small" type="link" onClick={() => setDemo('normal')}>
-                        Отключить демонстрационную ошибку
-                      </Button>
-                    )}
-                  </div>
-                </>
-              }
-              style={{ marginBottom: 16 }}
-            />
+            <div role="alert" className={styles.error}>
+              <strong>Не удалось обновить каталог</strong>
+              <p>
+                {apiErrorMessage(error)} Добавление временно недоступно, пока не удастся обновить
+                каталог.
+              </p>
+              <div className={styles.errorActions}>
+                <Button small onClick={refetch} disabled={isFetching}>
+                  Повторить
+                </Button>
+                {demo === 'error' && (
+                  <Button small variant="link" onClick={() => setDemo('normal')}>
+                    Отключить демонстрационную ошибку
+                  </Button>
+                )}
+              </div>
+            </div>
           )}
           {!result.total && !isFetching && !isError ? (
             <div className={styles.empty}>
-              <Empty description="По вашему запросу ничего не нашлось">
+              <div className={styles.emptyContent}>
+                <SearchOutlined className={styles.emptyIcon} aria-hidden="true" />
+                <p>По вашему запросу ничего не нашлось</p>
                 <p className="muted">Попробуйте другое название или уберите фильтры.</p>
-                <Button onClick={reset} type="primary">
+                <Button onClick={reset} variant="primary">
                   Показать все товары
                 </Button>
-              </Empty>
+              </div>
             </div>
           ) : (
-            <div className={styles.grid} aria-busy={isFetching}>
-              {result.items.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  product={product}
-                  pharmacy={pharmacy}
-                  busy={isFetching || isError}
-                />
-              ))}
-            </div>
+            <ProductGrid products={result.items} pharmacy={pharmacy} busy={isFetching || isError} />
           )}
           <div className={styles.catalogNote}>
             Изображения упаковок условные. Все товары и цены — демонстрационные.
@@ -250,50 +253,19 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           Инструмент для демонстрации на собеседовании. Задержка и ошибка применяются только к
           запросам каталога.
         </p>
-        <Select
+        <select
           aria-label="Режим сети"
+          className={styles.select}
+          disabled={!hydrated}
           value={demo}
-          onChange={setDemo}
-          options={[
-            { value: 'normal', label: 'Обычная сеть' },
-            { value: 'slow', label: 'Задержка 1,5 секунды' },
-            { value: 'error', label: 'Ошибка API' },
-          ]}
+          onChange={(event) => setDemo(event.currentTarget.value)}
           style={{ minWidth: 220 }}
-        />
+        >
+          <option value="normal">Обычная сеть</option>
+          <option value="slow">Задержка 1,5 секунды</option>
+          <option value="error">Ошибка API</option>
+        </select>
       </details>
     </main>
-  );
-}
-export function CatalogSkeleton() {
-  return (
-    <div className="container" role="status" aria-label="Загружаем каталог">
-      <div className={styles.hero} style={{ minHeight: 310 }}>
-        <Skeleton active paragraph={{ rows: 3 }} />
-      </div>
-      <div className={styles.search}>
-        <Skeleton.Input active block style={{ height: 54 }} />
-      </div>
-      <div className={styles.layout}>
-        <aside className={styles.sidebar}>
-          <Skeleton active paragraph={{ rows: 6 }} />
-        </aside>
-        <div>
-          <div style={{ height: 90 }}>
-            <Skeleton active paragraph={{ rows: 1 }} />
-          </div>
-          <div className={styles.grid}>
-            {Array.from({ length: 8 }, (_, i) => (
-              <div className={styles.card} key={i}>
-                <div style={{ height: 198, background: '#e9eee7', borderRadius: 14 }} />
-                <div className={styles.cardBody}>
-                  <Skeleton active paragraph={{ rows: 4 }} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }

@@ -1,6 +1,5 @@
 'use client';
-import { Button } from 'antd';
-import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
+import { CartAction } from './cart-action';
 import { useAppDispatch, useAppSelector } from '@/shared/lib/store-hooks';
 import { addItem } from '@/entities/cart/model';
 import type { Product } from '@/entities/product/model';
@@ -16,29 +15,17 @@ export function AddButton({ product, busy = false }: { product: Product; busy?: 
   const offer = product.offers[pharmacy];
   return (
     <>
-      <Button
-        block
-        type={quantity ? 'default' : 'primary'}
-        icon={quantity ? <CheckOutlined /> : <PlusOutlined />}
-        disabled={!hydrated || busy || offer.stock === 0 || quantity >= offer.stock}
-        aria-label={
-          offer.stock
-            ? `${quantity ? 'Добавить ещё' : 'В корзину'}: ${product.name}`
-            : `Нет в наличии: ${product.name}`
-        }
+      <CartAction
+        productId={product.id}
+        name={product.name}
+        stock={offer.stock}
+        quantity={quantity}
+        locked={!hydrated || busy}
         onClick={() => {
           dispatch(addItem({ id: product.id, stock: offer.stock }));
           setAnnouncement(`${product.name}: в корзине ${quantity + 1} шт.`);
         }}
-      >
-        {!offer.stock
-          ? 'Нет в этой аптеке'
-          : quantity >= offer.stock
-            ? `В корзине ${quantity} · максимум`
-            : quantity
-              ? `В корзине ${quantity} · ещё`
-              : 'В корзину'}
-      </Button>
+      />
       <span className="visually-hidden" role="status" aria-live="polite">
         {announcement}
       </span>

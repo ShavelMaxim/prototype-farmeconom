@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { Badge } from 'antd';
 import { ShoppingOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { useAppSelector } from '@/shared/lib/store-hooks';
 import { PharmacyPicker } from '@/features/pharmacy/picker';
@@ -49,9 +48,14 @@ export function Header() {
             className={styles.cart}
             aria-label={`Корзина, товаров: ${count}`}
           >
-            <Badge count={count} color="#176b52" size="small">
+            <span className={styles.cartIcon}>
               <ShoppingOutlined style={{ fontSize: 22 }} />
-            </Badge>
+              {count > 0 && (
+                <span className={styles.count} aria-hidden="true">
+                  {count > 99 ? '99+' : count}
+                </span>
+              )}
+            </span>
             <span>Корзина</span>
           </Link>
         </div>

@@ -1,0 +1,30 @@
+{
+  "label": "control-ready",
+  "url": "http://127.0.0.1:3102/prototype-farmeconom/",
+  "cpuSlowdown": 4,
+  "readyMs": 1953.5,
+  "valueMs": 271.39999985694885,
+  "resultsMs": 1005.5999999046326,
+  "dialogMs": 1056.7000000476837,
+  "dialogFromNavigationMs": 4293.700000047684,
+  "tasks": [
+    {
+      "startTime": 800,
+      "duration": 260
+    },
+    {
+      "startTime": 1181.7000000476837,
+      "duration": 255
+    },
+    {
+      "startTime": 1616.2000000476837,
+      "duration": 55
+    },
+    {
+      "startTime": 1824,
+      "duration": 132
+    }
+  ],
+  "blockingBeforeReadyMs": 502,
+  "errors": []
+}

@@ -1,0 +1,212 @@
+{
+  "label": "round3-final-ready",
+  "url": "http://127.0.0.1:3102/prototype-farmeconom/",
+  "cpuSlowdown": 4,
+  "metrics": {
+    "Timestamp": 1990101.617201,
+    "AudioHandlers": 0,
+    "AudioWorkletProcessors": 0,
+    "Documents": 8,
+    "Frames": 6,
+    "JSEventListeners": 396,
+    "LayoutObjects": 1937,
+    "MediaKeySessions": 0,
+    "MediaKeys": 0,
+    "Nodes": 1094,
+    "Resources": 16,
+    "ContextLifecycleStateObservers": 27,
+    "V8PerContextDatas": 4,
+    "WorkerGlobalScopes": 0,
+    "UACSSResources": 0,
+    "RTCPeerConnections": 0,
+    "ResourceFetchers": 8,
+    "AdSubframes": 0,
+    "DetachedScriptStates": 2,
+    "ArrayBufferContents": 1,
+    "LayoutCount": 9,
+    "RecalcStyleCount": 14,
+    "LayoutDuration": 0.913553,
+    "RecalcStyleDuration": 0.164504,
+    "DevToolsCommandDuration": 0.159123,
+    "ScriptDuration": 0.817569,
+    "V8CompileDuration": 0.00887,
+    "TaskDuration": 3.048661,
+    "TaskOtherDuration": 0.985042,
+    "ThreadTime": 0.810787,
+    "ProcessTime": 5.167317,
+    "JSHeapUsedSize": 5950764,
+    "JSHeapTotalSize": 8458240,
+    "FirstMeaningfulPaint": 1990099.117092,
+    "DomContentLoaded": 1990099.378875,
+    "NavigationStart": 1990097.669944
+  },
+  "timing": {
+    "UpdateLayoutTree": 168.59999999999997,
+    "Paint": 126.84700000000001,
+    "Layout": 912.9540000000001
+  },
+  "topSelf": [
+    {
+      "name": "(native): (program)",
+      "ms": 1982
+    },
+    {
+      "name": "(native): (idle)",
+      "ms": 713
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/base/build-base.ts:47 instantiateModule",
+      "ms": 247
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/zod/v4/mini/schemas.js:61 ",
+      "ms": 108
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:7770 beginWork",
+      "ms": 26
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:4629 renderWithHooks",
+      "ms": 21
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-dir/link.tsx:337 LinkComponent",
+      "ms": 11
+    },
+    {
+      "name": "(native): (garbage collector)",
+      "ms": 8
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:10499 commitMutationEffectsOnFiber",
+      "ms": 8
+    },
+    {
+      "name": "(native): ",
+      "ms": 8
+    },
+    {
+      "name": "http://127.0.0.1:3102/prototype-farmeconom/_next/static/chunks/1_cpt5yid_cd_.js: ",
+      "ms": 8
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@reduxjs/toolkit/dist/query/rtk-query.modern.mjs:2239 init",
+      "ms": 8
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:3068 popHydrationState",
+      "ms": 7
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/zod/v4/core/core.js:49 a",
+      "ms": 7
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:12711 performUnitOfWork",
+      "ms": 7
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@reduxjs/toolkit/dist/query/rtk-query.modern.mjs:2200 ",
+      "ms": 6
+    },
+    {
+      "name": "http://127.0.0.1:3102/prototype-farmeconom/_next/static/chunks/20rxd0xlnlwl_.js: ",
+      "ms": 6
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/use-sync-external-store/with-selector.js:3 ",
+      "ms": 6
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@reduxjs/toolkit/dist/query/rtk-query.modern.mjs:1539 ",
+      "ms": 6
+    },
+    {
+      "name": "(native): InjectedScript",
+      "ms": 6
+    }
+  ],
+  "topInclusiveSources": [
+    {
+      "name": "(native)",
+      "ms": 3714
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js",
+      "ms": 772
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/scheduler/cjs/scheduler.production.js",
+      "ms": 671
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/base/build-base.ts",
+      "ms": 533
+    },
+    {
+      "name": "turbopack:///[turbopack]/shared/runtime/runtime-utils.ts",
+      "ms": 520
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.production.js",
+      "ms": 338
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/shared/lib/utils.ts",
+      "ms": 269
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-index.tsx",
+      "ms": 249
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/dom/runtime-backend-dom.ts",
+      "ms": 233
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-next-turbopack.ts",
+      "ms": 213
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-bootstrap.ts",
+      "ms": 213
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/use-sync-external-store/with-selector.js",
+      "ms": 169
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/zod/v4/mini/schemas.js",
+      "ms": 129
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@reduxjs/toolkit/dist/query/rtk-query.modern.mjs",
+      "ms": 81
+    },
+    {
+      "name": "http://127.0.0.1:3102/prototype-farmeconom/_next/static/chunks/2sb1h59z6ue73.js",
+      "ms": 75
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react/cjs/react.production.js",
+      "ms": 72
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/components/app-router-headers.ts",
+      "ms": 67
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/components/router-reducer/router-reducer-types.ts",
+      "ms": 64
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/components/router-reducer/reducers/has-interception-route-in-current-tree.ts",
+      "ms": 53
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/zod/v4/core/schemas.js",
+      "ms": 52
+    }
+  ]
+}

@@ -86,8 +86,7 @@ test('ошибка API локальна, товары сохраняются, п
   const add = page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true });
   await expect(add).toBeEnabled();
   await page.getByText('Проверить поведение интерфейса', { exact: true }).click();
-  await page.getByRole('combobox', { name: 'Режим сети' }).click();
-  await page.getByText('Ошибка API', { exact: true }).click();
+  await page.getByRole('combobox', { name: 'Режим сети' }).selectOption('error');
   await page.getByRole('textbox', { name: 'Поиск товаров' }).fill('термометр');
   await expect(page.getByText('Не удалось обновить каталог')).toBeVisible();
   await expect(add).toBeDisabled();

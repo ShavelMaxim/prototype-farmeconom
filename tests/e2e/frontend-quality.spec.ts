@@ -2,6 +2,105 @@ import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 test.setTimeout(60000);
 
+test('начальный JavaScript укладывается в бюджет до открытия диалогов', async ({ page }) => {
+  const downloads: Promise<number>[] = [];
+  page.on('response', (response) => {
+    if (new URL(response.url()).pathname.endsWith('.js')) {
+      downloads.push(response.body().then((body) => body.byteLength));
+    }
+  });
+  await page.goto('./', { waitUntil: 'networkidle' });
+  await expect(
+    page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
+  ).toBeEnabled();
+  const sizes = await Promise.all(downloads);
+  expect(sizes.length).toBeGreaterThan(0);
+  expect(sizes.reduce((total, size) => total + size, 0)).toBeLessThan(750000);
+});
+
+test('загрузка диалога видима и не меняет высоту шапки', async ({ page }) => {
+  await page.goto('./');
+  await expect(
+    page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
+  ).toBeEnabled();
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route('**/_next/static/chunks/*.js', async (route) => {
+    await gate;
+    await route.continue();
+  });
+  const before = (await page.locator('header').boundingBox())!.height;
+  try {
+    await page.getByRole('button', { name: 'Выбрать аптеку', exact: true }).click();
+    await expect(
+      page.getByRole('status').filter({ hasText: 'Открываем выбор аптеки…' }),
+    ).toBeVisible();
+    expect((await page.locator('header').boundingBox())!.height).toBe(before);
+  } finally {
+    release();
+  }
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page.getByRole('status').filter({ hasText: 'Открываем выбор аптеки…' })).toHaveCount(
+    0,
+  );
+});
+
+test('сетка добавляет правильный товар через иконку и клавиатуру и сохраняет максимум', async ({
+  page,
+}) => {
+  await page.goto('./');
+  const first = page
+    .locator('article')
+    .filter({
+      has: page.getByRole('heading', { name: 'Гель для бережного очищения', exact: true }),
+    })
+    .getByRole('button');
+  await expect(first).toBeEnabled();
+  await first.locator('svg').click();
+  await expect(first).toContainText('В корзине 1');
+  await first.focus();
+  await page.keyboard.press('Space');
+  await expect(first).toBeDisabled();
+  await expect(first).toContainText('В корзине 2 · максимум');
+  await page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }).click();
+  await expect(page.getByRole('link', { name: 'Корзина, товаров: 3', exact: true })).toBeVisible();
+  await page.reload();
+  await expect(first).toBeDisabled();
+  await expect(first).toContainText('В корзине 2 · максимум');
+  await expect(page.getByRole('link', { name: 'Корзина, товаров: 3', exact: true })).toBeVisible();
+});
+
+test('первый поиск и добавление работают сразу после готовности кнопки', async ({ page }) => {
+  await page.goto('./', { waitUntil: 'domcontentloaded' });
+  const add = page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true });
+  await expect(add).toBeEnabled();
+  await page.getByRole('textbox', { name: 'Поиск товаров' }).fill('термометр');
+  await expect(page.getByRole('status').filter({ hasText: 'Найдено товаров:' })).toHaveText(
+    'Найдено товаров: 2. Цены и наличие обновлены',
+  );
+  await expect(page.locator('article')).toHaveCount(2);
+  await add.click();
+  await expect(
+    page.getByRole('status').filter({ hasText: 'Электронный термометр: в корзине 1 шт.' }),
+  ).toBeVisible();
+});
+
+test('сортировка доступна с клавиатуры и восстанавливается через Back', async ({ page }) => {
+  await page.goto('./');
+  const sort = page.getByRole('combobox', { name: 'Сортировка товаров' });
+  await sort.selectOption('price-asc');
+  await expect(page).toHaveURL(/sort=price-asc/);
+  await sort.focus();
+  await page.keyboard.press('End');
+  await expect(sort).toHaveValue('name');
+  await expect(page).toHaveURL(/sort=name/);
+  await page.goBack();
+  await expect(sort).toHaveValue('price-asc');
+  await expect(page).toHaveURL(/sort=price-asc/);
+});
+
 test('прокрутка каталога сохраняет размер упаковки и доступность последнего товара', async ({
   page,
 }) => {

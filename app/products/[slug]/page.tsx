@@ -1,3 +1,4 @@
+import { AntdBoundary } from '@/shared/ui/antd-boundary';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getProduct, products } from '@/entities/product/repository';
@@ -13,5 +14,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProductPage({ params }: Props) {
   const product = getProduct((await params).slug);
   if (!product) notFound();
-  return <ProductDetail product={product} />;
+  return (
+    <AntdBoundary>
+      <ProductDetail product={product} />
+    </AntdBoundary>
+  );
 }

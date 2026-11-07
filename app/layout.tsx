@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { AntdRegistry } from '@ant-design/nextjs-registry';
 import { Providers } from '@/app/providers';
 import { Header } from '@/widgets/header/header';
 import Link from 'next/link';
@@ -17,26 +16,24 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <a className="skip-link" href="#main">
           Перейти к содержимому
         </a>
-        <AntdRegistry>
-          <Providers initialCatalog={defaultCatalog}>
-            <Header />
-            {children}
-            <footer className="footer">
-              <div>
-                <strong>аптека рядом.</strong>
-                <p>Забота начинается с простого.</p>
-              </div>
-              <p>
-                Независимый учебный проект.
-                <br />
-                Не официальный сайт Фармэконом. Покупки не совершаются.
-              </p>
-              <Link prefetch={false} href="/about">
-                Как устроен проект ↗
-              </Link>
-            </footer>
-          </Providers>
-        </AntdRegistry>
+        <Providers initialCatalog={defaultCatalog}>
+          <Header />
+          {children}
+          <footer className="footer">
+            <div>
+              <strong>аптека рядом.</strong>
+              <p>Забота начинается с простого.</p>
+            </div>
+            <p>
+              Независимый учебный проект.
+              <br />
+              Не официальный сайт Фармэконом. Покупки не совершаются.
+            </p>
+            <Link prefetch={false} href="/about">
+              Как устроен проект ↗
+            </Link>
+          </footer>
+        </Providers>
       </body>
     </html>
   );

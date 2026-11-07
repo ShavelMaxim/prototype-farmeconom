@@ -1,9 +1,6 @@
 'use client';
 import { useEffect, useState, type ReactNode } from 'react';
 import { Provider, useStore } from 'react-redux';
-import { ConfigProvider } from 'antd';
-import ruRU from 'antd/locale/ru_RU';
-import { antdTheme } from '@/shared/config/antd-theme';
 import { makeStore, type AppStore } from './store';
 import type { CatalogResponse } from '@/entities/product/model';
 import { restore } from '@/entities/cart/model';
@@ -50,10 +47,8 @@ export function Providers({
   });
   return (
     <Provider store={store} serverState={serverState}>
-      <ConfigProvider locale={ruRU} theme={antdTheme}>
-        {children}
-        <CartPersistence />
-      </ConfigProvider>
+      {children}
+      <CartPersistence />
     </Provider>
   );
 }

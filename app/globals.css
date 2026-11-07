@@ -27,12 +27,14 @@ select {
 }
 button,
 a,
-input {
+input,
+select {
   touch-action: manipulation;
 }
 a:focus-visible,
 button:focus-visible,
-input:focus-visible {
+input:focus-visible,
+select:focus-visible {
   outline: 3px solid #cf9655;
   outline-offset: 4px;
 }

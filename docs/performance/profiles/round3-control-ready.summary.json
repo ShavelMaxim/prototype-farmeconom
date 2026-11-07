@@ -1,0 +1,212 @@
+{
+  "label": "round3-control-ready",
+  "url": "http://127.0.0.1:3102/prototype-farmeconom/",
+  "cpuSlowdown": 4,
+  "metrics": {
+    "Timestamp": 1989667.700345,
+    "AudioHandlers": 0,
+    "AudioWorkletProcessors": 0,
+    "Documents": 6,
+    "Frames": 5,
+    "JSEventListeners": 472,
+    "LayoutObjects": 963,
+    "MediaKeySessions": 0,
+    "MediaKeys": 0,
+    "Nodes": 1161,
+    "Resources": 20,
+    "ContextLifecycleStateObservers": 30,
+    "V8PerContextDatas": 4,
+    "WorkerGlobalScopes": 0,
+    "UACSSResources": 0,
+    "RTCPeerConnections": 0,
+    "ResourceFetchers": 6,
+    "AdSubframes": 0,
+    "DetachedScriptStates": 2,
+    "ArrayBufferContents": 2,
+    "LayoutCount": 8,
+    "RecalcStyleCount": 21,
+    "LayoutDuration": 0.498787,
+    "RecalcStyleDuration": 0.129113,
+    "DevToolsCommandDuration": 0.111004,
+    "ScriptDuration": 1.005072,
+    "V8CompileDuration": 0.007538,
+    "TaskDuration": 2.423116,
+    "TaskOtherDuration": 0.671602,
+    "ThreadTime": 0.622068,
+    "ProcessTime": 4.230826,
+    "JSHeapUsedSize": 8790112,
+    "JSHeapTotalSize": 12914688,
+    "FirstMeaningfulPaint": 1989665.224607,
+    "DomContentLoaded": 1989665.307252,
+    "NavigationStart": 1989664.503614
+  },
+  "timing": {
+    "UpdateLayoutTree": 129.884,
+    "Layout": 498.198,
+    "Paint": 104.83000000000001
+  },
+  "topSelf": [
+    {
+      "name": "(native): (program)",
+      "ms": 1228
+    },
+    {
+      "name": "(native): (idle)",
+      "ms": 746
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/base/build-base.ts:47 instantiateModule",
+      "ms": 270
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/zod/v4/mini/schemas.js:61 ",
+      "ms": 79
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:4629 renderWithHooks",
+      "ms": 41
+    },
+    {
+      "name": "(native): (garbage collector)",
+      "ms": 19
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/antd/es/button/Button.js:42 ",
+      "ms": 18
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:7770 beginWork",
+      "ms": 13
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:10499 commitMutationEffectsOnFiber",
+      "ms": 9
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:5811 useMemo",
+      "ms": 9
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:9013 commitHookEffectListMount",
+      "ms": 9
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs/es/util/css-variables.js:32 ",
+      "ms": 9
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/zod/v4/core/core.js:49 a",
+      "ms": 9
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:3068 popHydrationState",
+      "ms": 8
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/use-sync-external-store/with-selector.js:3 ",
+      "ms": 7
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js:12711 performUnitOfWork",
+      "ms": 7
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@reduxjs/toolkit/dist/query/rtk-query.modern.mjs:2239 init",
+      "ms": 6
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react/cjs/react.production.js:452 r.createElement",
+      "ms": 6
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@emotion/hash/dist/hash.browser.esm.js:3 g",
+      "ms": 6
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/antd/es/theme/themes/default/theme.js:2 ",
+      "ms": 6
+    }
+  ],
+  "topInclusiveSources": [
+    {
+      "name": "(native)",
+      "ms": 3121
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-dom/cjs/react-dom-client.production.js",
+      "ms": 957
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/scheduler/cjs/scheduler.production.js",
+      "ms": 884
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/base/build-base.ts",
+      "ms": 518
+    },
+    {
+      "name": "turbopack:///[turbopack]/shared/runtime/runtime-utils.ts",
+      "ms": 500
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react-server-dom-turbopack/cjs/react-server-dom-turbopack-client.browser.production.js",
+      "ms": 378
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/navigation.js",
+      "ms": 236
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-index.tsx",
+      "ms": 176
+    },
+    {
+      "name": "turbopack:///[turbopack]/browser/runtime/dom/runtime-backend-dom.ts",
+      "ms": 168
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/dist/compiled/react/cjs/react.production.js",
+      "ms": 162
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-next-turbopack.ts",
+      "ms": 147
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/next/src/client/app-bootstrap.ts",
+      "ms": 147
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/use-sync-external-store/with-selector.js",
+      "ms": 121
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/zod/v4/mini/schemas.js",
+      "ms": 99
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs/es/hooks/useGlobalCache.js",
+      "ms": 85
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/antd/es/button/Button.js",
+      "ms": 73
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/antd/es/theme/useToken.js",
+      "ms": 69
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs/es/Cache.js",
+      "ms": 68
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs-utils/es/util/genStyleUtils.js",
+      "ms": 67
+    },
+    {
+      "name": "turbopack:///[project]/node_modules/@ant-design/cssinjs/es/hooks/useCacheToken.js",
+      "ms": 66
+    }
+  ]
+}

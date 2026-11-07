@@ -1,0 +1,56 @@
+[
+  {
+    "label": "before",
+    "width": 1440,
+    "cardHeight": 472.140625,
+    "buttonHeight": 44,
+    "buttonColor": "rgb(23, 107, 82)",
+    "scrollWidth": 1440,
+    "viewport": 1440
+  },
+  {
+    "label": "before",
+    "width": 412,
+    "cardHeight": 459.140625,
+    "buttonHeight": 44,
+    "buttonColor": "rgb(23, 107, 82)",
+    "scrollWidth": 412,
+    "viewport": 412
+  },
+  {
+    "label": "before",
+    "width": 320,
+    "cardHeight": 459.140625,
+    "buttonHeight": 44,
+    "buttonColor": "rgb(23, 107, 82)",
+    "scrollWidth": 320,
+    "viewport": 320
+  },
+  {
+    "label": "after",
+    "width": 1440,
+    "cardHeight": 472.140625,
+    "buttonHeight": 44,
+    "buttonColor": "rgb(23, 107, 82)",
+    "scrollWidth": 1440,
+    "viewport": 1440
+  },
+  {
+    "label": "after",
+    "width": 412,
+    "cardHeight": 459.140625,
+    "buttonHeight": 44,
+    "buttonColor": "rgb(23, 107, 82)",
+    "scrollWidth": 412,
+    "viewport": 412
+  },
+  {
+    "label": "after",
+    "width": 320,
+    "cardHeight": 459.140625,
+    "buttonHeight": 44,
+    "buttonColor": "rgb(23, 107, 82)",
+    "scrollWidth": 320,
+    "viewport": 320
+  }
+]

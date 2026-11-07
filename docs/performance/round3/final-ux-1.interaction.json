@@ -1,0 +1,38 @@
+{
+  "label": "final-ux-1",
+  "url": "http://127.0.0.1:3102/prototype-farmeconom/",
+  "cpuSlowdown": 4,
+  "readyMs": 2360.600000143051,
+  "valueMs": 346.5,
+  "resultsMs": 1128.0999999046326,
+  "dialogMs": 1148.8999998569489,
+  "dialogFromNavigationMs": 4932,
+  "tasks": [
+    {
+      "startTime": 836.8000001907349,
+      "duration": 234
+    },
+    {
+      "startTime": 1089.2000000476837,
+      "duration": 96
+    },
+    {
+      "startTime": 1204.5,
+      "duration": 82
+    },
+    {
+      "startTime": 1311.5,
+      "duration": 330
+    },
+    {
+      "startTime": 1762.4000000953674,
+      "duration": 332
+    },
+    {
+      "startTime": 2296.600000143051,
+      "duration": 64
+    }
+  ],
+  "blockingBeforeReadyMs": 838,
+  "errors": []
+}

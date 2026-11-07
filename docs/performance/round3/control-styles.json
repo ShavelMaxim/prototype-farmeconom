@@ -1,0 +1,74 @@
+{
+  "states": {
+    "primary": {
+      "height": "44px",
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "12px",
+      "fontWeight": "600",
+      "lineHeight": "normal",
+      "borderRadius": "12px",
+      "border": "1px solid rgba(0, 0, 0, 0)",
+      "padding": "0px 15px",
+      "columnGap": "8px",
+      "color": "rgb(255, 255, 255)",
+      "backgroundColor": "rgb(23, 107, 82)",
+      "boxShadow": "none",
+      "cursor": "pointer"
+    },
+    "primaryHover": {
+      "height": "44px",
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "12px",
+      "fontWeight": "600",
+      "lineHeight": "normal",
+      "borderRadius": "12px",
+      "border": "1px solid rgba(0, 0, 0, 0)",
+      "padding": "0px 15px",
+      "columnGap": "8px",
+      "color": "rgb(255, 255, 255)",
+      "backgroundColor": "rgb(44, 120, 95)",
+      "boxShadow": "none",
+      "cursor": "pointer"
+    },
+    "addedNormal": {
+      "height": "44px",
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "12px",
+      "fontWeight": "600",
+      "lineHeight": "normal",
+      "borderRadius": "12px",
+      "border": "1px solid rgb(217, 217, 217)",
+      "padding": "0px 15px",
+      "columnGap": "8px",
+      "color": "rgb(32, 60, 53)",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "boxShadow": "rgba(0, 0, 0, 0.02) 0px 2px 0px 0px",
+      "cursor": "pointer"
+    },
+    "maximum": {
+      "height": "44px",
+      "fontFamily": "Arial, Helvetica, sans-serif",
+      "fontSize": "12px",
+      "fontWeight": "600",
+      "lineHeight": "normal",
+      "borderRadius": "12px",
+      "border": "1px solid rgb(217, 217, 217)",
+      "padding": "0px 15px",
+      "columnGap": "8px",
+      "color": "rgba(0, 0, 0, 0.25)",
+      "backgroundColor": "rgba(0, 0, 0, 0.04)",
+      "boxShadow": "none",
+      "cursor": "not-allowed"
+    }
+  },
+  "select": {
+    "height": "44px",
+    "width": "174px",
+    "border": "1px solid rgb(217, 217, 217)",
+    "borderRadius": "12px",
+    "fontSize": "14px",
+    "padding": "10px 11px",
+    "color": "rgb(32, 60, 53)",
+    "background": "rgb(255, 255, 255)"
+  }
+}

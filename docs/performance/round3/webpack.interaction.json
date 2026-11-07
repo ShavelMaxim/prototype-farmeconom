@@ -1,0 +1,52 @@
+{
+  "label": "webpack",
+  "url": "http://127.0.0.1:3100/prototype-farmeconom/",
+  "cpuSlowdown": 4,
+  "readyMs": 3709.7000000476837,
+  "valueMs": 395.59999990463257,
+  "resultsMs": 1443.0999999046326,
+  "tasks": [
+    {
+      "startTime": 86.40000009536743,
+      "duration": 97
+    },
+    {
+      "startTime": 944.1000001430511,
+      "duration": 318
+    },
+    {
+      "startTime": 1284.6000001430511,
+      "duration": 326
+    },
+    {
+      "startTime": 1628.1000001430511,
+      "duration": 84
+    },
+    {
+      "startTime": 1727,
+      "duration": 115
+    },
+    {
+      "startTime": 1843.4000000953674,
+      "duration": 881
+    },
+    {
+      "startTime": 2729.4000000953674,
+      "duration": 53
+    },
+    {
+      "startTime": 2821.7000000476837,
+      "duration": 78
+    },
+    {
+      "startTime": 3059.4000000953674,
+      "duration": 69
+    },
+    {
+      "startTime": 3544.4000000953674,
+      "duration": 168
+    }
+  ],
+  "blockingBeforeReadyMs": 1689,
+  "errors": []
+}

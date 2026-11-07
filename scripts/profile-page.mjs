@@ -27,9 +27,12 @@ try {
   });
   await session.send('Profiler.start');
   await page.goto(url, { waitUntil: 'networkidle' });
-  await page
-    .getByRole('button', { name: 'В корзину: Электронный термометр', exact: true })
-    .waitFor({ state: 'visible' });
+  // Visible SSR markup is not evidence that React has finished restoring the cart.
+  await page.waitForFunction(() =>
+    document
+      .querySelector('button[aria-label="В корзину: Электронный термометр"]')
+      ?.matches(':enabled'),
+  );
   await page.waitForTimeout(1000);
   const { profile } = await session.send('Profiler.stop');
   const metrics = Object.fromEntries(

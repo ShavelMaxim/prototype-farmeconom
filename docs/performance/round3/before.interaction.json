@@ -1,0 +1,48 @@
+{
+  "label": "before",
+  "url": "http://127.0.0.1:3100/prototype-farmeconom/",
+  "cpuSlowdown": 4,
+  "readyMs": 3425.2000000476837,
+  "valueMs": 484.2000000476837,
+  "resultsMs": 1475,
+  "tasks": [
+    {
+      "startTime": 203.10000014305115,
+      "duration": 70
+    },
+    {
+      "startTime": 1075.4000000953674,
+      "duration": 229
+    },
+    {
+      "startTime": 1323.7999999523163,
+      "duration": 198
+    },
+    {
+      "startTime": 1540.4000000953674,
+      "duration": 75
+    },
+    {
+      "startTime": 1616.6000001430511,
+      "duration": 421
+    },
+    {
+      "startTime": 2209.7000000476837,
+      "duration": 383
+    },
+    {
+      "startTime": 2615.7999999523163,
+      "duration": 63
+    },
+    {
+      "startTime": 2848.7999999523163,
+      "duration": 95
+    },
+    {
+      "startTime": 3235.2999999523163,
+      "duration": 194
+    }
+  ],
+  "blockingBeforeReadyMs": 1278,
+  "errors": []
+}
