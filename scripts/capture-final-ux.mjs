@@ -39,8 +39,8 @@ try {
   await expect(page.locator('[data-dialog-ready="true"]')).toBeAttached();
   await snapshot('filters-390');
   await page.keyboard.press('Escape');
-  await page.getByRole('textbox', { name: 'Поиск товаров', exact: true }).fill('термометр');
-  await page.getByRole('textbox', { name: 'Поиск товаров', exact: true }).press('Enter');
+  await page.getByRole('combobox', { name: 'Поиск товаров', exact: true }).fill('термометр');
+  await page.getByRole('combobox', { name: 'Поиск товаров', exact: true }).press('Enter');
   await expect(page.locator('article')).toHaveCount(2);
   await snapshot('search-390');
   await page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }).click();

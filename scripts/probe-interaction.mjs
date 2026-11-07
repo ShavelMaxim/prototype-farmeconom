@@ -45,7 +45,7 @@ try {
   const readyMs = await page.evaluate(
     () => performance.getEntriesByName('shop:ready')[0].startTime,
   );
-  const search = page.getByRole('textbox', { name: 'Поиск товаров' });
+  const search = page.getByRole('combobox', { name: 'Поиск товаров' });
   const interactionStart = await page.evaluate(() => performance.now());
   await search.fill('термометр');
   await expect(search).toHaveValue('термометр');

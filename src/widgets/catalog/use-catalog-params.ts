@@ -60,6 +60,10 @@ export function useCatalogParams(query: CatalogQuery) {
     searchChanged,
     reset,
     update,
+    cancelPendingSearch() {
+      if (timer.current) clearTimeout(timer.current);
+      pending.current = null;
+    },
     submitSearch() {
       if (timer.current) clearTimeout(timer.current);
       pending.current = draft.trim();

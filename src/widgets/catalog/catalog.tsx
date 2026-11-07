@@ -12,7 +12,6 @@ import {
   SearchOutlined,
   SlidersOutlined,
   EnvironmentOutlined,
-  CloseOutlined,
 } from '@ant-design/icons';
 import { categories, parseCatalogQuery, type CatalogResponse } from '@/entities/product/model';
 import { useInventory, useGetCatalogQuery } from '@/entities/product/api';
@@ -24,6 +23,7 @@ import { useDesktopLayout } from '@/shared/lib/use-desktop-layout';
 import { AppliedFilters } from './applied-filters';
 import { productCount } from '@/shared/lib/product-count';
 import { useDialogController } from '@/shared/lib/use-dialog-controller';
+import { SearchField } from './search-field';
 
 const FilterDrawer = dynamic(() => import('./filter-drawer'), {
   loading: () => <LoadingNotice>Открываем фильтры…</LoadingNotice>,
@@ -55,7 +55,8 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
   const pharmacy = useAppSelector((s) => s.cart.pharmacy);
   const hydrated = useAppSelector((s) => s.cart.hydrated);
   const query = parseCatalogQuery({ ...Object.fromEntries(new URLSearchParams(search)), pharmacy });
-  const { draft, searchChanged, reset, update, submitSearch } = useCatalogParams(query);
+  const { draft, searchChanged, reset, update, submitSearch, cancelPendingSearch } =
+    useCatalogParams(query);
   const {
     open: filtersOpen,
     show: showFilters,
@@ -144,28 +145,15 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           }
         }}
       >
-        <span className={styles.searchInput}>
-          <SearchOutlined aria-hidden="true" />
-          <input
-            aria-label="Поиск товаров"
-            disabled={!hydrated}
-            placeholder="Название или бренд"
-            value={draft}
-            onChange={(event) => searchChanged(event.currentTarget.value)}
-            maxLength={80}
-            enterKeyHint="search"
-          />
-          {draft && (
-            <button
-              className={styles.clear}
-              type="button"
-              aria-label="Очистить поиск"
-              onClick={() => searchChanged('')}
-            >
-              <CloseOutlined />
-            </button>
-          )}
-        </span>
+        <SearchField
+          draft={draft}
+          query={query}
+          products={inventory.products}
+          disabled={!hydrated}
+          unavailable={!inventory.ready || inventory.isError || isError}
+          onChange={searchChanged}
+          onSelect={cancelPendingSearch}
+        />
         <Button variant="primary" type="submit" disabled={!hydrated}>
           Найти <ArrowRightOutlined />
         </Button>

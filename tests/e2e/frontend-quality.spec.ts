@@ -137,7 +137,7 @@ test('первый поиск и добавление работают сраз�
   await page.goto('./', { waitUntil: 'domcontentloaded' });
   const add = page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true });
   await expect(add).toBeEnabled();
-  await page.getByRole('textbox', { name: 'Поиск товаров' }).fill('термометр');
+  await page.getByRole('combobox', { name: 'Поиск товаров' }).fill('термометр');
   await expect(page.getByRole('status').filter({ hasText: 'Найдено товаров:' })).toHaveText(
     'Найдено товаров: 2. Цены и наличие обновлены',
   );
@@ -252,7 +252,7 @@ test('каталог: автоматическая доступность и ref
       () => document.documentElement.scrollWidth <= document.documentElement.clientWidth,
     ),
   ).toBe(true);
-  await expect(page.getByRole('textbox', { name: 'Поиск товаров' })).toBeVisible();
+  await expect(page.getByRole('combobox', { name: 'Поиск товаров' })).toBeVisible();
   if (page.viewportSize()!.width < 600) {
     const filters = page.getByRole('button', { name: 'Категории и фильтры', exact: false });
     await filters.focus();
@@ -268,7 +268,7 @@ test('последний быстрый запрос побеждает при �
   await expect(
     page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
   ).toBeEnabled();
-  const search = page.getByRole('textbox', { name: 'Поиск товаров' });
+  const search = page.getByRole('combobox', { name: 'Поиск товаров' });
   await search.fill('крем');
   await search.fill('термометр');
   await page.getByRole('button', { name: 'Выбрать аптеку', exact: true }).click();

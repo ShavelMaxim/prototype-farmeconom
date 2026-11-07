@@ -3,16 +3,19 @@ import { Button, Modal, Radio } from 'antd';
 import { pharmacies } from '@/shared/config/pharmacies';
 import type { PharmacyId } from '@/shared/config/pharmacy-id';
 import { useState } from 'react';
+import { money, type Product } from '@/entities/product/model';
 export default function PharmacyDialog({
   draft,
   onChange,
   onCancel,
   onConfirm,
+  product,
 }: {
   draft: PharmacyId;
   onChange: (id: PharmacyId) => void;
   onCancel: () => void;
   onConfirm: () => void;
+  product?: Product;
 }) {
   const [ready, setReady] = useState(false);
   return (
@@ -49,6 +52,14 @@ export default function PharmacyDialog({
               <span>
                 {p.hours} · {p.note}
               </span>
+              {product && (
+                <span>
+                  {money(product.offers[p.id].price)} ·{' '}
+                  {product.offers[p.id].stock
+                    ? `В наличии ${product.offers[p.id].stock} шт.`
+                    : 'Нет в этой аптеке'}
+                </span>
+              )}
             </Radio>
           ))}
         </Radio.Group>

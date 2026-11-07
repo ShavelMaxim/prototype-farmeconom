@@ -89,11 +89,58 @@
   color: #6f6b3e;
 }
 .search {
+  position: relative;
   display: flex;
   gap: 12px;
   margin-bottom: 34px;
 }
-.search > span {
+.suggestions {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  max-height: min(50dvh, 420px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 8px 24px #203c351a;
+}
+.suggestionHeading {
+  margin: 4px 8px 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.suggestions button {
+  width: 100%;
+  min-height: 52px;
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  text-align: left;
+  border: 0;
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+}
+.suggestions button:hover,
+.suggestions button[aria-selected='true'] {
+  background: var(--tint);
+  outline: 2px solid var(--green);
+  outline-offset: -2px;
+}
+.suggestions small {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.search > .searchInput {
   min-height: 54px;
   border-radius: 14px;
 }
@@ -673,7 +720,7 @@
   .search > button :global(.anticon) {
     display: none;
   }
-  .search > span,
+  .search > .searchInput,
   .search > button {
     height: 48px;
     min-height: 48px;

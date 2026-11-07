@@ -10,7 +10,7 @@ test('мобильный поиск выводит результат под п�
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
-  const search = page.getByRole('textbox', { name: 'Поиск товаров', exact: true });
+  const search = page.getByRole('combobox', { name: 'Поиск товаров', exact: true });
   await expect(search).toBeEnabled();
   await search.fill('термометр');
   await search.press('Enter');

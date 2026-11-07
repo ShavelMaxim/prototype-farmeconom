@@ -1,7 +1,14 @@
 .layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 40px;
+}
+.layout > * {
+  min-width: 0;
+}
+.layout p,
+.related a {
+  overflow-wrap: anywhere;
 }
 .title {
   font-size: 2.25rem;
@@ -18,6 +25,7 @@
   font-weight: 600;
   letter-spacing: -1px;
   margin: 24px 0;
+  overflow-wrap: anywhere;
 }
 .purchase {
   max-width: 330px;
@@ -110,14 +118,19 @@
 .facts dd {
   text-align: right;
   margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 @media (max-width: 700px) {
   .layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 22px;
   }
   .title {
     font-size: 1.875rem;
+  }
+  .price {
+    font-size: 1.5rem;
   }
   .purchase {
     max-width: none;

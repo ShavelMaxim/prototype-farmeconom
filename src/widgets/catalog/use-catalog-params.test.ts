@@ -45,3 +45,13 @@ it('смена условий сбрасывает раскрытие выдач
   act(() => result.current.update({ category: 'Уход и гигиена' }));
   expect(new URLSearchParams(location.search).has('page')).toBe(false);
 });
+it('переход по подсказке отменяет debounce и не записывает поиск в URL товара', () => {
+  vi.useFakeTimers();
+  const { result } = renderHook(() => useCatalogParams(catalogQuerySchema.parse({})));
+  act(() => result.current.searchChanged('терм'));
+  act(() => result.current.cancelPendingSearch());
+  window.history.pushState(null, '', '/products/digital-thermometer/');
+  act(() => vi.advanceTimersByTime(1000));
+  expect(location.pathname).toBe('/products/digital-thermometer/');
+  expect(location.search).toBe('');
+});

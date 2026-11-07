@@ -1,11 +1,11 @@
 'use client';
 import Link from 'next/link';
-import { Alert, Divider, Tag } from 'antd';
+import { Alert, Tag } from 'antd';
 import { ProductArtwork } from '@/entities/product/artwork';
 import { money, type Product } from '@/entities/product/model';
 import { useAppSelector } from '@/shared/lib/store-hooks';
 import { AddButton } from '@/features/cart/add-button';
-import { PharmacyPicker } from '@/features/pharmacy/picker';
+import { PharmacyOffers } from '@/features/pharmacy/offers';
 import styles from './product-detail.module.css';
 import { useInventory } from '@/entities/product/api';
 import { InventoryStatus } from '@/entities/product/inventory-status';
@@ -68,12 +68,6 @@ export function ProductDetail({ product: initial }: { product: Product }) {
               Перейти в корзину →
             </Link>
           </div>
-          <Divider />
-          <h2 className={styles.subtitle}>Самовывоз из аптеки</h2>
-          <PharmacyPicker />
-          <p className="muted">
-            Выберите аптеку, чтобы увидеть её цену и наличие. Все адреса демонстрационные.
-          </p>
           {!offer.stock && (
             <Alert
               type="info"
@@ -82,6 +76,7 @@ export function ProductDetail({ product: initial }: { product: Product }) {
               description="Наличие отличается между точками получения."
             />
           )}
+          <PharmacyOffers product={product} />
         </div>
         <section className="panel">
           <h2>О товаре</h2>

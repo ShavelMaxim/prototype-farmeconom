@@ -1,12 +1,17 @@
 import type { CatalogQuery, Product } from './model';
 import { values } from './facets';
 export function filterCatalog(query: CatalogQuery, source: Product[]) {
-  const normalized = query.q.toLocaleLowerCase('ru-RU').replaceAll('ё', 'е');
+  const normalized = query.q
+    .trim()
+    .toLocaleLowerCase('ru-RU')
+    .replaceAll('ё', 'е')
+    .replace(/\s+/g, ' ');
   const items = source.filter(
     (p) =>
       `${p.name} ${p.brand} ${p.category} ${p.ingredient}`
         .toLocaleLowerCase('ru-RU')
         .replaceAll('ё', 'е')
+        .replace(/\s+/g, ' ')
         .includes(normalized) &&
       (query.category === 'Все товары' || p.category === query.category) &&
       (query.available !== 'true' || p.offers[query.pharmacy].stock > 0) &&

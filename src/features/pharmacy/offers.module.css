@@ -1,0 +1,66 @@
+.offers {
+  min-width: 0;
+  margin-top: 24px;
+}
+.offers h2 {
+  font-size: 1.25rem;
+}
+.offers > p {
+  font-size: 0.875rem;
+}
+.offers ul {
+  display: grid;
+  list-style: none;
+  gap: 12px;
+  padding: 0;
+  margin: 16px 0 0;
+}
+.offers li {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper);
+}
+.offers li.selected {
+  border-color: var(--green);
+  box-shadow: inset 0 0 0 1px var(--green);
+}
+.offers li > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+.offers h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+.offers li p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 10px 0;
+  overflow-wrap: anywhere;
+}
+.badge {
+  border-radius: 20px;
+  padding: 4px 10px;
+  color: var(--green);
+  background: var(--tint);
+  font-size: 0.75rem;
+}
+.priceRow {
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+.priceRow strong {
+  font-size: 1.1rem;
+}
+.offers li > button {
+  min-height: 44px;
+  height: auto;
+  max-width: 100%;
+  white-space: normal;
+  flex-wrap: wrap;
+}

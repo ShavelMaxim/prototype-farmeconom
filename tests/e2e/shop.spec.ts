@@ -4,7 +4,7 @@ test('покупатель находит товар, сохраняет кор�
   await expect(
     page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),
   ).toBeEnabled();
-  await page.getByRole('textbox', { name: 'Поиск товаров' }).fill('термометр');
+  await page.getByRole('combobox', { name: 'Поиск товаров' }).fill('термометр');
   await expect(page).toHaveURL(/q=/);
   await page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }).click();
   await page.getByRole('link', { name: 'Корзина, товаров: 1' }).click();
@@ -96,7 +96,7 @@ test('ошибка API локальна, товары сохраняются, п
   await expect(add).toBeEnabled();
   await page.getByText('Проверить поведение интерфейса', { exact: true }).click();
   await page.getByRole('combobox', { name: 'Режим сети' }).selectOption('error');
-  await page.getByRole('textbox', { name: 'Поиск товаров' }).fill('термометр');
+  await page.getByRole('combobox', { name: 'Поиск товаров' }).fill('термометр');
   await expect(page.getByText('Не удалось обновить каталог')).toBeVisible();
   await expect(add).toBeDisabled();
   expect(

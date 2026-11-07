@@ -34,7 +34,7 @@ test('выдача раскрывается с клавиатуры, возвр�
     .toBeLessThan(80);
   await page.reload();
   await expect(page.locator('article')).toHaveCount(24);
-  await page.getByRole('textbox', { name: 'Поиск товаров' }).fill('Демо-компонент A');
+  await page.getByRole('combobox', { name: 'Поиск товаров' }).fill('Демо-компонент A');
   await expect(page.locator('article')).toHaveCount(2);
   await expect(page).not.toHaveURL(/page=/);
   await expect(
