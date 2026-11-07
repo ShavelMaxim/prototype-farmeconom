@@ -36,3 +36,12 @@ it('повторное применение тех же условий не до
   expect(push).not.toHaveBeenCalled();
   push.mockRestore();
 });
+it('смена условий сбрасывает раскрытие выдачи, а само раскрытие сохраняет поиск', () => {
+  window.history.replaceState(null, '', '/?q=уход&page=2');
+  const { result } = renderHook(() => useCatalogParams(catalogQuerySchema.parse({ q: 'уход' })));
+  act(() => result.current.update({ page: '3' }));
+  expect(new URLSearchParams(location.search).get('q')).toBe('уход');
+  expect(new URLSearchParams(location.search).get('page')).toBe('3');
+  act(() => result.current.update({ category: 'Уход и гигиена' }));
+  expect(new URLSearchParams(location.search).has('page')).toBe(false);
+});

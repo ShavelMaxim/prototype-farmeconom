@@ -4,6 +4,44 @@ import { settleMotion } from './settle-motion';
 test.setTimeout(60000);
 const addName = 'В корзину: Электронный термометр';
 
+test('выдача раскрывается с клавиатуры, возвращается из товара и сбрасывается поиском', async ({
+  page,
+}) => {
+  await page.goto('./');
+  await expect(page.getByRole('button', { name: addName, exact: true })).toBeEnabled();
+  await expect(page.locator('article')).toHaveCount(12);
+  const more = page.getByRole('button', { name: 'Показать ещё 12 товаров', exact: true });
+  await more.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('article')).toHaveCount(24);
+  await expect(page).toHaveURL(/page=2/);
+  await expect(
+    page.getByRole('link', { name: 'Салфетки для обработки кожи', exact: true }),
+  ).toBeFocused();
+  const product = page.getByRole('link', { name: 'Электронные напольные весы', exact: true });
+  await product.scrollIntoViewIfNeeded();
+  const position = await page.evaluate(() => scrollY);
+  await product.click();
+  await expect(page).toHaveURL(/products\/digital-scales\/?$/);
+  await expect(
+    page.getByRole('heading', { name: 'Электронные напольные весы', exact: true, level: 1 }),
+  ).toBeVisible();
+  await page.goBack();
+  await expect(page.locator('article')).toHaveCount(24);
+  await expect(page).toHaveURL(/page=2/);
+  await expect
+    .poll(async () => Math.abs((await page.evaluate(() => scrollY)) - position))
+    .toBeLessThan(80);
+  await page.reload();
+  await expect(page.locator('article')).toHaveCount(24);
+  await page.getByRole('textbox', { name: 'Поиск товаров' }).fill('Демо-компонент A');
+  await expect(page.locator('article')).toHaveCount(2);
+  await expect(page).not.toHaveURL(/page=/);
+  await expect(
+    page.getByRole('heading', { name: 'Учебный образец A · большая упаковка', exact: true }),
+  ).toBeVisible();
+});
+
 test('мобильные фильтры: отмена, возраст, применение одной записью History и удаление метки', async ({
   page,
 }) => {
@@ -42,7 +80,7 @@ test('мобильные фильтры: отмена, возраст, прим�
   await expect(page.locator('article')).toHaveCount(1);
   await page.goBack();
   await expect(page).not.toHaveURL(/audience=/);
-  await expect(page.locator('article')).toHaveCount(44);
+  await expect(page.locator('article')).toHaveCount(12);
 });
 
 test('избранное сохраняется, удаление последнего товара можно отменить', async ({ page }) => {

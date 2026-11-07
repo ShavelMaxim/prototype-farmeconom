@@ -167,6 +167,8 @@ test('прокрутка каталога сохраняет размер упа
 }) => {
   await page.goto('./');
   const card = page.locator('article').last();
+  await expect(page.locator('article')).toHaveCount(12);
+  for (let i = 0; i < 3; i++) await page.getByRole('button', { name: /^Показать ещё/ }).click();
   await expect(page.locator('article')).toHaveCount(44);
   // The decorative subtree may be skipped offscreen, but its fixed box must remain.
   const scene = card.locator('a > div[aria-hidden="true"]').first();

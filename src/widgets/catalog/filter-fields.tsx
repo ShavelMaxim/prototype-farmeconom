@@ -7,26 +7,10 @@ import {
   toggleValue,
   values,
   type FacetKey,
+  categoryPatch,
 } from '@/entities/product/facets';
 import styles from './filters.module.css';
 
-export function categoryPatch(category: string) {
-  return {
-    category: category === 'Все товары' ? '' : category,
-    brand: '',
-    form: '',
-    dose: '',
-    packs: '',
-    ingredient: '',
-    flavor: '',
-    weight: '',
-    volume: '',
-    material: '',
-    size: '',
-    skin: '',
-    manufacturer: '',
-  };
-}
 export function FilterFields({
   query,
   products,

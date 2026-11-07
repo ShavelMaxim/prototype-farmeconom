@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, type Ref } from 'react';
 import type { PharmacyId, Product } from '@/entities/product/model';
 import { useCatalogCart } from '@/features/cart/use-catalog-cart';
 import { ProductCard } from './product-card';
@@ -10,16 +10,19 @@ export const ProductGrid = memo(function ProductGrid({
   products,
   pharmacy,
   busy,
+  ref,
 }: {
   products: Product[];
   pharmacy: PharmacyId;
   busy: boolean;
+  ref?: Ref<HTMLFieldSetElement>;
 }) {
   const { quantities, hydrated, add, announcement } = useCatalogCart(products, pharmacy, busy);
   const favorites = useFavorites();
   return (
     <>
       <fieldset
+        ref={ref}
         className={styles.grid}
         aria-label="Товары каталога"
         aria-busy={busy}

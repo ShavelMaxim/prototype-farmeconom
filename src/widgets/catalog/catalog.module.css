@@ -200,6 +200,24 @@
 }
 .sidebar {
   padding-top: 9px;
+  position: sticky;
+  top: 16px;
+  align-self: start;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable;
+  padding-right: 8px;
+}
+.filterPlaceholder {
+  display: grid;
+  gap: 12px;
+  padding: 16px 0;
+}
+.filterPlaceholder span {
+  height: 44px;
+  background: var(--tint);
+  border-radius: 10px;
 }
 .categories {
   display: flex;
@@ -538,6 +556,22 @@
   margin-top: 24px;
   color: var(--muted);
   font-size: 0.6875rem;
+}
+.loadMore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  text-align: center;
+}
+.loadMore p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+.loadMore button {
+  min-width: min(260px, 100%);
+  max-width: 100%;
 }
 .empty {
   padding: 70px 16px;

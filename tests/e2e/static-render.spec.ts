@@ -5,7 +5,10 @@ test('статический HTML содержит настоящий катал
   await expect(
     page.getByRole('heading', { name: 'Для вас и ваших близких', exact: true }),
   ).toBeVisible();
-  await expect(page.locator('article')).toHaveCount(44);
+  await expect(page.locator('article')).toHaveCount(12);
+  await expect(
+    page.getByRole('button', { name: 'Показать ещё 12 товаров', exact: true }),
+  ).toBeDisabled();
   await expect(page.getByRole('combobox', { name: 'Сортировка товаров' })).toBeDisabled();
   await expect(
     page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }),

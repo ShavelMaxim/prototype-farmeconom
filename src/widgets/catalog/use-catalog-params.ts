@@ -9,6 +9,7 @@ export function useCatalogParams(query: CatalogQuery) {
   const pending = useRef<string | null>(null);
   function update(values: Record<string, string>, replace = false) {
     const params = new URLSearchParams(window.location.search);
+    if (Object.keys(values).some((key) => key !== 'page')) params.delete('page');
     Object.entries(values).forEach(([key, value]) =>
       value ? params.set(key, value) : params.delete(key),
     );

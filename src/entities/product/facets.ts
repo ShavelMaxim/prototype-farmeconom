@@ -49,3 +49,20 @@ export function toggleValue(value: string, option: string) {
   return [...selected].sort().join('|');
 }
 export const medicalCategories = ['Лекарственные средства', 'Гомеопатия'];
+export function categoryPatch(category: string) {
+  return {
+    category: category === 'Все товары' ? '' : category,
+    brand: '',
+    form: '',
+    dose: '',
+    packs: '',
+    ingredient: '',
+    flavor: '',
+    weight: '',
+    volume: '',
+    material: '',
+    size: '',
+    skin: '',
+    manufacturer: '',
+  };
+}

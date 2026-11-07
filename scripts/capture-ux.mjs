@@ -23,6 +23,7 @@ try {
     await page.waitForFunction(() =>
       document.querySelector('button[data-product-id="product-2"]')?.matches(':enabled'),
     );
+    if (width >= 901) await page.getByRole('button', { name: /^Медтехника/ }).waitFor();
     await snapshot(page, { path: `${destination}/home-${width}.png` });
     await page
       .getByRole('heading', { name: 'Для вас и ваших близких', exact: true })

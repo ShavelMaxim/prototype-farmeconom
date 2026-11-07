@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useCatalogParams } from './use-catalog-params';
 import { apiErrorMessage } from '@/shared/api/errors';
@@ -19,7 +19,8 @@ import { useInventory, useGetCatalogQuery } from '@/entities/product/api';
 import { useAppSelector } from '@/shared/lib/store-hooks';
 import { pharmacies } from '@/shared/config/pharmacies';
 import styles from './catalog.module.css';
-import { FilterFields, categoryPatch } from './filter-fields';
+import { categoryPatch } from '@/entities/product/facets';
+import { useDesktopLayout } from '@/shared/lib/use-desktop-layout';
 import { AppliedFilters } from './applied-filters';
 import { productCount } from '@/shared/lib/product-count';
 import { useDialogController } from '@/shared/lib/use-dialog-controller';
@@ -27,12 +28,28 @@ import { useDialogController } from '@/shared/lib/use-dialog-controller';
 const FilterDrawer = dynamic(() => import('./filter-drawer'), {
   loading: () => <LoadingNotice>Открываем фильтры…</LoadingNotice>,
 });
+function FilterPlaceholder() {
+  return (
+    <div className={styles.filterPlaceholder} role="status" aria-label="Загружаем фильтры">
+      <span />
+      <span />
+      <span />
+      <span />
+      <span />
+    </div>
+  );
+}
+const DesktopFilters = dynamic(() => import('./desktop-filters'), {
+  ssr: false,
+  loading: () => <FilterPlaceholder />,
+});
 const sorting = [
   { value: 'popular', label: 'По популярности' },
   { value: 'price-asc', label: 'Сначала дешевле' },
   { value: 'price-desc', label: 'Сначала дороже' },
   { value: 'name', label: 'По названию' },
 ];
+const BATCH_SIZE = 12;
 export function Catalog({ initial }: { initial: CatalogResponse }) {
   const search = useCatalogSearch();
   const pharmacy = useAppSelector((s) => s.cart.pharmacy);
@@ -51,25 +68,23 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
     { refetchOnMountOrArgChange: Boolean(process.env.NEXT_PUBLIC_API_URL) },
   );
   const result = data ?? (process.env.NEXT_PUBLIC_API_URL ? { items: [], total: 0 } : initial);
+  const requestedPage = Number(new URLSearchParams(search).get('page') ?? '1');
+  const page =
+    Number.isInteger(requestedPage) && requestedPage > 0
+      ? Math.min(requestedPage, Math.max(1, Math.ceil(result.total / BATCH_SIZE)))
+      : 1;
+  const visible = useMemo(() => result.items.slice(0, page * BATCH_SIZE), [result.items, page]);
+  const gridRef = useRef<HTMLFieldSetElement>(null);
+  const focusIndex = useRef<number | null>(null);
+  useEffect(() => {
+    if (focusIndex.current === null) return;
+    const link = gridRef.current?.querySelectorAll<HTMLAnchorElement>('h3 a')[focusIndex.current];
+    focusIndex.current = null;
+    link?.focus({ preventScroll: true });
+    link?.scrollIntoView({ block: 'start' });
+  }, [page]);
   const inventory = useInventory(initial.items);
-  const filters = (
-    <>
-      <FilterFields
-        query={query}
-        products={inventory.products}
-        disabled={!hydrated}
-        onChange={(patch) =>
-          update(
-            patch,
-            Object.keys(patch).some((key) => ['min', 'max', 'age'].includes(key)),
-          )
-        }
-      />
-      <Button variant="link" onClick={reset}>
-        Сбросить фильтры
-      </Button>
-    </>
-  );
+  const desktop = useDesktopLayout();
   return (
     <main id="main" className={`container ${styles.catalogPage}`}>
       <section className={styles.hero} aria-labelledby="hero-title">
@@ -144,7 +159,24 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
         ))}
       </div>
       <section className={styles.layout} aria-label="Каталог товаров">
-        <aside className={styles.sidebar}>{filters}</aside>
+        <aside className={styles.sidebar} aria-label="Фильтры каталога">
+          {desktop ? (
+            <DesktopFilters
+              query={query}
+              products={inventory.products}
+              disabled={!hydrated}
+              onReset={reset}
+              onChange={(patch) =>
+                update(
+                  patch,
+                  Object.keys(patch).some((key) => ['min', 'max', 'age'].includes(key)),
+                )
+              }
+            />
+          ) : (
+            <FilterPlaceholder />
+          )}
+        </aside>
         <div className={styles.main}>
           <div className={styles.toolbar}>
             <div>
@@ -231,7 +263,30 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
               </div>
             </div>
           ) : (
-            <ProductGrid products={result.items} pharmacy={pharmacy} busy={isFetching || isError} />
+            <ProductGrid
+              ref={gridRef}
+              products={visible}
+              pharmacy={pharmacy}
+              busy={isFetching || isError}
+            />
+          )}
+          {result.total > 0 && (
+            <div className={styles.loadMore}>
+              <p role="status" aria-live="polite" className="muted">
+                Показано товаров: {visible.length} из {result.total}
+              </p>
+              {visible.length < result.total && (
+                <Button
+                  disabled={!hydrated || isFetching || isError}
+                  onClick={() => {
+                    focusIndex.current = visible.length;
+                    update({ page: String(page + 1) });
+                  }}
+                >
+                  Показать ещё {productCount(Math.min(BATCH_SIZE, result.total - visible.length))}
+                </Button>
+              )}
+            </div>
           )}
           <div className={styles.catalogNote}>
             Изображения упаковок условные. Все товары и цены — демонстрационные.
