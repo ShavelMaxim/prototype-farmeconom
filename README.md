@@ -1,6 +1,6 @@
 # Аптека рядом — frontend-портфолио
 
-[Открыть опубликованное демо](https://shavelmaxim.github.io/prototype-farmeconom/) · [Успешный deployment](https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42349471470)
+[Открыть опубликованное демо](https://shavelmaxim.github.io/prototype-farmeconom/) · [Успешный deployment](https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42352387959)
 
 Независимый учебный концепт аптечного магазина для собеседования в Фармэконом. Данные вымышленные; реальные заказы не создаются. Next.js App Router экспортируется в статические файлы для GitHub Pages.
 
@@ -77,3 +77,5 @@ E2E проверяют out на статическом сервере, вклю�
 Историческая версия2b79da1 до расширения UX: мобильные Lighthouse98/99/97,медиана98,CLS0. Свежий контроль той серии90; старые результаты не подменяются. Начальные JS со сжатием345287→210490байт. В том CI прошли28unit/integration и38E2E; на Pages — HTTP smoke и14адресных E2E. Это лабораторные прогоны, не полевой INP.
 
 Новая UX-итерация: [сценарии и границы](docs/UX-EXPANSION.md), [проверки и замеры расширенного интерфейса](docs/performance/UX-EXPANSION.md). Актуальное состояние публикации — в CONTEXT.md. scripts/capture-ux.mjs снимает четыре размера экрана, scripts/measure-ui.mjs — последовательные Lighthouse-замеры без нагрузки от параллельных тестов.
+
+Финальная UX-версия da7c6ce опубликована: 40 unit/integration и 56 E2E в CI, HTTP smoke и 22 внешних E2E прошли. Mobile Performance 90/94/91 (медиана 91), A11y/BP 100, CLS 0. SEO 60 сохраняется из-за noindex. Подробные прогоны и ограничения — docs/performance/UX-EXPANSION.md.
