@@ -1,8 +1,6 @@
 'use client';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import { ProductArtwork } from '@/entities/product/artwork';
 import { useCatalogParams } from './use-catalog-params';
 import { apiErrorMessage } from '@/shared/api/errors';
 import { ProductGrid } from './product-grid';
@@ -13,7 +11,6 @@ import {
   ArrowRightOutlined,
   SearchOutlined,
   SlidersOutlined,
-  EnvironmentOutlined,
   AppstoreOutlined,
 } from '@ant-design/icons';
 import { categories, parseCatalogQuery, type CatalogResponse } from '@/entities/product/model';
@@ -53,7 +50,7 @@ const sorting = [
   { value: 'name', label: 'По названию' },
 ];
 const BATCH_SIZE = 12;
-export function Catalog({ initial }: { initial: CatalogResponse }) {
+export function Catalog({ initial, intro }: { initial: CatalogResponse; intro: ReactNode }) {
   const search = useCatalogSearch();
   const pharmacy = useAppSelector((s) => s.cart.pharmacy);
   const hydrated = useAppSelector((s) => s.cart.hydrated);
@@ -107,38 +104,6 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
     facetKeys.reduce((count, key) => count + values(query[key]).length, 0);
   return (
     <main id="main" className={`container ${styles.catalogPage}`}>
-      <section className={styles.hero} aria-labelledby="hero-title">
-        <div>
-          <span className="eyebrow">ДЛЯ ВАС И ВАШИХ БЛИЗКИХ</span>
-          <h1 id="hero-title">
-            Забота о себе.
-            <br />
-            <span>Каждый день.</span>
-          </h1>
-          <p>Всё необходимое для домашней аптечки и ежедневного ухода — в одном месте.</p>
-          <a href="#catalog-results" className={styles.heroCta}>
-            Перейти в каталог <ArrowRightOutlined />
-          </a>
-          <div className={styles.heroMeta}>
-            <span>
-              <EnvironmentOutlined /> 3 аптеки в Ангарске
-            </span>
-            <span>Самовывоз</span>
-          </div>
-        </div>
-        <div className={styles.heroGraphic} aria-hidden="true">
-          <div className={styles.orbit} />
-          <div className={styles.plinth} />
-          <div className={styles.heroPacks}>
-            {initial.items.slice(0, 2).map((product) => (
-              <ProductArtwork key={product.id} product={product} />
-            ))}
-          </div>
-          <span className={styles.heroChip}>
-            <EnvironmentOutlined /> Самовывоз рядом с вами
-          </span>
-        </div>
-      </section>
       <form
         ref={searchRef}
         role="search"
@@ -167,18 +132,12 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           Найти <ArrowRightOutlined />
         </Button>
       </form>
+      {intro}
       <div className={styles.mobileHeading}>
         <h1>Каталог</h1>
         <span>Всё нужное — рядом</span>
       </div>
-      <nav className={styles.quickCategories} aria-label="Популярные разделы">
-        {categories.slice(1, 7).map((category) => (
-          <Link prefetch={false} key={category} href={`/?category=${encodeURIComponent(category)}`}>
-            <AppstoreOutlined aria-hidden="true" />
-            <span>{category}</span>
-          </Link>
-        ))}
-      </nav>
+
       <div className={styles.categoryRail} aria-label="Быстрый выбор категории">
         {[...new Set([...categories.slice(0, 5), query.category])].map((category) => (
           <button

@@ -18,7 +18,7 @@ for (const route of [
   const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
   assert.equal(response.status, 200, `${url}: HTTP status`);
   const html = await response.text();
-  assert.match(html, /Аптека рядом/);
+  assert.match(html, /Фарм Эконом/);
   const assets = [...html.matchAll(/(?:src|href)="([^"]+\.(?:js|css)(?:\?[^"]*)?)"/g)].map(
     (match) => new URL(match[1].replaceAll('&amp;', '&'), url),
   );

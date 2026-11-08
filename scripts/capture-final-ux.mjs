@@ -54,11 +54,11 @@ try {
   await page.getByRole('button', { name: 'Отменить', exact: true }).click();
   await page.getByRole('link', { name: 'К оформлению', exact: true }).click();
   await page
-    .getByRole('checkbox', { name: 'Я понимаю, что это учебный сценарий без реального заказа' })
+    .getByRole('checkbox', { name: 'Сохранить заказ на этом устройстве без передачи в аптеку' })
     .check();
-  await page.getByRole('button', { name: 'Завершить демо-оформление', exact: true }).click();
+  await page.getByRole('button', { name: 'Сохранить заказ', exact: true }).click();
   await page.getByRole('link', { name: 'Посмотреть мои заказы', exact: true }).click();
-  await expect(page.getByText('Демо завершено', { exact: true })).toBeVisible();
+  await expect(page.getByText('Сохранён на устройстве', { exact: true })).toBeVisible();
   await snapshot('orders-390');
   await page.goto(new URL('products/digital-thermometer/', base).href);
   await page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true }).click();
