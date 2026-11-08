@@ -1,0 +1,30 @@
+/* Optional decoration only: no scripts, moving particles or network assets.
+   Keep it out of hit testing and suppress it in either high-contrast mode. */
+.seasonal-decor {
+  display: none;
+}
+html[data-festive='true'][data-contrast='standard'] .seasonal-decor {
+  display: block;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 17px;
+  z-index: 2;
+  background:
+    radial-gradient(ellipse at 18px 7px, #f4da9c 0 3px, transparent 4px) 0 0/92px 17px repeat-x,
+    radial-gradient(ellipse at 63px 8px, #87d5c1 0 3px, transparent 4px) 0 0/92px 17px repeat-x;
+  border-top: 2px solid #78958a;
+}
+@media (max-width: 900px) {
+  html[data-festive='true'][data-contrast='standard'] .seasonal-decor {
+    height: 12px;
+    opacity: 0.85;
+  }
+}
+@media (forced-colors: active) {
+  .seasonal-decor {
+    display: none !important;
+  }
+}

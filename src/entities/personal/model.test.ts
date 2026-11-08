@@ -5,6 +5,7 @@ import {
   recordOrder,
   defaultDisplay,
   setFavorite,
+  setDisplay,
   type DemoOrder,
 } from './model';
 const order: DemoOrder = {
@@ -25,6 +26,20 @@ it('отклоняет повреждённые снимки, не блокир�
   );
   expect(state.hydrated).toBe(true);
   expect(state.orders).toEqual([]);
+});
+it('восстанавливает прежний формат без праздничного флага и сохраняет все пользовательские данные', () => {
+  const previousDisplay = { scale: '150', contrast: 'dark', spacing: true, reducedMotion: true };
+  let state = personalReducer(
+    undefined,
+    restorePersonal({ favorites: ['product-1'], orders: [order], display: previousDisplay }),
+  );
+  expect(state.favorites).toEqual(['product-1']);
+  expect(state.orders).toEqual([order]);
+  expect(state.display).toMatchObject(previousDisplay);
+  expect(state.display.festive === true).toBe(false);
+  state = personalReducer(state, setDisplay({ festive: true }));
+  expect(state.display).toMatchObject({ ...previousDisplay, festive: true });
+  expect(state.orders).toEqual([order]);
 });
 it('восстанавливает настройки и избранное, исключает дубли и сохраняет снимок заказа', () => {
   let state = personalReducer(

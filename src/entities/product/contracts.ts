@@ -33,7 +33,7 @@ export const productSchema = z
     dose: z.string().default(''),
     packCount: z.number().int().positive().optional(),
     ingredient: z.string().default(''),
-    manufacturer: z.string().default('Учебная коллекция'),
+    manufacturer: z.string().default('Коллекция'),
     relationGroup: z.string().optional(),
     medicalDemo: z.boolean().default(false),
     flavor: z.string().optional(),

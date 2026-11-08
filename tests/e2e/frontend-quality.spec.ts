@@ -208,9 +208,9 @@ test('клавиатура: возврат фокуса из диалога и �
   ).toBeVisible();
   await page.getByRole('link', { name: 'Перейти в корзину' }).click();
   await page.getByRole('link', { name: 'К оформлению' }).click();
-  await page.getByRole('button', { name: 'Завершить демо-оформление' }).click();
+  await page.getByRole('button', { name: 'Сохранить заказ' }).click();
   const consent = page.getByRole('checkbox', {
-    name: 'Я понимаю, что это учебный сценарий без реального заказа',
+    name: 'Сохранить заказ на этом устройстве без передачи в аптеку',
   });
   await expect(consent).toHaveAttribute('aria-invalid', 'true');
   await expect(consent).toBeFocused();

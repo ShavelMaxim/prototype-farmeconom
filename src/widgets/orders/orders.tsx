@@ -42,8 +42,7 @@ export function Orders({ products: initial }: { products: Product[] }) {
           <p className="eyebrow">ВАША ИСТОРИЯ</p>
           <h1>Мои заказы</h1>
           <p className="muted">
-            История демо-оформлений в этом браузере. Реальные покупки и бронирования не совершаются.
-            Сохраняются последние 30 записей.
+            История заказов, сохранённых на этом устройстве. Сохраняются последние 30 записей.
           </p>
         </div>
         {storageUnavailable && (
@@ -54,7 +53,7 @@ export function Orders({ products: initial }: { products: Product[] }) {
         ) : !orders.length ? (
           <div className="panel empty-state">
             <span aria-hidden="true">↗</span>
-            <h2>Здесь появятся ваши демо-заказы</h2>
+            <h2>Здесь появятся ваши заказы</h2>
             <p className="muted">
               Пройдите оформление корзины — состав и стоимость останутся в истории.
             </p>
@@ -78,7 +77,7 @@ export function Orders({ products: initial }: { products: Product[] }) {
                         {date.format(new Date(order.createdAt))}
                       </time>
                     </div>
-                    <span className={styles.status}>Демо завершено</span>
+                    <span className={styles.status}>Сохранён на устройстве</span>
                   </div>
                   <p>
                     {pharmacy.name} · {pharmacy.address}
@@ -122,7 +121,7 @@ export function Orders({ products: initial }: { products: Product[] }) {
                       inventory.isError
                     }
                   >
-                    Повторить демо-заказ
+                    Повторить заказ
                   </Button>
                 </section>
               );
@@ -175,9 +174,7 @@ export function Orders({ products: initial }: { products: Product[] }) {
         >
           <span hidden data-dialog-ready={dialogReady} />
           {completed ? (
-            <p role="status">
-              Существующая корзина сохранена. Новое демо-оформление ещё не создано.
-            </p>
+            <p role="status">Существующая корзина сохранена. Новый заказ ещё не сохранён.</p>
           ) : (
             <>
               <p>

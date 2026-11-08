@@ -41,6 +41,7 @@ function CartPersistence() {
       root.dataset.contrast = display.contrast;
       root.dataset.spacing = String(display.spacing);
       root.dataset.motion = display.reducedMotion ? 'reduce' : 'system';
+      root.dataset.festive = String(display.festive === true);
     }
     applyDisplay();
     return store.subscribe(() => {

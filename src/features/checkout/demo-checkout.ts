@@ -19,10 +19,10 @@ export async function demoCheckout(request: Request) {
     );
   return Response.json(
     {
-      reference: `DEMO-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
+      reference: `FE-${crypto.randomUUID().slice(0, 8).toUpperCase()}`,
       total: summary.total,
       count: summary.count,
-      message: 'Сценарий пройден. Настоящий заказ не создан.',
+      message: 'Состав и стоимость сохранены в истории заказов на этом устройстве.',
     },
     { headers: { 'Cache-Control': 'no-store' } },
   );

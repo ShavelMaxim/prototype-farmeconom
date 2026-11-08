@@ -44,7 +44,6 @@ export const ProductCard = memo(function ProductCard({
           </Link>
         </h3>
         <p className={styles.size}>{product.size}</p>
-        {product.medicalDemo && <span className={styles.demoBadge}>Учебный образец</span>}
         <div className={styles.price}>{money(product.offers[pharmacy].price)}</div>
         <p className={product.offers[pharmacy].stock ? styles.stock : styles.noStock}>
           {product.offers[pharmacy].stock

@@ -1,12 +1,21 @@
 :root {
-  --green: #176b52;
-  --ink: #203c35;
-  --muted: #526459;
-  --line: #e2e8dd;
-  --paper: #fffefb;
-  --background: #f7f8f3;
-  --tint: #e9eee2;
+  --green: #23786b;
+  --ink: #152c31;
+  --muted: #576d73;
+  --line: #dce5e5;
+  --paper: #fff;
+  --background: #f2f5f5;
+  --tint: #e3f4ee;
   --on-accent: #fff;
+  --accent: #54dfc4;
+  --accent-hover: #75e8d1;
+  --on-bright: #10372f;
+  --chrome: #11252a;
+  --chrome-deep: #0c1a20;
+  --chrome-text: #f3faf8;
+  --chrome-muted: #c2d5d5;
+  --chrome-line: #30474b;
+  --focus: #188577;
   --error-bg: #fff2f0;
 }
 html {
@@ -29,6 +38,15 @@ html[data-contrast='light'] {
   --paper: #fff;
   --background: #fff;
   --tint: #eee;
+  --accent: #003e2c;
+  --accent-hover: #002e20;
+  --on-bright: #fff;
+  --chrome: #fff;
+  --chrome-deep: #fff;
+  --chrome-text: #000;
+  --chrome-muted: #303030;
+  --chrome-line: #555;
+  --focus: #003e2c;
 }
 html[data-contrast='dark'] {
   color-scheme: dark;
@@ -41,6 +59,15 @@ html[data-contrast='dark'] {
   --tint: #303831;
   --on-accent: #111;
   --error-bg: #40201c;
+  --accent: #f4df75;
+  --accent-hover: #fff0ab;
+  --on-bright: #111;
+  --chrome: #171b19;
+  --chrome-deep: #090c0a;
+  --chrome-text: #fff;
+  --chrome-muted: #dedede;
+  --chrome-line: #999;
+  --focus: #f4df75;
 }
 html[data-spacing='true'] body {
   letter-spacing: 0.04em;
@@ -84,7 +111,7 @@ button:disabled {
   cursor: not-allowed;
 }
 summary:focus-visible {
-  outline: 3px solid #cf9655;
+  outline: 3px solid var(--focus);
   outline-offset: 4px;
 }
 @media (max-width: 900px) {
@@ -114,7 +141,7 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 a {
@@ -136,7 +163,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 3px solid #cf9655;
+  outline: 3px solid var(--focus);
   outline-offset: 4px;
 }
 h1,
@@ -175,7 +202,7 @@ main {
 .eyebrow {
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: var(--green);
 }
@@ -188,7 +215,7 @@ main {
   justify-content: space-between;
   gap: 30px;
   font-size: 0.75rem;
-  color: #526459;
+  color: var(--muted);
 }
 .footer strong {
   font-size: 1.25rem;
@@ -228,7 +255,7 @@ main {
 }
 .pharmacy-options .ant-radio-wrapper-checked {
   border-color: var(--green);
-  background: #f2f7ef;
+  background: var(--tint);
 }
 .pharmacy-options strong {
   display: block;

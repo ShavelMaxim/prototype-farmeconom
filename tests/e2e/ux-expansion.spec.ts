@@ -34,11 +34,11 @@ test('выдача раскрывается с клавиатуры, возвр�
     .toBeLessThan(80);
   await page.reload();
   await expect(page.locator('article')).toHaveCount(24);
-  await page.getByRole('combobox', { name: 'Поиск товаров' }).fill('Демо-компонент A');
+  await page.getByRole('combobox', { name: 'Поиск товаров' }).fill('Компонент A');
   await expect(page.locator('article')).toHaveCount(2);
   await expect(page).not.toHaveURL(/page=/);
   await expect(
-    page.getByRole('heading', { name: 'Учебный образец A · большая упаковка', exact: true }),
+    page.getByRole('heading', { name: 'Таблетки · серия A, большая упаковка', exact: true }),
   ).toBeVisible();
 });
 
@@ -112,19 +112,19 @@ test('демо-оформление создаёт снимок истории, 
   await page.getByRole('link', { name: 'Корзина, товаров: 1', exact: true }).click();
   await page.getByRole('link', { name: 'К оформлению', exact: true }).click();
   await page
-    .getByRole('checkbox', { name: 'Я понимаю, что это учебный сценарий без реального заказа' })
+    .getByRole('checkbox', { name: 'Сохранить заказ на этом устройстве без передачи в аптеку' })
     .check();
-  await page.getByRole('button', { name: 'Завершить демо-оформление', exact: true }).click();
+  await page.getByRole('button', { name: 'Сохранить заказ', exact: true }).click();
   await page.getByRole('link', { name: 'Посмотреть мои заказы', exact: true }).click();
-  await expect(page.getByText('Демо завершено', { exact: true })).toBeVisible();
+  await expect(page.getByText('Сохранён на устройстве', { exact: true })).toBeVisible();
   await page.reload();
   await page.getByText(/Состав ·/).click();
   await expect(page.getByText('Электронный термометр', { exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Повторить демо-заказ', exact: true }).click();
+  await page.getByRole('button', { name: 'Повторить заказ', exact: true }).click();
   await expect(page.getByRole('dialog')).toContainText('Текущая аптека: Центральная');
   await page.getByRole('button', { name: 'Отмена', exact: true }).click();
   await expect(page.getByRole('link', { name: 'Корзина, товаров: 0', exact: true })).toBeVisible();
-  await page.getByRole('button', { name: 'Повторить демо-заказ', exact: true }).click();
+  await page.getByRole('button', { name: 'Повторить заказ', exact: true }).click();
   await page.getByRole('button', { name: /^Добавить 1 шт/ }).click();
   await page.getByRole('link', { name: 'Открыть корзину', exact: true }).click();
   await expect(

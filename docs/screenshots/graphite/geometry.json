@@ -1,0 +1,97 @@
+[
+  {
+    "name": "viewport-1440",
+    "viewport": 1440,
+    "content": 1440
+  },
+  {
+    "name": "festive-viewport-1440",
+    "viewport": 1440,
+    "content": 1440
+  },
+  {
+    "name": "viewport-768",
+    "viewport": 768,
+    "content": 768
+  },
+  {
+    "name": "festive-viewport-768",
+    "viewport": 768,
+    "content": 768
+  },
+  {
+    "name": "viewport-390",
+    "viewport": 390,
+    "content": 390
+  },
+  {
+    "name": "festive-viewport-390",
+    "viewport": 390,
+    "content": 390
+  },
+  {
+    "name": "favorites-390",
+    "viewport": 390,
+    "content": 390
+  },
+  {
+    "name": "cart-390",
+    "viewport": 390,
+    "content": 390
+  },
+  {
+    "name": "checkout-390",
+    "viewport": 390,
+    "content": 390
+  },
+  {
+    "name": "result-390",
+    "viewport": 390,
+    "content": 390
+  },
+  {
+    "name": "viewport-320",
+    "viewport": 320,
+    "content": 320
+  },
+  {
+    "name": "festive-viewport-320",
+    "viewport": 320,
+    "content": 320
+  },
+  {
+    "name": "home-320-200",
+    "viewport": 320,
+    "content": 320
+  },
+  {
+    "name": "products-320-200",
+    "viewport": 320,
+    "content": 320
+  },
+  {
+    "name": "cart-320-200",
+    "viewport": 320,
+    "content": 320
+  },
+  {
+    "name": "checkout-320-200",
+    "viewport": 320,
+    "content": 320
+  },
+  {
+    "name": "result-320-200",
+    "viewport": 320,
+    "content": 320
+  },
+  {
+    "name": "favorites-320-200",
+    "viewport": 320,
+    "content": 320
+  },
+  {
+    "name": "orders-320-200",
+    "viewport": 320,
+    "content": 320
+  }
+]

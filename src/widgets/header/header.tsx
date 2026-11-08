@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import {
   ShoppingOutlined,
-  ArrowRightOutlined,
   HeartOutlined,
   UnorderedListOutlined,
   AppstoreOutlined,
@@ -16,6 +15,7 @@ import { useDialogController } from '@/shared/lib/use-dialog-controller';
 import { useAppSelector } from '@/shared/lib/store-hooks';
 import { PharmacyPicker } from '@/features/pharmacy/picker';
 import styles from './header.module.css';
+import { SeasonalToggle } from './seasonal-toggle';
 const DisplayDialog = dynamic(() => import('@/features/accessibility/display-dialog'), {
   loading: () => <LoadingNotice>Открываем настройки отображения…</LoadingNotice>,
 });
@@ -52,9 +52,9 @@ export function Header() {
   return (
     <>
       <div className={styles.notice}>
-        <span>Учебный концепт для портфолио · товары, цены и аптеки вымышлены</span>
+        <span>Ангарск · с заботой о вас и ваших близких</span>
         <Link prefetch={false} href="/about">
-          О проекте <ArrowRightOutlined />
+          Как заказать
         </Link>
       </div>
       <header className={styles.header}>
@@ -63,39 +63,40 @@ export function Header() {
             prefetch={false}
             href="/"
             className={styles.logo}
-            aria-label="Аптека рядом — каталог"
+            aria-label="Фарм Эконом — каталог"
           >
-            <span className={styles.cross}>+</span>
+            <span className={styles.cross} aria-hidden="true">
+              +
+            </span>
             <span>
-              аптека
-              <span className={styles.word}>
-                рядом<span className={styles.dot}>.</span>
-              </span>
+              <span className={styles.word}>фарм эконом</span>
+              <small className={styles.tagline}>ЗАБОТА КАЖДЫЙ ДЕНЬ</small>
             </span>
           </Link>
           <div className={styles.location}>
-            <span className={styles.city}>АНГАРСК</span>
+            <span className={styles.city}>Самовывоз · Ангарск</span>
             <PharmacyPicker />
           </div>
           <nav aria-label="Основная навигация" className={styles.nav}>
             <Link prefetch={false} href="/">
-              Каталог
+              <AppstoreOutlined aria-hidden="true" /> Каталог
             </Link>
             <Link
               prefetch={false}
               href="/favorites"
               aria-current={current('/favorites') ? 'page' : undefined}
             >
-              Избранное
+              <HeartOutlined aria-hidden="true" /> Избранное
             </Link>
             <Link
               prefetch={false}
               href="/orders"
               aria-current={current('/orders') ? 'page' : undefined}
             >
-              Мои заказы
+              <UnorderedListOutlined aria-hidden="true" /> Мои заказы
             </Link>
           </nav>
+          <SeasonalToggle />
           <button
             className={styles.display}
             ref={setDisplayTrigger}

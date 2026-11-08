@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -29,6 +29,13 @@ export function Checkout({ products: initial }: { products: Product[] }) {
   const summary = getCartSummary(cart.items, products, cart.pharmacy);
   const [checkout, { isLoading, error }] = useCheckoutMutation();
   const [result, setResult] = useState<CheckoutResponse | null>(null);
+  const resultHeading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (result) {
+      resultHeading.current?.focus({ preventScroll: true });
+      resultHeading.current?.scrollIntoView({ block: 'start' });
+    }
+  }, [result]);
   const {
     control,
     handleSubmit,
@@ -72,8 +79,13 @@ export function Checkout({ products: initial }: { products: Product[] }) {
     <main id="main" className="container prose">
       {result ? (
         <Result
+          className={styles.result}
           status="success"
-          title="Демонстрация завершена"
+          title={
+            <h1 ref={resultHeading} tabIndex={-1}>
+              Заказ сохранён
+            </h1>
+          }
           subTitle={`${result.reference} · ${result.count} шт. · ${money(result.total)}`}
           extra={
             <>
@@ -95,7 +107,7 @@ export function Checkout({ products: initial }: { products: Product[] }) {
             ← Назад в корзину
           </Link>
           <h1>Получение заказа</h1>
-          <p className="muted">Последний шаг учебного сценария. Личные данные не нужны.</p>
+          <p className="muted">Проверьте состав корзины и удобный день получения.</p>
           {!cart.hydrated ? (
             <Skeleton active />
           ) : !cart.items.length ? (
@@ -109,8 +121,8 @@ export function Checkout({ products: initial }: { products: Product[] }) {
               <Alert
                 showIcon
                 type="info"
-                title="Это демонстрационное оформление"
-                description="Проверьте аптеку, день получения и состав корзины. Реального бронирования или покупки не произойдёт."
+                title="Сохранение заказа на устройстве"
+                description="Состав и стоимость сохранятся в истории этого браузера. Передача в аптеку и бронирование пока недоступны."
               />
               <section>
                 <h2>1. Аптека</h2>
@@ -153,7 +165,7 @@ export function Checkout({ products: initial }: { products: Product[] }) {
                     aria-describedby={errors.acknowledge ? 'ack-error' : undefined}
                     aria-invalid={Boolean(errors.acknowledge)}
                   >
-                    Я понимаю, что это учебный сценарий без реального заказа
+                    Сохранить заказ на этом устройстве без передачи в аптеку
                   </Checkbox>
                 )}
               />
@@ -174,7 +186,7 @@ export function Checkout({ products: initial }: { products: Product[] }) {
                 <Alert
                   type="error"
                   showIcon
-                  title="Не удалось завершить демонстрацию"
+                  title="Не удалось сохранить заказ"
                   description={apiErrorMessage(error)}
                 />
               )}
@@ -185,7 +197,7 @@ export function Checkout({ products: initial }: { products: Product[] }) {
                 loading={isLoading}
                 disabled={!summary.valid}
               >
-                Завершить демо-оформление
+                Сохранить заказ
               </Button>
             </form>
           )}

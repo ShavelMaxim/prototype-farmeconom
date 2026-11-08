@@ -3,6 +3,10 @@
   flex-direction: column;
   gap: 24px;
 }
+.form > *,
+.form fieldset {
+  min-width: 0;
+}
 .form section h2 {
   font-size: 1.1875rem;
   margin-top: 6px;
@@ -29,12 +33,15 @@
   border-bottom: 1px solid var(--line);
   padding: 20px 0;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
   align-items: center;
   font-size: 0.875rem;
 }
 .total strong {
+  max-width: 100%;
+  overflow-wrap: anywhere;
   font-size: 1.625rem;
   letter-spacing: -1px;
 }
@@ -42,4 +49,32 @@
   color: #b33c39;
   font-size: 0.8125rem;
   margin: -10px 0 0;
+}
+.result {
+  padding: 32px 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.result h1 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  margin: 0;
+}
+/* Retain this heading's 24px base at every user scale (48px at 200%). */
+:global(html[data-scale]:not([data-scale='100'])) .result h1 {
+  font-size: 1.5rem;
+}
+.result :global(.ant-result-body) {
+  padding: 24px 16px;
+}
+.result :global(.ant-result-extra) {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.result :global(.ant-result-extra) > * {
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
 }

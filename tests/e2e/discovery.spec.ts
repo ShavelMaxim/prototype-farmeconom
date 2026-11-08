@@ -60,6 +60,7 @@ test('опечатка исправляется явно, фильтры сох�
   await page.goto('./');
   await input.fill('терм');
   await expect(page.getByRole('listbox', { name: 'Подсказки поиска' })).toBeVisible();
+  await page.goto('./?diagnostics=1');
   await page.getByText('Проверить поведение интерфейса', { exact: true }).click();
   await page.getByRole('combobox', { name: 'Режим сети', exact: true }).selectOption('error');
   await expect(

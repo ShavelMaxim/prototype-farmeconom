@@ -9,12 +9,14 @@ export const displaySchema = z.object({
   contrast: z.enum(['standard', 'light', 'dark']),
   spacing: z.boolean(),
   reducedMotion: z.boolean(),
+  festive: z.optional(z.boolean()),
 });
 export const defaultDisplay: z.infer<typeof displaySchema> = {
   scale: '100',
   contrast: 'standard',
   spacing: false,
   reducedMotion: false,
+  festive: false,
 };
 const text = z.string().check(z.minLength(1), z.maxLength(200));
 const orderSchema = z.object({

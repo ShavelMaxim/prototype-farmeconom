@@ -32,9 +32,9 @@ describe('расширенные условия каталога', () => {
       catalogQuerySchema.parse({
         category: 'Лекарственные средства',
         form: 'Таблетки',
-        ingredient: 'Демо-компонент A',
+        ingredient: 'Компонент A',
         packs: '40',
-        dose: '10 мг (демо)',
+        dose: '10 мг',
         min: '250',
         pharmacy: 'park',
       }),

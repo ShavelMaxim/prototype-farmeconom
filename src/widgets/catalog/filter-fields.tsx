@@ -185,14 +185,14 @@ export function FilterFields({
             </span>
           </div>
           <p className={styles.note}>
-            Сопоставление с маркировкой учебных товаров. Возраст не определяет дозу лекарства.
+            Сопоставление с возрастной маркировкой. Возраст не определяет дозу лекарства.
           </p>
         </div>
       )}
       {medical && (
         <p className={styles.warning}>
-          Медицинские параметры вымышлены. Нет подтверждённых данных о применении при беременности,
-          кормлении и в детском возрасте.
+          Фильтры не подтверждают возможность применения при беременности, кормлении и в детском
+          возрасте.
         </p>
       )}
       {options('feature', 'Особенности', Object.entries(features), (p) => p.features)}
@@ -211,7 +211,7 @@ export function FilterFields({
       {medical &&
         options(
           'dose',
-          'Дозировка · демо',
+          'Дозировка',
           unique((p) => p.dose),
           (p) => [p.dose],
         )}
@@ -224,7 +224,7 @@ export function FilterFields({
       {medical &&
         options(
           'ingredient',
-          'Действующее вещество · демо',
+          'Действующее вещество',
           unique((p) => p.ingredient),
           (p) => [p.ingredient],
         )}

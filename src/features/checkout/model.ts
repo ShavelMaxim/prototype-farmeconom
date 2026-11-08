@@ -3,7 +3,7 @@ import { pharmacySchema } from '@/entities/product/model';
 import { productIdSchema } from '@/shared/config/product-id';
 export const checkoutFormSchema = z.object({
   pickup: z.enum(['today', 'tomorrow']),
-  acknowledge: z.boolean().refine((value) => value, 'Подтвердите, что это демонстрационный заказ'),
+  acknowledge: z.boolean().refine((value) => value, 'Подтвердите сохранение заказа на устройстве'),
 });
 export type CheckoutFormValues = z.infer<typeof checkoutFormSchema>;
 export const checkoutRequestSchema = checkoutFormSchema.extend({

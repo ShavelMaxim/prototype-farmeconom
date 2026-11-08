@@ -40,7 +40,7 @@ export function ProductDetail({ product: initial }: { product: Product }) {
       <div className={styles.layout}>
         <div>
           <ProductArtwork product={product} large />
-          <p className={styles.caption}>Условное изображение упаковки · учебный проект</p>
+          <p className={styles.caption}>Изображение упаковки</p>
         </div>
         <div>
           <p className="eyebrow">
@@ -53,8 +53,8 @@ export function ProductDetail({ product: initial }: { product: Product }) {
             <Alert
               type="warning"
               showIcon
-              title="Вымышленный медицинский образец"
-              description="Название, вещество и дозировка нужны только для демонстрации фильтров. Это не инструкция. Нет подтверждённых данных о применении детьми, при беременности и кормлении."
+              title="Перед применением прочитайте инструкцию"
+              description="Карточка товара не заменяет инструкцию. Применение детьми, при беременности и кормлении необходимо уточнить у специалиста."
             />
           )}
           <Tag color={offer.stock ? 'green' : 'default'} style={{ color: 'var(--green)' }}>
@@ -99,7 +99,7 @@ export function ProductDetail({ product: initial }: { product: Product }) {
               <dd>{product.category}</dd>
             </div>
             <div>
-              <dt>Артикул демо</dt>
+              <dt>Артикул</dt>
               <dd>{product.id}</dd>
             </div>
             <div>
@@ -114,13 +114,13 @@ export function ProductDetail({ product: initial }: { product: Product }) {
             )}
             {product.dose && (
               <div>
-                <dt>Дозировка · демо</dt>
+                <dt>Дозировка</dt>
                 <dd>{product.dose}</dd>
               </div>
             )}
             {product.ingredient && (
               <div>
-                <dt>Вещество · демо</dt>
+                <dt>Вещество</dt>
                 <dd>{product.ingredient}</dd>
               </div>
             )}
@@ -138,7 +138,7 @@ export function ProductDetail({ product: initial }: { product: Product }) {
             )}
             {product.minAgeMonths !== undefined && (
               <div>
-                <dt>Возрастная маркировка · демо</dt>
+                <dt>Возрастная маркировка</dt>
                 <dd>
                   От {product.minAgeMonths} мес.
                   {product.maxAgeMonths !== undefined ? ` до ${product.maxAgeMonths} мес.` : ''}
@@ -192,10 +192,10 @@ export function ProductDetail({ product: initial }: { product: Product }) {
       </div>
       {related.length > 0 && (
         <section className={`panel ${styles.related}`}>
-          <h2>{product.medicalDemo ? 'Сравнить учебные образцы' : 'Похожие товары'}</h2>
+          <h2>{product.medicalDemo ? 'Сравнить упаковки' : 'Похожие товары'}</h2>
           <p className="muted">
             {product.medicalDemo
-              ? 'Одна группа демонстрационного вещества. Это не подтверждает терапевтическую взаимозаменяемость.'
+              ? 'Сравнение характеристик не подтверждает терапевтическую взаимозаменяемость.'
               : 'Общая товарная группа — сравните характеристики и упаковку.'}
           </p>
           <ul>

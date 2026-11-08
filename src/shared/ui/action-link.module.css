@@ -7,15 +7,15 @@
   width: 100%;
   padding: 10px 18px;
   border-radius: 12px;
-  background: var(--green);
-  color: var(--on-accent);
+  background: var(--accent);
+  color: var(--on-bright);
   font-size: 0.875rem;
   font-weight: 600;
   transition: background 0.15s;
 }
 .link:hover {
-  background: #245c4a;
-  color: var(--on-accent);
+  background: var(--accent-hover);
+  color: var(--on-bright);
 }
 
 :global(html[data-contrast='dark']) .button:hover:not(:disabled),

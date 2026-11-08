@@ -13,13 +13,13 @@ test('покупатель находит товар, сохраняет кор�
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Электронный термометр' })).toBeVisible();
   await page.getByRole('link', { name: 'К оформлению' }).click();
-  await page.getByRole('button', { name: 'Завершить демо-оформление' }).click();
+  await page.getByRole('button', { name: 'Сохранить заказ' }).click();
   await expect(page.getByRole('alert').filter({ hasText: 'Подтвердите' })).toBeVisible();
   await page
-    .getByRole('checkbox', { name: 'Я понимаю, что это учебный сценарий без реального заказа' })
+    .getByRole('checkbox', { name: 'Сохранить заказ на этом устройстве без передачи в аптеку' })
     .check();
-  await page.getByRole('button', { name: 'Завершить демо-оформление' }).click();
-  await expect(page.getByText('Демонстрация завершена')).toBeVisible();
+  await page.getByRole('button', { name: 'Сохранить заказ' }).click();
+  await expect(page.getByText('Заказ сохранён')).toBeVisible();
 });
 test('смена аптеки блокирует недоступный товар, а возврат восстанавливает оформление', async ({
   page,
@@ -94,6 +94,7 @@ test('ошибка API локальна, товары сохраняются, п
   await page.goto('./');
   const add = page.getByRole('button', { name: 'В корзину: Электронный термометр', exact: true });
   await expect(add).toBeEnabled();
+  await page.goto('./?diagnostics=1');
   await page.getByText('Проверить поведение интерфейса', { exact: true }).click();
   await page.getByRole('combobox', { name: 'Режим сети' }).selectOption('error');
   await page.getByRole('combobox', { name: 'Поиск товаров' }).fill('термометр');
@@ -106,7 +107,7 @@ test('ошибка API локальна, товары сохраняются, п
   ).toBe(true);
   await page.getByRole('button', { name: 'Повторить', exact: true }).click();
   await expect(page.getByText('Не удалось обновить каталог')).toBeVisible();
-  await page.getByRole('button', { name: 'Отключить демонстрационную ошибку' }).click();
+  await page.getByRole('button', { name: 'Восстановить соединение' }).click();
   await expect(add).toBeEnabled();
 });
 

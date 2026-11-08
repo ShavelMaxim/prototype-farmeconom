@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { ProductArtwork } from '@/entities/product/artwork';
 import { useCatalogParams } from './use-catalog-params';
 import { apiErrorMessage } from '@/shared/api/errors';
 import { ProductGrid } from './product-grid';
@@ -12,6 +14,7 @@ import {
   SearchOutlined,
   SlidersOutlined,
   EnvironmentOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
 import { categories, parseCatalogQuery, type CatalogResponse } from '@/entities/product/model';
 import { useInventory, useGetCatalogQuery } from '@/entities/product/api';
@@ -106,16 +109,16 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
     <main id="main" className={`container ${styles.catalogPage}`}>
       <section className={styles.hero} aria-labelledby="hero-title">
         <div>
-          <span className="eyebrow">ЗАБОТА БЛИЖЕ, ЧЕМ КАЖЕТСЯ</span>
+          <span className="eyebrow">ДЛЯ ВАС И ВАШИХ БЛИЗКИХ</span>
           <h1 id="hero-title">
-            Всё для здоровья.
+            Забота о себе.
             <br />
-            <span>Рядом с вами.</span>
+            <span>Каждый день.</span>
           </h1>
-          <p>
-            Найдите нужное и выберите удобную аптеку.
-            <br /> Спокойно, понятно, без лишних шагов.
-          </p>
+          <p>Всё необходимое для домашней аптечки и ежедневного ухода — в одном месте.</p>
+          <a href="#catalog-results" className={styles.heroCta}>
+            Перейти в каталог <ArrowRightOutlined />
+          </a>
           <div className={styles.heroMeta}>
             <span>
               <EnvironmentOutlined /> 3 аптеки в Ангарске
@@ -125,9 +128,15 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
         </div>
         <div className={styles.heroGraphic} aria-hidden="true">
           <div className={styles.orbit} />
-          <div className={styles.heroCross}>+</div>
-          <span className={styles.heroChip}>Каждый день — с заботой</span>
-          <div className={styles.smallCircle}>✳</div>
+          <div className={styles.plinth} />
+          <div className={styles.heroPacks}>
+            {initial.items.slice(0, 2).map((product) => (
+              <ProductArtwork key={product.id} product={product} />
+            ))}
+          </div>
+          <span className={styles.heroChip}>
+            <EnvironmentOutlined /> Самовывоз рядом с вами
+          </span>
         </div>
       </section>
       <form
@@ -158,8 +167,20 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           Найти <ArrowRightOutlined />
         </Button>
       </form>
+      <div className={styles.mobileHeading}>
+        <h1>Каталог</h1>
+        <span>Всё нужное — рядом</span>
+      </div>
+      <nav className={styles.quickCategories} aria-label="Популярные разделы">
+        {categories.slice(1, 7).map((category) => (
+          <Link prefetch={false} key={category} href={`/?category=${encodeURIComponent(category)}`}>
+            <AppstoreOutlined aria-hidden="true" />
+            <span>{category}</span>
+          </Link>
+        ))}
+      </nav>
       <div className={styles.categoryRail} aria-label="Быстрый выбор категории">
-        {categories.map((category) => (
+        {[...new Set([...categories.slice(0, 5), query.category])].map((category) => (
           <button
             key={category}
             disabled={!hydrated}
@@ -169,6 +190,19 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
             {category}
           </button>
         ))}
+        <button
+          type="button"
+          disabled={!hydrated}
+          onClick={(event) => {
+            setFilterTrigger(event.currentTarget);
+            showFilters();
+          }}
+          aria-haspopup="dialog"
+          aria-expanded={filtersOpen}
+          aria-label="Все категории"
+        >
+          Все категории <AppstoreOutlined aria-hidden="true" />
+        </button>
       </div>
       <section className={styles.layout} aria-label="Каталог товаров">
         <aside className={styles.sidebar} aria-label="Фильтры каталога">
@@ -192,7 +226,12 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
         <div className={styles.main}>
           <div className={styles.toolbar}>
             <div>
-              <h2 ref={resultsRef} tabIndex={-1} className={styles.resultsTitle}>
+              <h2
+                id="catalog-results"
+                ref={resultsRef}
+                tabIndex={-1}
+                className={styles.resultsTitle}
+              >
                 {query.q
                   ? `Поиск: «${query.q}»`
                   : query.category === 'Все товары'
@@ -233,7 +272,10 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
                 }}
                 className={styles.mobileFilters}
                 icon={<SlidersOutlined />}
-                onClick={showFilters}
+                onClick={(event) => {
+                  setFilterTrigger(event.currentTarget);
+                  showFilters();
+                }}
               >
                 Фильтры {filterCount > 0 && <span aria-hidden="true">· {filterCount}</span>}
               </Button>
@@ -260,7 +302,7 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
                 </Button>
                 {demo === 'error' && (
                   <Button small variant="link" onClick={() => setDemo('normal')}>
-                    Отключить демонстрационную ошибку
+                    Восстановить соединение
                   </Button>
                 )}
               </div>
@@ -303,9 +345,6 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
               )}
             </div>
           )}
-          <div className={styles.catalogNote}>
-            Изображения упаковок условные. Все товары и цены — демонстрационные.
-          </div>
         </div>
       </section>
       {filtersOpen && (
@@ -316,25 +355,24 @@ export function Catalog({ initial }: { initial: CatalogResponse }) {
           onClose={closeFilters}
         />
       )}
-      <details className={styles.demoPanel}>
-        <summary>Проверить поведение интерфейса</summary>
-        <p>
-          Инструмент для демонстрации на собеседовании. Задержка и ошибка применяются только к
-          запросам каталога.
-        </p>
-        <select
-          aria-label="Режим сети"
-          className={styles.select}
-          disabled={!hydrated}
-          value={demo}
-          onChange={(event) => setDemo(event.currentTarget.value)}
-          style={{ minWidth: 220 }}
-        >
-          <option value="normal">Обычная сеть</option>
-          <option value="slow">Задержка 1,5 секунды</option>
-          <option value="error">Ошибка API</option>
-        </select>
-      </details>
+      {new URLSearchParams(search).get('diagnostics') === '1' && (
+        <details className={styles.demoPanel}>
+          <summary>Проверить поведение интерфейса</summary>
+          <p>Диагностика соединения с каталогом.</p>
+          <select
+            aria-label="Режим сети"
+            className={styles.select}
+            disabled={!hydrated}
+            value={demo}
+            onChange={(event) => setDemo(event.currentTarget.value)}
+            style={{ minWidth: 220 }}
+          >
+            <option value="normal">Обычная сеть</option>
+            <option value="slow">Задержка 1,5 секунды</option>
+            <option value="error">Ошибка API</option>
+          </select>
+        </details>
+      )}
     </main>
   );
 }

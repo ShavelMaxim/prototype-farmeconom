@@ -171,7 +171,7 @@ export function CartView({ products: initial }: { products: Product[] }) {
                   </>
                 ) : (
                   <>
-                    <p>Товар больше не доступен в демо-каталоге.</p>
+                    <p>Товар больше не доступен в каталоге.</p>
                     <Button onClick={() => remove(line.id, line.quantity, 'Товар')}>
                       Удалить товар
                     </Button>
@@ -218,9 +218,9 @@ export function CartView({ products: initial }: { products: Product[] }) {
               )}
             </div>
             <p className={styles.disclaimer}>
-              Демонстрационный сценарий.
+              Заказ сохраняется на этом устройстве.
               <br />
-              Оплата и реальный заказ не создаются.
+              Отправка в аптеку пока недоступна.
             </p>
           </aside>
         </div>

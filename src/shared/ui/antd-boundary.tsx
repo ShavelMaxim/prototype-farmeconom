@@ -14,6 +14,20 @@ export function AntdBoundary({ children }: { children: ReactNode }) {
     const contrast = display.contrast !== 'standard';
     return {
       ...antdTheme,
+      components: {
+        ...antdTheme.components,
+        Button: {
+          ...antdTheme.components?.Button,
+          ...(contrast
+            ? {
+                colorPrimary: dark ? '#f4df75' : '#003e2c',
+                colorPrimaryHover: dark ? '#fff0ab' : '#002e20',
+                colorPrimaryActive: dark ? '#f4df75' : '#003e2c',
+                primaryColor: dark ? '#111' : '#fff',
+              }
+            : {}),
+        },
+      },
       algorithm: dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
       token: {
         ...antdTheme.token,

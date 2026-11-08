@@ -8,8 +8,8 @@
   padding: 0 15px;
   border: 1px solid transparent;
   border-radius: 12px;
-  background: var(--green);
-  color: var(--on-accent);
+  background: var(--accent);
+  color: var(--on-bright);
   font-size: 0.875rem;
   font-weight: 600;
   line-height: normal;
@@ -21,10 +21,10 @@
     color 0.2s;
 }
 .button:hover:not(:disabled) {
-  background: #2c785f;
+  background: var(--accent-hover);
 }
 .button:active:not(:disabled) {
-  background: #0a4536;
+  background: var(--accent-hover);
 }
 .added {
   border-color: var(--line);
@@ -33,14 +33,14 @@
   box-shadow: 0 2px 0 rgb(0 0 0 / 2%);
 }
 .added:hover:not(:disabled) {
-  border-color: #2c785f;
+  border-color: var(--green);
   background: var(--paper);
-  color: #2c785f;
+  color: var(--green);
 }
 .added:active:not(:disabled) {
-  border-color: #0a4536;
+  border-color: var(--green);
   background: var(--paper);
-  color: #0a4536;
+  color: var(--green);
 }
 .button:disabled {
   border-color: var(--line);

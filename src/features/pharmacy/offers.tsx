@@ -11,8 +11,7 @@ export function PharmacyOffers({ product }: { product: Product }) {
     <section aria-labelledby="pharmacy-offers-title" className={styles.offers}>
       <h2 id="pharmacy-offers-title">Цена и наличие в аптеках</h2>
       <p className="muted">
-        Сравните точки самовывоза. Все адреса и остатки демонстрационные. Смена аптеки применяется
-        ко всей корзине после подтверждения.
+        Сравните точки самовывоза. Смена аптеки применяется ко всей корзине после подтверждения.
       </p>
       <ul>
         {pharmacies.map((pharmacy) => {
