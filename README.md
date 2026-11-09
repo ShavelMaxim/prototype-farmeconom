@@ -1,8 +1,10 @@
 # Фарм Эконом — frontend-портфолио
 
-[Открыть магазин](https://shavelmaxim.github.io/prototype-farmeconom/) · [Успешный deployment](https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42484874578)
+[Открыть магазин](https://shavelmaxim.github.io/prototype-farmeconom/) · [Успешный deployment](https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42555218369)
 
-Текущая версия **42f0d75** опубликована: графитовый дизайн, аквамариновый акцент, название «Фарм Эконом» и отключаемое новогоднее оформление. В финальном CI прошли **48 unit/integration и 76 E2E**; на Pages — 10 адресных E2E и HTTP smoke восьми маршрутов/ресурсов/404. Итоговый мобильный Lighthouse **93/93/89, медиана93**, CLS0, A11y/BP100. Все серии и ограничения — [DESIGN-GRAPHITE](docs/DESIGN-GRAPHITE.md).
+Текущая версия **6763a47** опубликована: графитовый дизайн, название «Фарм Эконом», отключаемое новогоднее оформление и исправленная навигация по категориям. В финальном CI прошли **48 unit/integration и 80 E2E**, на Pages — ещё8адресныхE2E. Каталог обновляется и после верхних плиток Next Link, и после нативных фильтров. Подробности — [CATEGORY-NAVIGATION-FIX](docs/CATEGORY-NAVIGATION-FIX.md).
+
+Последняя отдельная мобильная серия Lighthouse относится к **42f0d75 до исправления URL**: 93/93/89 (медиана93), CLS0, A11y/BP100. Для6763a47 отдельно подтверждены статическийHTML и JS-бюджет; Lighthouse не перемерялся. Все серии/ограничения редизайна — [DESIGN-GRAPHITE](docs/DESIGN-GRAPHITE.md).
 
 Независимый учебный концепт аптечного магазина для собеседования в Фармэконом. Данные вымышленные; реальные заказы не создаются. Next.js App Router экспортируется в статические файлы для GitHub Pages.
 
