@@ -1,5 +1,13 @@
 # Контекст для продолжения
 
+## Категории и Next Link — 9 ноября 2026, исправление подготовлено
+
+Пользователь сообщил, что на прямой ссылке с category=Для детей категории не переключаются, тогда как в Codex фильтр работает. На Pages42f0 воспроизведено: верхние плитки меняют URL без обновления товаров; боковые кнопки работают. useCatalogSearch слушал только собственное событие/popstate, а Next Link их не отправляет. Причина в коде, не подтверждённая особенность браузера. Документ docs/CATEGORY-NAVIGATION-FIX.md.
+
+Добавлен CatalogUrlObserver с useSearchParams в отдельном пустом Suspense. Сам Catalog/Server Intro/12SSRкарточек не помещены в CSR-boundary. Ссылки и History API не перехватываются. Новые4E2E проверяют прямой вход, Next Link-плитки, ссылку «Каталог», Back/Forward/reload на desktop/touch. Тест до исправления упал на опубликованном42f0; после прошли локальные28адресныхE2E, build/typecheck/lint и48unit. НачальныйJS-бюджет и HTML безJS защищены.
+
+Новая итерация PLAN2/3. Исправление пока локальное; публичныйruntime42f0 ещё содержит дефект. Далее: commit/push, дождатьсяCI80 иPages, запустить4новыхE2E на публичномURL, обновить контекст/план/отчёт/архив, остановитьpreview3103. Не объявлять исправление опубликованным доdeploy.
+
 ## Итоговый графитовый дизайн — завершено 9 ноября 2026
 
 Опубликованный runtime **42f0d75**: https://shavelmaxim.github.io/prototype-farmeconom/. [Pages 42484874578](https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42484874578) и [Quality 42484874587](https://github.com/ShavelMaxim/prototype-farmeconom/actions/runs/42484874587) — success. Новая итерация PLAN.md **6/6**, исходные 10 этапов также завершены. Последующий документирующий коммит не меняет опубликованный код. Полный отчёт: docs/DESIGN-GRAPHITE.md.

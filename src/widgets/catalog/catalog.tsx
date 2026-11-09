@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { useCatalogParams } from './use-catalog-params';
 import { apiErrorMessage } from '@/shared/api/errors';
@@ -24,6 +24,7 @@ import { AppliedFilters } from './applied-filters';
 import { productCount } from '@/shared/lib/product-count';
 import { useDialogController } from '@/shared/lib/use-dialog-controller';
 import { SearchField } from './search-field';
+import { CatalogUrlObserver } from './catalog-url-observer';
 
 const FilterDrawer = dynamic(() => import('./filter-drawer'), {
   loading: () => <LoadingNotice>Открываем фильтры…</LoadingNotice>,
@@ -104,6 +105,9 @@ export function Catalog({ initial, intro }: { initial: CatalogResponse; intro: R
     facetKeys.reduce((count, key) => count + values(query[key]).length, 0);
   return (
     <main id="main" className={`container ${styles.catalogPage}`}>
+      <Suspense fallback={null}>
+        <CatalogUrlObserver />
+      </Suspense>
       <form
         ref={searchRef}
         role="search"
