@@ -1,0 +1,42 @@
+{
+  "label": "graphite-probe-a-2",
+  "url": "http://127.0.0.1:3107/prototype-farmeconom/",
+  "cpuSlowdown": 4,
+  "readyMs": 2704,
+  "valueMs": 339.39999985694885,
+  "resultsMs": 1074.7000000476837,
+  "dialogMs": 1672.7999999523163,
+  "dialogFromNavigationMs": 5760.799999952316,
+  "tasks": [
+    {
+      "startTime": 937.5,
+      "duration": 323
+    },
+    {
+      "startTime": 1278.7999999523163,
+      "duration": 126
+    },
+    {
+      "startTime": 1522.7999999523163,
+      "duration": 84
+    },
+    {
+      "startTime": 1634.8999998569489,
+      "duration": 283
+    },
+    {
+      "startTime": 1923.2999999523163,
+      "duration": 63
+    },
+    {
+      "startTime": 2095,
+      "duration": 315
+    },
+    {
+      "startTime": 2613,
+      "duration": 91
+    }
+  ],
+  "blockingBeforeReadyMs": 935,
+  "errors": []
+}
